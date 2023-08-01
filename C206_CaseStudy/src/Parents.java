@@ -6,12 +6,12 @@ public class Parents{
 	private String feedback;
 	private ArrayList<Ordering> orderList = new ArrayList<Ordering>();
 	
-	public Parents(String name, String password, boolean tracking, String feedback, ArrayList<Ordering> orderList) {
+	public Parents(String name, String password) {
 			this.name = name;
 			this.password = password;
 			this.tracking = false;
 			this.feedback = "";
-			this.orderList = orderList;
+			this.orderList = new ArrayList<Ordering>();
 	}
 
 	public String getPassword() {

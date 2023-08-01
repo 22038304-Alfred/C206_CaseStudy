@@ -7,12 +7,14 @@ public class C206_CaseStudy {
 	private static final int Max_option_Vendor = 6;
 	private static ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
 	private static ArrayList<Menu> MenuList = new ArrayList<Menu>();
-	private static Menu [] WeeklyMenuList = new Menu[5];
 	private static ArrayList<Admin> AdminList = new ArrayList<Admin>();
 	private static ArrayList<Parents> ParentAccounts = new ArrayList<Parents>();
 	private static int option = 0;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		ParentAccounts.add(new Parents("Gerald","Pass123"));
+		AdminList.add(new Admin("Manager","Pw123"));
+		VendorList.add(new Vendor("McDonald","password","MCD@yahoo.org","Bishan St 53,123567"));
 		
 		loop_start: while (true) {
 			String pattern = "(?i)(admin|vendor|user|end)";
@@ -23,6 +25,8 @@ public class C206_CaseStudy {
 				for(Parents P: ParentAccounts) {
 					if (P.authentication(username,password)) {
 						GeneralUI();
+					}else {
+						System.out.println("Incorrect!");
 					}
 				}
 			}else if(UserSelect.equalsIgnoreCase("vendor")) {
@@ -31,6 +35,8 @@ public class C206_CaseStudy {
 				for(Vendor V: VendorList) {
 					if(V.authentication(username, password)) {
 						VendorUI(username);
+					}else {
+						System.out.println("Incorrect!");
 					}
 				}
 			}else if(UserSelect.equalsIgnoreCase("admin")) {
@@ -39,6 +45,8 @@ public class C206_CaseStudy {
 				for(Admin A: AdminList) {
 					if(A.authentication(username, password)) {
 						AdminUI();
+					}else {
+						System.out.println("Incorrect!");
 					}
 				}
 			}else if(UserSelect.equalsIgnoreCase("end")) {
@@ -117,7 +125,8 @@ public class C206_CaseStudy {
 		System.out.println("2. Delete Items");
 		System.out.println("3. Edit Items");
 		System.out.println("4. FeedBacks");
-		System.out.println("5. End");
+		System.out.println("5. Edit Email/Location address");
+		System.out.println("6. End");
 		
 	}
 	
@@ -141,9 +150,6 @@ public class C206_CaseStudy {
 		}
 	}
 //Main Start
-	private static void DailyMenu(String dayofweek, ArrayList<Vendor> VendorList, Menu[] WeeklyMenu) {
-		
-	}
 	
 	private static void ViewMenu(String dayofweek, ArrayList<Menu> MenuList) {
 		DayOfWeek date = DayOfWeek.valueOf(dayofweek);
@@ -239,13 +245,20 @@ public class C206_CaseStudy {
 	}
 	
 	private static void ViewFB(String VendorName) {
-		int MaxIndex = 0;
-		int rangeIndex = Math.min(5, VendorList.get(i).getReviews().size());
 		for(Vendor V: VendorList) {
 			if(V.getName().equals(VendorName)) {
-				for(Review R: V.getReviews()) {
-					System.out.printf("Food Rating: %d\nExperience Rating: %d\nDescription:\n%s",
-							R.getRateFood(),R.getRateExperience(),R.getImprovements());
+				int MaxIndex = 0;
+				int endIndex = Math.min(5, V.getReviews().size());
+				Page_Loop:while(true) {
+					for(int i = MaxIndex; i<endIndex; i++) {
+						Review R = V.getReviews().get(i);
+						System.out.printf("Food Rating: %d\nExperience Rating: %d\nDescription:\n%s",
+								R.getRateFood(),R.getRateExperience(),R.getImprovements());
+					}
+					
+					if(endIndex >= V.getReviews().size()) {
+						System.out.printf();
+					}
 				}
 			}else {
 				System.out.println("Vendor does not exist!");

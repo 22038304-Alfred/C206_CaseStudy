@@ -10,9 +10,9 @@ public class Vendor{
 	
 	public Vendor(String name, String pass, String email, String address) {
 		this.name = name;
+		this.pass = pass;
 		this.email = email;
 		this.address = address;
-		this.pass = pass;
 		this.Menu = new ArrayList<Meals>();
 		this.reviews = new ArrayList<Review>();
 	}
