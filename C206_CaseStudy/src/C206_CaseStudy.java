@@ -8,10 +8,44 @@ public class C206_CaseStudy {
 	private static ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
 	private static ArrayList<Menu> MenuList = new ArrayList<Menu>();
 	private static Menu [] WeeklyMenuList = new Menu[5];
+	private static ArrayList<Admin> AdminList = new ArrayList<Admin>();
 	private static ArrayList<Parents> ParentAccounts = new ArrayList<Parents>();
 	private static int option = 0;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		loop_start: while (true) {
+			String pattern = "(?i)(admin|vendor|user|end)";
+			String UserSelect = Helper.readStringRegEx("Enter Login type [Admin, User, Vendor or end]: ", pattern);
+			if (UserSelect.equalsIgnoreCase("user")) {
+				String username = Helper.readString("Enter Username: ");
+				String password = Helper.readString("Enter Password: ");
+				for(Parents P: ParentAccounts) {
+					if (P.authentication(username,password)) {
+						GeneralUI();
+					}
+				}
+			}else if(UserSelect.equalsIgnoreCase("vendor")) {
+				String username = Helper.readString("Enter Username: ");
+				String password = Helper.readString("Enter Password: ");
+				for(Vendor V: VendorList) {
+					if(V.authentication(username, password)) {
+						VendorUI(username);
+					}
+				}
+			}else if(UserSelect.equalsIgnoreCase("admin")) {
+				String username = Helper.readString("Enter Username: ");
+				String password = Helper.readString("Enter Password: ");
+				for(Admin A: AdminList) {
+					if(A.authentication(username, password)) {
+						AdminUI();
+					}
+				}
+			}else if(UserSelect.equalsIgnoreCase("end")) {
+				break loop_start;
+			}
+		}
+			
 	}
 
 	

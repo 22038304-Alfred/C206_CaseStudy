@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-//
 public class Parents{
 	private String name;
 	private String password;

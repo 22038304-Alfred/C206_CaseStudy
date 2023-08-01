@@ -8,11 +8,11 @@ public class Vendor{
 	private ArrayList<Meals> Menu;
 	private ArrayList<Review> reviews;
 	
-	public Vendor(String name, String email, String address) {
+	public Vendor(String name, String pass, String email, String address) {
 		this.name = name;
 		this.email = email;
 		this.address = address;
-		this.pass = "Pass123";
+		this.pass = pass;
 		this.Menu = new ArrayList<Meals>();
 		this.reviews = new ArrayList<Review>();
 	}
@@ -38,6 +38,10 @@ public class Vendor{
 		this.pass = pass;
 	}
 
+	public boolean authentication(String name, String pass) {
+	    return this.name.equals(name) && this.pass.equals(pass);
+	}
+	
 	public String getEmail() {
 		return email;
 	}
