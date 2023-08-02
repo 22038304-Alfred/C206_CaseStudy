@@ -12,7 +12,7 @@ public class C206_CaseStudy {
 	private static int option = 0;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ParentAccounts.add(new Parents("Default1","Pass123"));
+		ParentAccounts.add(new Parents("Default1","Pass123","St Hilda's School"));
 		AdminList.add(new Admin("Manager","Pw123"));
 		VendorList.add(new Vendor("Vendor1","password","MCD@coporation.org","AMK Hub #1-23,123567"));
 		
@@ -151,8 +151,7 @@ public class C206_CaseStudy {
 	}
 //Main Start
 	
-	private static void ViewMenu(String dayofweek, ArrayList<Menu> MenuList) {
-		DayOfWeek date = DayOfWeek.valueOf(dayofweek);
+	private static void ViewMenu(LocalDate date, ArrayList<Menu> MenuList) {
 		for (Menu menu : MenuList) {
 			if (date.equals(menu.getDate())) {
 				System.out.println("Menu for "+menu.getDate()+":");
@@ -185,7 +184,84 @@ public class C206_CaseStudy {
 		}
 	}
 //Main End
+
+//Admin Start
+	private static void ManageSchInfo() {
+		
+	}
 	
+	private static void ManageAcc(String AdminName) {
+		for(Admin A: AdminList) {
+			if(AdminName.equals(A.getUser())){
+				LoopStart:while(true) {
+					int x = 1;
+					int MinIndex = 0;
+					int MaxIndex = Math.min(10, ParentAccounts.size());
+					for(int i = MinIndex; i<MaxIndex; i++) {
+						Parents PA = ParentAccounts.get(i);
+						System.out.printf("%d. Name:%s",
+								x+1, PA.getName());
+					}
+					
+					if(MaxIndex >= ParentAccounts.size()) {
+						System.out.println("No More Vendors");
+						break LoopStart;
+					}
+					
+					boolean input = Helper.readBoolean("Show 10 more? (y/n): ");
+					 if(input==true) {
+						 MinIndex = MaxIndex;
+						 MaxIndex = Math.min((MinIndex+10), ParentAccounts.size());
+					 }else {
+						 System.out.println("END");
+						 break LoopStart;
+					 }
+					
+				}
+			}else {
+				System.out.println("Invalid Admin!");
+			}
+		}
+	}
+	
+	private static void ManageVendor(String AdminName) {
+		for(Admin A: AdminList) {
+			if(AdminName.equals(A.getUser())){
+				LoopStart:while(true) {
+					int x = 1;
+					int MinIndex = 0;
+					int MaxIndex = Math.min(10, VendorList.size());
+					for(int i = MinIndex; i<MaxIndex; i++) {
+						Vendor V = VendorList.get(i);
+						System.out.printf("%d. Name: %s\nEmail: %s\nAddress: %s",
+								x+1, V.getName(), V.getEmail(), V.getAddress());
+					}
+					
+					if(MaxIndex >= VendorList.size()) {
+						System.out.println("No More Vendors");
+						break LoopStart;
+					}
+					
+					boolean input = Helper.readBoolean("Show 10 more? (y/n): ");
+					 if(input==true) {
+						 MinIndex = MaxIndex;
+						 MaxIndex = Math.min((MinIndex+10), VendorList.size());
+					 }else {
+						 System.out.println("END");
+						 break LoopStart;
+					 }
+					
+				}
+			}else {
+				System.out.println("Invalid Admin!");
+			}
+		}
+	}
+	
+	private static void Report() {
+		
+	}
+//Admin End
 	
 //Vendor Start
 	private static void AddItems(String VendorName) {
@@ -253,13 +329,13 @@ public class C206_CaseStudy {
 		for(Vendor V: VendorList) {
 			if(V.getName().equals(VendorName)) {
 				int MinIndex = 0;
-				
+				int x = 1;
 				int MaxIndex = Math.min(5, V.getReviews().size());
 				Page_Loop:while(true) {
 					for(int i = MinIndex; i<MaxIndex; i++) {
 						Review R = V.getReviews().get(i);
-						System.out.printf("Food Rating: %d\nExperience Rating: %d\nDescription:\n%s",
-								R.getRateFood(),R.getRateExperience(),R.getImprovements());
+						System.out.printf("%d. Food Rating: %d\nExperience Rating: %d\nDescription:\n%s",
+								x+1 ,R.getRateFood(),R.getRateExperience(),R.getImprovements());
 					}
 					
 					if(MaxIndex >= V.getReviews().size()) {
