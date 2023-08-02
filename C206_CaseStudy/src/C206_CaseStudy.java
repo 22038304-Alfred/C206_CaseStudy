@@ -12,9 +12,9 @@ public class C206_CaseStudy {
 	private static int option = 0;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ParentAccounts.add(new Parents("Gerald","Pass123"));
+		ParentAccounts.add(new Parents("Default1","Pass123"));
 		AdminList.add(new Admin("Manager","Pw123"));
-		VendorList.add(new Vendor("McDonald","password","MCD@yahoo.org","Bishan St 53,123567"));
+		VendorList.add(new Vendor("Vendor1","password","MCD@coporation.org","AMK Hub #1-23,123567"));
 		
 		loop_start: while (true) {
 			String pattern = "(?i)(admin|vendor|user|end)";
@@ -177,7 +177,12 @@ public class C206_CaseStudy {
 	}
 	
 	private static void Rating() {
-		
+		for(Parents P: ParentAccounts) {
+			if(P.isTracking() == false &&
+					!P.getOrderList().isEmpty()) {
+				
+			}
+		}
 	}
 //Main End
 	
@@ -247,18 +252,29 @@ public class C206_CaseStudy {
 	private static void ViewFB(String VendorName) {
 		for(Vendor V: VendorList) {
 			if(V.getName().equals(VendorName)) {
-				int MaxIndex = 0;
-				int endIndex = Math.min(5, V.getReviews().size());
+				int MinIndex = 0;
+				
+				int MaxIndex = Math.min(5, V.getReviews().size());
 				Page_Loop:while(true) {
-					for(int i = MaxIndex; i<endIndex; i++) {
+					for(int i = MinIndex; i<MaxIndex; i++) {
 						Review R = V.getReviews().get(i);
 						System.out.printf("Food Rating: %d\nExperience Rating: %d\nDescription:\n%s",
 								R.getRateFood(),R.getRateExperience(),R.getImprovements());
 					}
 					
-					if(endIndex >= V.getReviews().size()) {
-						System.out.printf();
+					if(MaxIndex >= V.getReviews().size()) {
+						System.out.println("Null");
+						break Page_Loop;
 					}
+					
+					boolean input = Helper.readBoolean("Show 5 more? (y/n): ");
+					 if(input==true) {
+						 MinIndex = MaxIndex;
+						 MaxIndex = Math.min((MinIndex+5), V.getReviews().size());
+					 }else {
+						 System.out.println("END");
+						 break Page_Loop;
+					 }
 				}
 			}else {
 				System.out.println("Vendor does not exist!");
