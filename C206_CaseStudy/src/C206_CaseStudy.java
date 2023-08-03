@@ -44,7 +44,7 @@ public class C206_CaseStudy {
 				String password = Helper.readString("Enter Password: ");
 				for(Admin A: AdminList) {
 					if(A.authentication(username, password)) {
-						AdminUI();
+						AdminUI(username);
 					}else {
 						System.out.println("Incorrect!");
 					}
@@ -99,16 +99,16 @@ public class C206_CaseStudy {
 		System.out.println("5. End");
 	}
 	
-	private static void AdminUI() {
+	private static void AdminUI(String AdminName) {
 		MenuAdmin();
 		option = Helper.readInt("Enter choice: ");
 		loop2: while(option != Max_option) {
 			if(option == 1) {
 				ManageSchInfo();
 			}else if(option == 2){
-				ManageAcc();
+				ManageAcc(AdminName);
 			}else if(option == 3) {
-				ManageVendor();
+				ManageVendor(AdminName);
 			}else if(option == 4){
 				Report();
 			}else if(option == Max_option) {
@@ -186,8 +186,12 @@ public class C206_CaseStudy {
 //Main End
 
 //Admin Start
-	private static void ManageSchInfo() {
-		
+	private static void ManageSchInfo(String AdminName) {
+		for(Admin A:AdminList) {
+			if(AdminName.equals(A.getUser())) {
+				
+			}
+		}
 	}
 	
 	private static void ManageAcc(String AdminName) {
@@ -286,6 +290,7 @@ public class C206_CaseStudy {
 					Meals m = V.getMenu().get(M);
 					if(m.getName().equalsIgnoreCase(name)) {
 						V.getMenu().remove(m);
+						System.out.println("Item Removed!");
 					}else{
 						System.out.println("Item does not exist!");
 					}
