@@ -8,7 +8,7 @@ public class Vendor{
 	private ArrayList<Meals> Menu;
 	private ArrayList<Review> reviews;
 	
-	public Vendor(String name, String pass, String email, String address) {
+	public Vendor(String name, String pass, String email, String address, ArrayList<Meals> Menu) {
 		this.name = name;
 		this.pass = pass;
 		this.email = email;
@@ -39,7 +39,14 @@ public class Vendor{
 	}
 
 	public boolean authentication(String name, String pass) {
-	    return this.name.equals(name) && this.pass.equals(pass);
+		boolean authenticate = false;
+	    if(this.name.equals(name) && this.pass.equals(pass)) {
+	    	authenticate = true;
+	    	return authenticate;
+	    }else {
+	    	authenticate = false;
+	    	return authenticate;
+	    }
 	}
 	
 	public String getEmail() {

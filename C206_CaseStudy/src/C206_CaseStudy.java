@@ -4,17 +4,28 @@ import java.util.Random;
 
 public class C206_CaseStudy {
 	private static final int Max_option = 5;
-	private static final int Max_option_Vendor = 6;
+	private static final int Max_option_Vendor = 7;
+	private static int option = 0;
+	private static boolean authenticate = false;
 	private static ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
 	private static ArrayList<Menu> MenuList = new ArrayList<Menu>();
 	private static ArrayList<Admin> AdminList = new ArrayList<Admin>();
 	private static ArrayList<Parents> ParentAccounts = new ArrayList<Parents>();
-	private static int option = 0;
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ParentAccounts.add(new Parents("Default1","Pass123","St Hilda's School"));
+		ParentAccounts.add(new Parents("Default2","Pass123","St Patricks's School"));
 		AdminList.add(new Admin("Manager","Pw123"));
-		VendorList.add(new Vendor("Vendor1","password","MCD@coporation.org","AMK Hub #1-23,123567"));
+		ArrayList<Meals> VendorMeal1 = new ArrayList<Meals>();
+		ArrayList<Meals> VendorMeal2 = new ArrayList<Meals>();
+		VendorMeal1.add(new Meals("Chicken Rice","Traditional and Fragrant Dish!",3.50,1200));
+		VendorMeal1.add(new Meals("Nasi Lemak","Delicious and flavourful!",2.80,1300));
+		VendorMeal2.add(new Meals("Meatless Don","Unique and Tasty!",4.50,1400));
+		VendorMeal2.add(new Meals("Veg Quiche","Flaky and crumbly!",3.20,1500));
+		VendorList.add(new Vendor("Vendor1","password","ABC@coporation.org","AMK Hub #1-23,123567",VendorMeal1));
+		VendorList.add(new Vendor("Vendor2","pass123","EFG@coporation.org","Bishan Junction 8 #1-23,123564",VendorMeal2));
+		
 		
 		loop_start: while (true) {
 			String pattern = "(?i)(admin|vendor|user|end)";
@@ -23,30 +34,33 @@ public class C206_CaseStudy {
 				String username = Helper.readString("Enter Username: ");
 				String password = Helper.readString("Enter Password: ");
 				for(Parents P: ParentAccounts) {
-					if (P.authentication(username,password)) {
+					boolean authentication = P.authentication(username,password);
+					if (authentication == true) {
 						GeneralUI();
-					}else {
-						System.out.println("Incorrect!");
+					}else if(authentication == false) {
+						System.out.println("Invalid Password or Username!");
 					}
 				}
 			}else if(UserSelect.equalsIgnoreCase("vendor")) {
 				String username = Helper.readString("Enter Username: ");
 				String password = Helper.readString("Enter Password: ");
 				for(Vendor V: VendorList) {
-					if(V.authentication(username, password)) {
+					boolean authentication = V.authentication(username, password);
+					if(authentication == true) {
 						VendorUI(username);
-					}else {
-						System.out.println("Incorrect!");
+					}else if(authentication == false) {
+						System.out.println("Invalid Password or Username!");
 					}
 				}
 			}else if(UserSelect.equalsIgnoreCase("admin")) {
 				String username = Helper.readString("Enter Username: ");
 				String password = Helper.readString("Enter Password: ");
 				for(Admin A: AdminList) {
-					if(A.authentication(username, password)) {
+					boolean authentication = A.authentication(username, password);
+					if(authentication == true) {
 						AdminUI(username);
-					}else {
-						System.out.println("Incorrect!");
+					}else if(authentication == false) {
+						System.out.println("Invalid Password or Username!");
 					}
 				}
 			}else if(UserSelect.equalsIgnoreCase("end")) {
@@ -89,9 +103,9 @@ public class C206_CaseStudy {
 	}
 	
 	private static void MenuAdmin() {
-		Helper.line(60, "~");
+		Helper.line(60, "=");
 		System.out.println("Administrator Mode");
-		Helper.line(60, "~");
+		Helper.line(60, "=");
 		System.out.println("1. Manage School Information");
 		System.out.println("2. Manage Accounts Overview");
 		System.out.println("3. Manage Vendors");
@@ -104,7 +118,7 @@ public class C206_CaseStudy {
 		option = Helper.readInt("Enter choice: ");
 		loop2: while(option != Max_option) {
 			if(option == 1) {
-				ManageSchInfo();
+				ManageSchInfo(AdminName);
 			}else if(option == 2){
 				ManageAcc(AdminName);
 			}else if(option == 3) {
@@ -126,7 +140,8 @@ public class C206_CaseStudy {
 		System.out.println("3. Edit Items");
 		System.out.println("4. FeedBacks");
 		System.out.println("5. Edit Email/Location address");
-		System.out.println("6. End");
+		System.out.println("6. View Menu");
+		System.out.println("7. End");
 		
 	}
 	
@@ -144,6 +159,8 @@ public class C206_CaseStudy {
 				ViewFB(VendorName);
 			}else if(option == 5) {
 				EditInfo(VendorName);
+			}else if(option == 6) {
+				ViewMenu(VendorName);
 			}else if(option == Max_option_Vendor){
 				break Loop3;
 			}
@@ -198,13 +215,12 @@ public class C206_CaseStudy {
 		for(Admin A: AdminList) {
 			if(AdminName.equals(A.getUser())){
 				LoopStart:while(true) {
-					int x = 1;
 					int MinIndex = 0;
 					int MaxIndex = Math.min(10, ParentAccounts.size());
 					for(int i = MinIndex; i<MaxIndex; i++) {
 						Parents PA = ParentAccounts.get(i);
 						System.out.printf("%d. Name:%s",
-								x+1, PA.getName());
+								i+1, PA.getName());
 					}
 					
 					if(MaxIndex >= ParentAccounts.size()) {
@@ -229,32 +245,15 @@ public class C206_CaseStudy {
 	}
 	
 	private static void ManageVendor(String AdminName) {
+		int i = 1;
+		Helper.line(60, "-");
+		System.out.format("%-4s|%-15s|%-15s|%-15s|\n","No.","Name","Email","Address");
 		for(Admin A: AdminList) {
 			if(AdminName.equals(A.getUser())){
-				LoopStart:while(true) {
-					int x = 1;
-					int MinIndex = 0;
-					int MaxIndex = Math.min(10, VendorList.size());
-					for(int i = MinIndex; i<MaxIndex; i++) {
-						Vendor V = VendorList.get(i);
-						System.out.printf("%d. Name: %s\nEmail: %s\nAddress: %s",
-								x+1, V.getName(), V.getEmail(), V.getAddress());
-					}
-					
-					if(MaxIndex >= VendorList.size()) {
-						System.out.println("No More Vendors");
-						break LoopStart;
-					}
-					
-					boolean input = Helper.readBoolean("Show 10 more? (y/n): ");
-					 if(input==true) {
-						 MinIndex = MaxIndex;
-						 MaxIndex = Math.min((MinIndex+10), VendorList.size());
-					 }else {
-						 System.out.println("END");
-						 break LoopStart;
-					 }
-					
+				for(int v = 0; v<VendorList.size(); v++) {
+					Vendor V = VendorList.get(v);
+					System.out.format("%-4d|%-15s|%-15s|%-15s|\n",i+1,V.getName(),V.getEmail(),V.getAddress());
+					Helper.line(60, "-");
 				}
 			}else {
 				System.out.println("Invalid Admin!");
@@ -275,7 +274,13 @@ public class C206_CaseStudy {
 		int qty = Helper.readInt("Enter quantity set for dish: ");
 		for(Vendor V : VendorList) {
 			if(V.getName().equals(VendorName)) {
-				V.getMenu().add(new Meals(name, description, price, qty));
+				for(Meals M: V.getMenu()) {
+					if(name.equalsIgnoreCase(M.getName())) {
+						V.getMenu().add(new Meals(name, description, price, qty));
+					}else {
+						System.out.println("Item exist!");
+					}
+				}
 			}else{
 				System.out.println("Vendor does not exist!");
 			}
@@ -378,6 +383,17 @@ public class C206_CaseStudy {
 				}
 			}else{
 				System.out.println("Vendor does not exist!");
+			}
+		}
+	}
+	
+	private static void ViewMenu(String VendorName) {
+		for(Vendor V: VendorList) {
+			if(VendorName.equals(V.getName())) {
+				for(Meals M: V.getMenu()) {
+					System.out.printf("Name: %s\nDescription: %s\nPrice: %f.2\nQuantity: %d\n", M.getName(),M.getDescription(),
+							M.getPrice(),M.getQty());
+				}
 			}
 		}
 	}

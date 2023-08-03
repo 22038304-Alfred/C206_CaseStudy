@@ -33,7 +33,14 @@ public class Parents{
 	}
 	
 	public boolean authentication(String name, String password) {
-	    return this.name.equals(name) && this.password.equals(password);
+		boolean authenticate = false;
+	    if(this.name.equals(name) && this.password.equals(password)) {
+	    	authenticate = true;
+	    	return authenticate;
+	    }else {
+	    	authenticate = false;
+	    	return authenticate;
+	    }
 	}
 
 	public void setOrderList(ArrayList<Ordering> orderList) {

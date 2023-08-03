@@ -19,7 +19,14 @@ public class Admin {
 		return Pass;
 	}
 	
-	public boolean authentication(String username, String password) {
-	    return this.User.equals(username) && this.Pass.equals(password);
+	public boolean authentication(String User, String Pass) {
+		boolean authenticate = false;
+	    if(this.User.equals(User) && this.Pass.equals(Pass)) {
+	    	authenticate = true;
+	    	return authenticate;
+	    }else {
+	    	authenticate = false;
+	    	return authenticate;
+	    }
 	}
 }
