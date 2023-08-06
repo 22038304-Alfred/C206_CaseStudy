@@ -58,7 +58,6 @@ public class Parents{
 	public String getFeedback() {
 		return feedback;
 	}
-
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
 	}

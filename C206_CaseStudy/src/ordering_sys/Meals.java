@@ -11,7 +11,7 @@ public class Meals {
 	private Meals[] foodMenu;
     private boolean[] availability;
 	public Object getFoodMenu;
-	private DayOfWeek dayOfWeek;
+	private DayOfWeek dayOfWeek; 
 	
     
 	public Meals(String itemName, String itemDescription, double itemPrice) {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Vendor {
     private String name;
     private String address;
-    private String pass;
+    private String pass; 
     private ArrayList<Menu> menuList;
     private ArrayList<Review> reviews;
     private ArrayList<Ordering> orderHistory;

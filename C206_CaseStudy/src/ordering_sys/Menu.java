@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class Menu {
     private LocalDate date;
     private ArrayList<Meals> foodMenu;
-    private String itemName;
+    private String itemName; 
     private double itemPrice;
     private DayOfWeek dayOfWeek;
     private String itemDescription;

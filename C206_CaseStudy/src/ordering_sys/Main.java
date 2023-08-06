@@ -881,7 +881,7 @@ private static void userUI() {
                 String chosenDate = Helper.readStringRegEx("Enter the day you want to order (e.g. Monday): ", datePattern);
                 ArrayList<Vendor> availableVendors = getAvailableVendorsForDate(chosenDate);
 
-                if (!availableVendors.isEmpty()) {
+                if (!availableVendors.isEmpty()) { 
                     displayAvailableVendors(availableVendors);
                     int chosenVendorOption = Helper.readInt("Select a vendor: ");
 
