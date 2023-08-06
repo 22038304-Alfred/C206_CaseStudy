@@ -3,18 +3,24 @@ package ordering_sys;
 import java.util.ArrayList;
 
 public class Parents{
-	private String username;
+	private String name;
 	private String password;
 	private boolean tracking;
 	private String feedback;
 	private ArrayList<Ordering> orderList = new ArrayList<Ordering>();
 	
-	public Parents(String username, String password, boolean tracking, String feedback, ArrayList<Ordering> orderList) {
-			this.username =username;
+	public Parents(String name, String password, boolean tracking, String feedback, ArrayList<Ordering> orderList) {
+			this.name = name;
 			this.password = password;
 			this.tracking = false;
 			this.feedback = "";
 			this.orderList = orderList;
+	}
+
+	public Parents(String username, String password) {
+		this.name = username;
+		this.password = password; 
+	
 	}
 
 	public String getPassword() {
@@ -26,7 +32,7 @@ public class Parents{
 	}
 	
 	public boolean authentication(String name, String password) {
-	    return this.username.equals(name) && this.password.equals(password);
+	    return this.name.equals(name) && this.password.equals(password);
 	}
 
 	public void setOrderList(ArrayList<Ordering> orderList) {
@@ -34,11 +40,11 @@ public class Parents{
 	}
 
 	public String getName() {
-		return username;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.username = name;
+		this.name = name;
 	}
 
 	public boolean isTracking() {
@@ -61,4 +67,9 @@ public class Parents{
 		return orderList;
 	}
 
+
+	 public void addOrder(Ordering userOrder) {
+		 orderList.add(userOrder);
+	    }
+	
 }

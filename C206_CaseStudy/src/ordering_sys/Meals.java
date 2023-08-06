@@ -1,20 +1,32 @@
 package ordering_sys;
 
+import java.time.DayOfWeek;
+
 public class Meals {
 	private String name;
 	private String description;
+	private DayOfWeek date; 
 	private double price;
 	private int qty;
+	private Meals[] foodMenu;
+    private boolean[] availability;
+	public Object getFoodMenu;
+	private DayOfWeek dayOfWeek;
 	
-	/*
-	 Establish the menu items in it:
-	 its name, description and prices
-	  */
-	public Meals(String name, String description, double price, int qty) {
+    
+	public Meals(String itemName, String itemDescription, double itemPrice) {
+	    availability = new boolean[DayOfWeek.values().length];
+	    for (int i = 0; i < availability.length; i++) {
+	    availability[i] = true;
+	        }
+	    }
+	public Meals(String name, String description, DayOfWeek date, double price, int qty) {
 		this.name = name;
 		this.description = description;
+		this.date = date;
 		this.price = price;
 		this.qty = qty;
+		
 	}
 
 	public int getQty() {
@@ -36,10 +48,12 @@ public class Meals {
 	public String getDescription() {
 		return description;
 	}
-	
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public DayOfWeek getDate() {
+		return date;
 	}
 
 	public double getPrice() {
@@ -50,5 +64,18 @@ public class Meals {
 		this.price = price;
 	}
 
+	 
+	public void setAvailability(DayOfWeek day, boolean isAvailable) {
+		availability[day.getValue() - 1] = isAvailable;
+	}
 
-}
+	public boolean isAvailableOnDay(DayOfWeek day) {
+		return availability[day.getValue() - 1];
+	    }
+	public Meals[] getFoodMenu() {
+		return foodMenu;
+	}
+	public DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
+	}
+	}

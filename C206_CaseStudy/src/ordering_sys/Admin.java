@@ -1,5 +1,6 @@
 package ordering_sys;
 
+
 public class Admin {
 	private String User;
 	private String Pass;
@@ -20,8 +21,7 @@ public class Admin {
 	public String getPass() {
 		return Pass;
 	}
-	
-	public boolean authentication(String username, String password) {
-	    return this.User.equals(username) && this.Pass.equals(password);
+	public void setPass(String pass) {
+		Pass = pass;
 	}
 }

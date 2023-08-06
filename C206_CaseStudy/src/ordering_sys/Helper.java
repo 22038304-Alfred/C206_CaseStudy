@@ -1,5 +1,5 @@
 package ordering_sys;
-
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -270,5 +270,10 @@ public class Helper {
 
 	public static boolean sameDate(Date one, Date two) {
 		return getDay(one) == getDay(two) && getMonth(one) == getMonth(two) && getYear(one) == getYear(two);
+	}
+
+	public static DayOfWeek readDayOfWeek(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -1,44 +1,50 @@
 package ordering_sys;
 
 import java.util.ArrayList;
-//import java.time.LocalDate;
-
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 public class Menu {
-	private String date;
-	private ArrayList<Meals> FoodMenu;
-	/*
-	 Each meals will be within an array and will randomise setting the dates to each meals to put out
-	  */
-	public Menu(String date, ArrayList<Meals> FoodMenu) {
-		this.date = date;
-		this.FoodMenu = new ArrayList<Meals>();
-	}
-	
-	public Menu(String date, Meals FoodMenu) {
-		this.date = date;
-		this.FoodMenu = new ArrayList<Meals>();
-		this.FoodMenu.add(FoodMenu);
-	}
+    private LocalDate date;
+    private ArrayList<Meals> foodMenu;
+    private String itemName;
+    private double itemPrice;
+    private DayOfWeek dayOfWeek;
+    private String itemDescription;
 
-	
-	public void addMeals(String date, ArrayList<Meals> foodMenu, ArrayList<Menu> dayMenuList) {
-		dayMenuList.add(new Menu(date,foodMenu));
-	}
-	
-	public String getDate() {
-		return date;
-	}
-	
-	public void setDate(String date) {
-		this.date = date;
-	}
-	
-	public ArrayList<Meals> getFoodMenu() {
-		return FoodMenu;
-	}
-	
-	public void setFoodMenu(ArrayList<Meals> foodMenu) {
-		FoodMenu = foodMenu;
-	}
+    public Menu(String itemName, String itemDescription, double itemPrice ) {
+            this.itemName = itemName;
+            this.itemDescription = itemDescription;
+            this.itemPrice = itemPrice;
+            //this.dayOfWeek = dayOfWeek;
+        }
+
+        public String getItemName() {
+            return itemName;
+        }
+
+        public double getItemPrice() {
+            return itemPrice;
+        }
+
+    public Menu(LocalDate date) {
+        this.date = date;
+        this.foodMenu = new ArrayList<>();
+    }
+
+	public LocalDate getDate() {
+        return date;
+    }
+
+    public ArrayList<Meals> getFoodMenu() {
+        return foodMenu;
+    }
+
+    public void addMeal(Meals meal) {
+        foodMenu.add(meal);
+    }
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
 }
+
