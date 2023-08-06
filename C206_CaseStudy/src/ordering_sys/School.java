@@ -1,7 +1,7 @@
 package ordering_sys;
 
 
-public class School {
+public class School { 
     private String name;
     private String address;
 

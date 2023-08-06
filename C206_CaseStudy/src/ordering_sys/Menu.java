@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-public class Menu {
+public class Menu { 
     private LocalDate date;
     private ArrayList<Meals> foodMenu;
     private String itemName; 

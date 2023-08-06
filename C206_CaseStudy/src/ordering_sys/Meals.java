@@ -7,7 +7,7 @@ public class Meals {
 	private String description;
 	private DayOfWeek date; 
 	private double price;
-	private int qty;
+	private int qty; 
 	private Meals[] foodMenu;
     private boolean[] availability;
 	public Object getFoodMenu;

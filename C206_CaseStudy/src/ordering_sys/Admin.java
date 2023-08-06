@@ -3,7 +3,7 @@ package ordering_sys;
 
 public class Admin {
 	private String User;
-	private String Pass;
+	private String Pass; 
 	
 	public Admin(String User, String Pass) {
 		this.User = User;

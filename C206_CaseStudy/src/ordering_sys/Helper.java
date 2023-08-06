@@ -252,7 +252,7 @@ public class Helper {
 	}
 
 	public static int calcYearDifference(Date former, Date latter) {
-		int years = getYear(latter) - getYear(former);
+		int years = getYear(latter) - getYear(former); 
 
 		if (years > 0) { 
 			if ((getMonth(former) > getMonth(latter))

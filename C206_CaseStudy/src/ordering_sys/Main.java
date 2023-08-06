@@ -876,7 +876,7 @@ private static void userUI() {
     Parents currentUser = getCurrentUser(); 
     
         switch (option) {
-            case 1:
+            case 1: 
                 String datePattern = "(?i)(mon|tues|wednes|fri)day";
                 String chosenDate = Helper.readStringRegEx("Enter the day you want to order (e.g. Monday): ", datePattern);
                 ArrayList<Vendor> availableVendors = getAvailableVendorsForDate(chosenDate);

@@ -13,7 +13,7 @@ public class Ordering{
 	private boolean rated;
 	private double totalAmount;
 	private ArrayList<Meals> items;
-    private DayOfWeek orderDate; 
+    private DayOfWeek orderDate;  
     private Vendor chosenVendor;
     private ArrayList<Meals> selectedItems;
     private String orderStatus;
