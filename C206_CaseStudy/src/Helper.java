@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Helper {
@@ -274,5 +275,13 @@ public class Helper {
 		return initialDate.getYear() == MainDate.getYear() &&
 				initialDate.getMonth() == MainDate.getMonth() &&
 				initialDate.getDayOfMonth() == MainDate.getDayOfMonth();
+	}
+
+	public static boolean equalIgnoreCaseRegEx(String prompt, String pattern) {
+		if(prompt == null || pattern == null) return prompt == pattern;
+		
+		Pattern patterns = Pattern.compile(Pattern.quote(prompt), Pattern.CASE_INSENSITIVE);
+		Matcher match = patterns.matcher(pattern);
+		return match.matches();
 	}
 }

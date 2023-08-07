@@ -11,7 +11,6 @@ public class C206_CaseStudy {
 	private static boolean authenticate = false;
 	private static ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
 	private static ArrayList<Menu> MenuList = new ArrayList<Menu>();
-	private static ArrayList<Meals> MealsCollection = new ArrayList<Meals>();
 	private static ArrayList<Admin> AdminList = new ArrayList<Admin>();
 	private static ArrayList<Parents> ParentAccounts = new ArrayList<Parents>();
 	private static ArrayList<String> SchoolList = new ArrayList<String>();
@@ -186,10 +185,19 @@ public class C206_CaseStudy {
 		}
 	}
 //Main Start
-
+	private static Menu MenuListCreation(ArrayList<Vendor> VendorList, Menu MenuList,LocalDate date) {
+		for(Vendor V: VendorList) {
+			for(Meals M: V.getMenu()) {
+				Menu Menu = new Menu(date,M);
+				MenuList.add(Menu);
+			}
+		}
+		
+		return MenuList;
+	}
+	
 	private static void ViewMenu() {
 		LocalDate date = Helper.readLocalDate("Enter Day: ");
-		RandomiseMenuDay(date,MealsCollection);
 		for (Menu menu : MenuList) {
 			if(Helper.containDate(menu.getDate(),date)) {
 				System.out.println("Menu for " + menu.getDate() + ":");
@@ -201,25 +209,17 @@ public class C206_CaseStudy {
 				}
 			}
 		}
-		return;
 	}
 
-	private static void RandomiseMenuDay(LocalDate date, ArrayList<Meals> MealsCollection) {
-		for(Vendor V: VendorList) {
-			for(Meals M: V.getMenu()) {
-				MealsCollection.add(M);
-			}
-		}
-		Collections.shuffle(MealsCollection);
-		ArrayList<Meals> ChosenMeals = new ArrayList<>(MealsCollection.subList(0, Math.min(10, MealsCollection.size())));
-		Menu menu = new Menu(date, ChosenMeals);
-		MenuList.add(menu);
-		return;
-	}
 
 	private static void StartOrder() {
+		String name = Helper.readString("Enter Name of child: ");
 		for(Parents P: ParentAccounts) {
-			
+			for(Child C:P.getChildren()) {
+				if(C.getChildName().equalsIgnoreCase(name)) {
+					
+				}
+			}
 		}
 	}
 
@@ -250,7 +250,7 @@ public class C206_CaseStudy {
 						String restriction = Helper.readString("Enter Child's Restrictions if more than one add a ',' inbetween(e.g halal, peanut allergy):");
 						String[] restrict = restriction.split(",");
 						for(String R: restrict) {
-							C.addRestrictions(R);
+							C.addRestrictions(R.toString());
 						}
 						P.addChildren(new Child(ic,name,schName,C.getRestrictions()));
 						System.out.println("Child added!");
@@ -274,7 +274,7 @@ public class C206_CaseStudy {
 			if(P.getName().equalsIgnoreCase(ParentName)) {
 				for(Child C: P.getChildren()) {
 					if(C.getChildName().equalsIgnoreCase(name) && C.getId().equalsIgnoreCase(ic)) {
-						String restriction = Helper.readString("Enter Child's Restrictions if more than one add a ',' inbetween(e.g halal, peanut allergy):");
+						String restriction = Helper.readString("Enter Child's Restrictions if more than one add a ',' inbetween(e.g halal, peanut allergy):").toLowerCase();
 						String[] restrict = restriction.split(",");
 						for(String R: restrict) {
 							C.addRestrictions(R);
@@ -393,11 +393,20 @@ public class C206_CaseStudy {
 		String description = Helper.readString("Enter description of dish: ");
 		double price = Helper.readDouble("Set price of dish: ");
 		int qty = Helper.readInt("Enter quantity set for dish: ");
+		boolean valid = Helper.readBoolean("Do you want to add Allergy Tags? [y/n]: ");
 		for (Vendor V : VendorList) {
 			if (V.getName().equals(VendorName)) {
 				for (Meals M : V.getMenu()) {
-					if (name.equalsIgnoreCase(M.getName())) {
+					if (name.equalsIgnoreCase(M.getName()) && valid == false) {
 						V.getMenu().add(new Meals(name, description, price, qty));
+					}else if (name.equalsIgnoreCase(M.getName()) && valid == true) {
+						String tags = Helper.readString("Enter Restriction tags if more than one add a ',' inbetween(e.g halal, peanut allergy): ").toLowerCase();
+						String [] addTags = tags.split(",");
+						for (int i=0; i<addTags.length; i++) {
+							addTags[i] = addTags[i].trim();
+							M.addMealTags(addTags[i]);
+						}
+						V.getMenu().add(new Meals(name, description, price, qty,M.getMealTags()));
 					} else {
 						System.out.println("Item exist!");
 					}
@@ -428,7 +437,7 @@ public class C206_CaseStudy {
 	}
 
 	private static void EditItems(String VendorName) {
-		String pattern = "(?i)(name|description|price|quantity|qty)";
+		String pattern = "(?i)(name|description|price|quantity|qty|restrict|restriction(s))";
 		String edit = Helper.readStringRegEx("Which option you want to edit?[e.g Description]:", pattern);
 		String nameItem = Helper.readString("Enter name of item: ");
 		for (Vendor V : VendorList) {
@@ -444,9 +453,17 @@ public class C206_CaseStudy {
 						} else if (edit.equalsIgnoreCase("price")) {
 							double newPrice = Helper.readDouble("Update price: ");
 							M.setPrice(newPrice);
-						} else if (edit.equalsIgnoreCase("quantity") || edit.equalsIgnoreCase("qty")) {
+						} else if (Helper.equalIgnoreCaseRegEx(edit,"(?i)(quantity|qty)")) {
 							int newQty = Helper.readInt("Update quantity: ");
 							M.setQty(newQty);
+						} else if (Helper.equalIgnoreCaseRegEx(edit,"(?i)(restrict(ion(s)?)")) {
+							String tags = Helper.readString("Enter Restriction tags if more than one add a ',' inbetween(e.g halal, peanut allergy): ").toLowerCase();
+							String [] addTags = tags.split(",");
+							for (int i=0; i<addTags.length; i++) {
+								addTags[i] = addTags[i].trim();
+								M.addMealTags(addTags[i]);
+							}
+							
 						}
 					}
 				}
