@@ -5,27 +5,33 @@ public class Parents{
 	private boolean tracking;
 	private String feedback;
 	private ArrayList<Ordering> orderList = new ArrayList<Ordering>();
-	private String SchName;
+	private ArrayList<Child> Children = new ArrayList<Child>();
 	
-	public Parents(String name, String password, String SchName) {
+	public Parents(String name, String password) {
 			this.name = name;
 			this.password = password;
 			this.tracking = false;
 			this.feedback = "";
 			this.orderList = new ArrayList<Ordering>();
-			this.SchName = SchName;
+			this.Children = new ArrayList<Child>();
+	}
+
+	
+	public ArrayList<Child> getChildren() {
+		return Children;
+	}
+
+
+	public void setChildren(ArrayList<Child> children) {
+		Children = children;
+	}
+
+	public void addChildren(Child child) {
+		Children.add(child);
 	}
 
 	public String getPassword() {
 		return password;
-	}
-
-	public String getSchName() {
-		return SchName;
-	}
-
-	public void setSchName(String schName) {
-		SchName = schName;
 	}
 
 	public void setPassword(String password) {

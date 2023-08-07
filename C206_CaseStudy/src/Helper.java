@@ -269,4 +269,10 @@ public class Helper {
 	public static boolean sameDate(Date one, Date two) {
 		return getDay(one) == getDay(two) && getMonth(one) == getMonth(two) && getYear(one) == getYear(two);
 	}
+	
+	public static boolean containDate(LocalDate initialDate, LocalDate MainDate) {
+		return initialDate.getYear() == MainDate.getYear() &&
+				initialDate.getMonth() == MainDate.getMonth() &&
+				initialDate.getDayOfMonth() == MainDate.getDayOfMonth();
+	}
 }
