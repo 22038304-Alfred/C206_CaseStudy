@@ -243,7 +243,7 @@ public class Helper {
 	public static Date now() {
 		return new Date(System.currentTimeMillis());
 	}
-
+	
 	public static int calcDayDifference(Date former, Date latter) {
 		long diff = latter.getTime() - former.getTime();
 		int days = (int) (diff / (24 * 60 * 60 * 1000));
@@ -283,5 +283,30 @@ public class Helper {
 		Pattern patterns = Pattern.compile(Pattern.quote(prompt), Pattern.CASE_INSENSITIVE);
 		Matcher match = patterns.matcher(pattern);
 		return match.matches();
+	}
+	
+	public static String capitalizedWords(String Word) {
+		String[] words = Word.split(" ");
+		String output = "";
+
+		for (String word : words) {
+			if (!word.isEmpty()) {
+				char firstLetter = Character.toUpperCase(word.charAt(0));
+				String FullWord = word.substring(1).toLowerCase();
+				output += firstLetter + FullWord + " ";
+			}
+		}
+
+		if (!output.isEmpty()) {
+			output = output.substring(0, output.length() - 1);
+		}
+
+		return output;
+	}
+
+	public static boolean isValidRangeDate(LocalDate date) {
+		LocalDate now = LocalDate.now();
+		long calDate = date.toEpochDay() - now.toEpochDay();
+		return calDate >= 0 && calDate <= 7;
 	}
 }
