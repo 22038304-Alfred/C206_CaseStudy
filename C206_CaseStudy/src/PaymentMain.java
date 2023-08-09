@@ -29,17 +29,24 @@ public class PaymentMain {
 	
 	//add
     public static void addPayment(ArrayList<Payment> paymentList, Payment trans) {
-    	Payment newPay;
-        for (Payment p : paymentList) {
+    	makePayment(paymentList, trans);
+    }
+
+
+	public static void makePayment(ArrayList<Payment> paymentList, Payment trans) {
+		Payment newPay;
+        String transBuyerAcc = trans.getBuyerAcc();
+		for (Payment p : paymentList) {
         	newPay = p ;  
-        if (newPay.getBuyerAcc().equalsIgnoreCase(trans.getBuyerAcc()) )
+        if (newPay.getBuyerAcc().equalsIgnoreCase(transBuyerAcc) )
 			return;
         }
-        if (trans.getBuyerAcc().isEmpty() || trans.getSellerAcc().isEmpty()) {
+        String transSellerAcc = trans.getSellerAcc();
+		if (transBuyerAcc.isEmpty() || transSellerAcc.isEmpty()) {
             return;
         }
         paymentList.add(trans);
-    }
+	}
     
     
     //retrieve
@@ -55,11 +62,15 @@ public class PaymentMain {
 	}
     
 	public static void viewAllPayment(ArrayList<Payment> paymentList) {
-		
-	String output = String.format("%-10s %-30d %-10s %-10s %-10s \n", "BUYER ACC", "AMOUNT",
-				"RECORD", "METHOD","SELLER ACC");
-		 output += retrieveAllPayment(paymentList);	
-		System.out.println(output); 
+		output(paymentList); 
+	}
+
+
+	public static void output(ArrayList<Payment> paymentList) {
+		String output = String.format("%-10s %-30d %-10s %-10s %-10s \n", "BUYER ACC", "AMOUNT",
+					"RECORD", "METHOD","SELLER ACC");
+			 output += retrieveAllPayment(paymentList);	
+			System.out.println(output);
 	}
     
     
@@ -68,7 +79,9 @@ public class PaymentMain {
 	    Payment delPay;
 	    for (Payment p : paymentList) {
 	        delPay = p;
-	        if (delPay.getBuyerAcc().equals(trans.getBuyerAcc())) {
+	        String transBuyerAcc = trans.getBuyerAcc();
+			String existBuyerAcc = delPay.getBuyerAcc();
+			if (existBuyerAcc.equals(transBuyerAcc)) {
 	            paymentList.remove(trans);
 	            return; 
 	        }

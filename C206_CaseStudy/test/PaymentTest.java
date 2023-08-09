@@ -37,7 +37,7 @@ public class PaymentTest {
 	}
 	
 	@Test
-	public void testAddPayment() {
+	public void testAddPayment() { 
 		//Test Payment list is not null and it is empty
 		assertNotNull("Test if there is valid Payment arraylist to add to", paymentList);
 		assertEquals("Test that the Payment arraylist is empty.", 0, paymentList.size());
