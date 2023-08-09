@@ -3,20 +3,35 @@ package GA;
 public class User {
 	
 	private String name;
-	private String nric4; 
+	private String pw; 
+
 	
-	public User(String name, String nric4) {
+	public User(String name, String pw) {
 		this.name = name;
-		this.nric4 = nric4;
+		this.pw = pw;
 	}
 	
 	public String getName() {
 		return name;
 	}
-	public String getNric4() {
-		return nric4;
+	public String getpw() {
+		return pw;
 	}
-	public void display() {
-		System.out.println("Welcome:   " + name);
+
+	public String toString() {
+		String output = String.format("%-10s %-20s \n", name, pw);
+		return output;
+	
 	}
+	public boolean isAuthenticate(String inputName, String inputPw) {
+	    return name.equals(inputName) && pw.equals(inputPw);
+	 }
+/*	public boolean isAuthenticate(String Uname, String Upw) {
+		if (!name.equals(Uname) || !pw.equals(Upw)) {
+			return false;
+		}else {
+			return true;
+		}
+	*/	
+	
 }
