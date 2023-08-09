@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+//queenie 22044804
 public class PaymentMain {
 
     public static void main(String[] args) {
@@ -53,6 +53,7 @@ public class PaymentMain {
 		}
 		return output; 
 	}
+    
 	public static void viewAllPayment(ArrayList<Payment> paymentList) {
 		
 	String output = String.format("%-10s %-30d %-10s %-10s %-10s \n", "BUYER ACC", "AMOUNT",
@@ -72,8 +73,8 @@ public class PaymentMain {
 	            return; 
 	        }
 	    }
-	}
-}
+	}//end of main method
+}//end of class
 
 
 

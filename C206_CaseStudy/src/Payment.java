@@ -1,3 +1,4 @@
+//queenie 22044804
 public class Payment {
 	private String buyerAcc;
 	private int amount;
@@ -20,7 +21,7 @@ public class Payment {
 		return output;
 	}
 	public static String showRecord(boolean getRecord) {
-		String hasRecord;
+		String hasRecord; 
 
 		if (getRecord == true) {
 			hasRecord = "Yes";
@@ -54,6 +55,5 @@ public class Payment {
 
 	public void setRecord(boolean hasRecord) {
 		this.hasRecord = hasRecord;
-	    }
-
-	}
+	}//end of main method
+}//end of class

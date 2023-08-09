@@ -10,7 +10,7 @@ import java.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+//queenie 22044804
 public class PaymentTest {
 
 	private Payment pay1;
@@ -38,7 +38,7 @@ public class PaymentTest {
 	
 	@Test
 	public void testAddPayment() {
-		// Payment list is not null and it is empty
+		//Test Payment list is not null and it is empty
 		assertNotNull("Test if there is valid Payment arraylist to add to", paymentList);
 		assertEquals("Test that the Payment arraylist is empty.", 0, paymentList.size());
 		//Given an empty list, after adding 1 Payment, the size of the list is 1
@@ -75,6 +75,7 @@ public class PaymentTest {
 		assertEquals("Test that nothing is displayed", testOutput, allPayment);
 
 		//Test Case 2
+		//Test retrieve payment after adding payment
 		PaymentMain.addPayment(paymentList, pay1);
 		PaymentMain.addPayment(paymentList, pay2);
 		// Test that the list is not empty
@@ -87,6 +88,7 @@ public class PaymentTest {
 		assertEquals("Test that the display is correct.", testOutput, allPayment); 
 
 		//Test Case 3
+		//Test retrieve payment for a false record
 		pay3.setRecord(false);
 		PaymentMain.addPayment(paymentList, pay3);
 		assertEquals("Test that Payment arraylist size is 3.", 3, paymentList.size());
@@ -98,6 +100,8 @@ public class PaymentTest {
 		// Test that the details are displayed correctly
 		assertEquals("Test that the display is correct.", testOutput, allPayment);
 	}
+	
+	
 	@Test
 	public void testDeletePayment() {
 		
@@ -117,7 +121,7 @@ public class PaymentTest {
 		assertEquals("Test that the Payment arraylist size is now 2 after removal.", 2, paymentList.size());
 		assertFalse("Test that the pay1 is removed from the list", paymentList.contains(pay1));
 		
-		// Delete an Payment that is not exist in the list
+		// Delete a Payment that is not exist in the list
 		PaymentMain.deletePayment(paymentList, new Payment("88888", 40, "PayNow", "99999"));
 		assertEquals("Test that the Payment arraylist size is remain unchange.", 2, paymentList.size());
 	}
@@ -129,9 +133,7 @@ public class PaymentTest {
 			pay2 = null;
 			paymentList = null;
 
-
-		}
-
-	}
+		}//end of main method
+	}//end of class
 
 	
