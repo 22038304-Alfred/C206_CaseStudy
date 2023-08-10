@@ -216,6 +216,21 @@ public class Helper {
 		return valid;
 	}
 
+	public static LocalDate readLocalDateFormatter(String prompt, String pattern) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		LocalDate date = null;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				String input = readString(prompt).trim();
+				date = LocalDate.parse(input, formatter);
+			} catch (IllegalArgumentException e) {
+				System.out.println("*** Please enter a date ("+pattern.toUpperCase()+") ***");
+			}
+		}
+		return date;
+	}
+	
 	private static String quit = "0";
 
 	public static int getUserOption(String title, String[] menu) {

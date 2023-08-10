@@ -2,8 +2,6 @@ import java.util.ArrayList;
 public class Parents{
 	private String name;
 	private String password;
-	private boolean tracking;
-	private String feedback;
 	private ArrayList<Ordering> orderHistory = new ArrayList<Ordering>();
 	private ArrayList<Child> Children = new ArrayList<Child>();
 	private ArrayList<PaymentGateway> CC = new ArrayList<PaymentGateway>();
@@ -11,8 +9,6 @@ public class Parents{
 	public Parents(String name, String password) {
 			this.name = name;
 			this.password = password;
-			this.tracking = false;
-			this.feedback = "";
 			this.orderHistory = new ArrayList<Ordering>();
 			this.Children = new ArrayList<Child>();
 			this.CC = null;
@@ -21,8 +17,6 @@ public class Parents{
 	public Parents(String name, String password, ArrayList<Child> Children) {
 		this.name = name;
 		this.password = password;
-		this.tracking = false;
-		this.feedback = "";
 		this.orderHistory = new ArrayList<Ordering>();
 		this.Children = new ArrayList<>(Children);
 		this.CC = null;
@@ -80,21 +74,6 @@ public class Parents{
 		this.name = name;
 	}
 
-	public boolean isTracking() {
-		return tracking;
-	}
-
-	public void setTracking(boolean tracking) {
-		this.tracking = tracking;
-	}
-
-	public String getFeedback() {
-		return feedback;
-	}
-
-	public void setFeedback(String feedback) {
-		this.feedback = feedback;
-	}
 
 	public ArrayList<Ordering> getOrderHistory() {
 		return orderHistory;

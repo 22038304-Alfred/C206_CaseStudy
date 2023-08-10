@@ -8,6 +8,8 @@ public class Ordering{
 	private ArrayList<String> Restrictions;
 	private LocalDate date;
 	private ArrayList<Meals> items;
+	private boolean trackingOrder;
+	private double totalAmount;
 	
 	public Ordering(String name, String ChildName, LocalDate date) {
 		this.orderId = Helper.toHex((name+ChildName+date+(items).toString()));
@@ -16,6 +18,31 @@ public class Ordering{
 		this.date = date;
 		this.items = new ArrayList<>(items);
 		this.Restrictions = new ArrayList<String>();
+		this.trackingOrder = true;
+		this.totalAmount = 0;
+	}
+	
+	public Ordering(String name, String ChildName, LocalDate date, double totalAmount) {
+		this.orderId = Helper.toHex((name+ChildName+date+(items).toString()));
+		this.name = name;
+		this.ChildName = ChildName;
+		this.date = date;
+		this.items = new ArrayList<>(items);
+		this.Restrictions = new ArrayList<String>();
+		this.trackingOrder = true;
+		this.totalAmount = totalAmount;
+	}
+	
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTrackOrder(boolean trackingOrder) {
+		this.trackingOrder = trackingOrder;
+	}
+	
+	public boolean getTrackingOrder() {
+		return trackingOrder;
 	}
 
 	public String getOrderId() {

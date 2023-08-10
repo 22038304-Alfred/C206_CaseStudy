@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 
 public class PaymentGateway {
 	private String id;

@@ -25,6 +25,10 @@ public class Vendor{
 	public ArrayList<Review> getReviews() {
 		return reviews;
 	}
+	
+	public void addReview(Review review) {
+		reviews.add(review);
+	}
 
 	public void publishReviews(ArrayList<Review> reviews) {
 		this.reviews = reviews;
