@@ -4,18 +4,33 @@ public class Parents{
 	private String password;
 	private boolean tracking;
 	private String feedback;
-	private ArrayList<Ordering> orderList = new ArrayList<Ordering>();
+	private ArrayList<Ordering> orderHistory = new ArrayList<Ordering>();
 	private ArrayList<Child> Children = new ArrayList<Child>();
-	
+	private ArrayList<PaymentGateway> CC = new ArrayList<PaymentGateway>();
+
 	public Parents(String name, String password) {
 			this.name = name;
 			this.password = password;
 			this.tracking = false;
 			this.feedback = "";
-			this.orderList = new ArrayList<Ordering>();
+			this.orderHistory = new ArrayList<Ordering>();
 			this.Children = new ArrayList<Child>();
+			this.CC = null;
 	}
 
+	public Parents(String name, String password, ArrayList<Child> Children) {
+		this.name = name;
+		this.password = password;
+		this.tracking = false;
+		this.feedback = "";
+		this.orderHistory = new ArrayList<Ordering>();
+		this.Children = new ArrayList<>(Children);
+		this.CC = null;
+	}
+	
+	public ArrayList<PaymentGateway> getCC() {
+		return CC;
+	}
 	
 	public ArrayList<Child> getChildren() {
 		return Children;
@@ -49,8 +64,12 @@ public class Parents{
 	    }
 	}
 
-	public void setOrderList(ArrayList<Ordering> orderList) {
-		this.orderList = orderList;
+	public void setOrderHistory(ArrayList<Ordering> orderHistory) {
+		this.orderHistory = orderHistory;
+	}
+	
+	public void addOrder(Ordering order) {
+		orderHistory.add(order);
 	}
 
 	public String getName() {
@@ -77,8 +96,8 @@ public class Parents{
 		this.feedback = feedback;
 	}
 
-	public ArrayList<Ordering> getOrderList() {
-		return orderList;
+	public ArrayList<Ordering> getOrderHistory() {
+		return orderHistory;
 	}
 
 }

@@ -24,6 +24,19 @@ public class Helper {
 		return input;
 
 	}
+	
+	public static boolean readBooleanRegEx(String prompt, String pattern) {
+		String input = readString(prompt);	
+		boolean matched = Pattern.matches(pattern, input);
+
+		while (!matched) {
+			System.out.println("Invalid input!");
+			input = readString(prompt);
+			matched = Pattern.matches(pattern, input);
+		}
+		return matched;
+
+	}
 
 	public static int readInt(String prompt) {
 		int input = 0;
@@ -39,6 +52,25 @@ public class Helper {
 		return input;
 	}
 
+	public static int readIntRange(String prompt, int min, int max) {
+		int input = 0;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				input = Integer.parseInt(readString(prompt));
+				if(input >= min && input <= max) {
+					valid = true;
+				}else {
+					System.out.println("*** Please enter a valid integer within the specified range ***");
+				}
+				
+			} catch (NumberFormatException e) {
+				System.out.println("*** Please enter an integer ***");
+			}
+		}
+		return input;
+	}
+	
 	public static double readDouble(String prompt) {
 		double input = 0;
 		boolean valid = false;
@@ -152,6 +184,36 @@ public class Helper {
 			}
 		}
 		return date;
+	}
+	
+	public static LocalDate readLocalDateCC(String prompt) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+		LocalDate date = null;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				String input = readString(prompt).trim();
+				date = LocalDate.parse(input, formatter);
+			} catch (IllegalArgumentException e) {
+				System.out.println("*** Please enter a date (MM/YYYY) ***");
+			}
+		}
+		return date;
+	}
+	
+	public static boolean readBoolLocalDateCC(String ccDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+		boolean valid = false;
+		while (!valid) {
+			try {
+				String input = readString(ccDate.trim());
+				LocalDate date = LocalDate.parse(input, formatter);
+				valid = true;
+			} catch (IllegalArgumentException e) {
+				System.out.println("*** Please enter a date (MM/YYYY) ***");
+			}
+		}
+		return valid;
 	}
 
 	private static String quit = "0";
@@ -309,4 +371,15 @@ public class Helper {
 		long calDate = date.toEpochDay() - now.toEpochDay();
 		return calDate >= 0 && calDate <= 7;
 	}
+	
+	public static String toHex(String input) {
+		StringBuilder hexDeci = new StringBuilder();
+		
+		for(char c: input.toCharArray()) {
+			hexDeci.append(String.format("%02X", c));
+		}
+		return hexDeci.toString();
+	}
+
+
 }

@@ -8,6 +8,8 @@ public class C206_CaseStudy {
 	private static final int Max_option = 5;
 	private static final int Max_option_7 = 7;
 	private static int option = 0;
+	private static final String IC_Pattern = "(?i)[tgm][0-9]{7}[a-zA-Z]";
+	private static final String Name_Pattern = "[a-zA-Z]";
 	private static boolean authenticate = false;
 	private static ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
 	private static ArrayList<Menu> MenuList = new ArrayList<Menu>();
@@ -15,12 +17,19 @@ public class C206_CaseStudy {
 	private static ArrayList<Parents> ParentAccounts = new ArrayList<Parents>();
 	private static ArrayList<String> SchoolList = new ArrayList<String>();
 	private static ArrayList<Ordering> OrderHistory = new ArrayList<Ordering>();
+	private static ArrayList<Child> child = new ArrayList<>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+
+		// Parents Account
 		ParentAccounts.add(new Parents("Default1", "Pass123"));
 		ParentAccounts.add(new Parents("Default2", "Pass123"));
+
+		// Admin Account
 		AdminList.add(new Admin("Manager", "Pw123"));
+
+		// Creating a Meals for vendors and Vendors' account
 		ArrayList<Meals> VendorMeal1 = new ArrayList<Meals>();
 		ArrayList<Meals> VendorMeal2 = new ArrayList<Meals>();
 		VendorMeal1.add(new Meals("Chicken Rice", "Traditional and Fragrant Dish!", 3.50, 1200));
@@ -71,10 +80,22 @@ public class C206_CaseStudy {
 			} else if (UserSelect.equalsIgnoreCase("register")) {
 				boolean create = Helper.readBoolean("Create Account? (y/n): ");
 				if (create == true) {
+					// Parent will be added first Requirement 1
+					System.out.println("Parent Account Sign Up!");
 					String Username_pattern = "[a-zA-Z0-9]{8,}";
 					String Users = Helper.readStringRegEx("Username: ", Username_pattern);
 					String Pass = Helper.readString("Password: ");
-					ParentAccounts.add(new Parents(Users, Pass));
+
+					// Child will be added second Requirement 2
+					System.out.println("Required to enter a Child details!");
+					String ic = Helper.readStringRegEx("Enter Child's NRIC [e.g T/G/M######A]:", IC_Pattern);
+					String name = Helper.readStringRegEx("Enter Full Name per NRIC: ", Name_Pattern);
+					String sch = Helper.readString("Enter Child's School: ").trim();
+
+					ArrayList<Child> child1 = new ArrayList<>();
+					child1.add(new Child(ic, name, sch));
+
+					ParentAccounts.add(new Parents(Users, Pass, child1));
 					System.out.println("User Registered!");
 				} else {
 					break loop_start;
@@ -187,12 +208,13 @@ public class C206_CaseStudy {
 	}
 
 //Main Start
-	
-	//The creation of Menu
-	private static ArrayList<Menu> MenuListCreation(ArrayList<Vendor> VendorList, ArrayList<Menu> menuList2, LocalDate date) {
-		//Check if the date is within range
+
+	// The creation of Menu
+	private static ArrayList<Menu> MenuListCreation(ArrayList<Vendor> VendorList, ArrayList<Menu> menuList2,
+			LocalDate date) {
+		// Check if the date is within range
 		boolean checkValid = Helper.isValidRangeDate(date);
-		if(checkValid == true) {
+		if (checkValid == true) {
 			for (Vendor V : VendorList) {
 				for (Meals M : V.getMenu()) {
 					Menu Menu = new Menu(date, M);
@@ -204,11 +226,12 @@ public class C206_CaseStudy {
 		return menuList2;
 	}
 
+	// For Menu Viewing
 	private static void ViewMenu() {
 		LocalDate date = Helper.readLocalDate("Enter Day: ");
 		String ChildName = Helper.readString("Enter your Child's name: ");
-		//The creation of MenuList
-		MenuListCreation(VendorList, MenuList,date);
+		// The creation of MenuList
+		MenuListCreation(VendorList, MenuList, date);
 		for (Parents P : ParentAccounts) {
 			for (Child C : P.getChildren()) {
 				if (ChildName.equalsIgnoreCase(C.getChildName())) {
@@ -216,15 +239,16 @@ public class C206_CaseStudy {
 					boolean hasRestrictions = !C.getRestrictions().isEmpty();
 
 					for (Menu menu : MenuList) {
-						//Check if Date exist in Menu
+						// Check if Date exist in Menu
 						if (Helper.containDate(menu.getDate(), date)) {
 							System.out.println("Menu for " + menu.getDate() + ":");
 							for (Meals meal : menu.getFoodMenu()) {
-								//If restriction is true then it will find tags containing all the description from child
+								// If restriction is true then it will find tags containing all the description
+								// from child
 								if (!hasRestrictions || meal.getMealTags().containsAll(C.getRestrictions())) {
 									printMenu(meal);
-								//If child does not have restriction
-								}else if(hasRestrictions) {
+									// If child does not have restriction
+								} else if (hasRestrictions) {
 									printMenu(meal);
 								}
 							}
@@ -237,7 +261,7 @@ public class C206_CaseStudy {
 		}
 	}
 
-	//This is for the printMenu list
+	// This is for the printMenu list
 	private static void printMenu(Meals meal) {
 		System.out.println("Name: " + meal.getName());
 		System.out.println("Description: " + meal.getDescription());
@@ -246,18 +270,137 @@ public class C206_CaseStudy {
 	}
 
 	private static void StartOrder() {
-		ViewMenu();
-		for (Parents P : ParentAccounts) {
-			for (Child C : P.getChildren()) {
-				if (C.getChildName().equalsIgnoreCase(name)) {
+		String parentName = Helper.readString("Enter your Name: ");
+		String childName = Helper.readString("Enter Child's Name per NRIC: ");
 
+		Parents parent = getParentByName(parentName);
+		if (parent == null) {
+			System.out.println("Parent not found");
+			return;
+		}
+		Child child = getChildByName(childName, parentName);
+		if (child == null) {
+			System.out.println("Child not found");
+			return;
+		}
+		ArrayList<Meals> childMenu = new ArrayList<>();
+		for (Menu ML : MenuList) {
+			for (Meals M : ML.getFoodMenu()) {
+				if (M.getMealTags().containsAll(child.getRestrictions())) {
+					childMenu.add(M);
 				}
 			}
 		}
+
+		System.out.println("Child's Menu");
+		for (int i = 0; i < childMenu.size(); i++) {
+			System.out.printf("%d. %s", (i + 1), childMenu.get(i).getName());
+		}
+
+		int mealChoice = Helper.readIntRange("Enter the number of the meal you want to order: ", 1, childMenu.size());
+		int qty = Helper.readIntRange("Enter the quantity: ", 1, Integer.MAX_VALUE);
+
+		Meals selectMeal = childMenu.get(mealChoice - 1);
+		Vendor vendor = getVendorByMeal(VendorList, selectMeal);
+		if (vendor == null) {
+			System.out.println("Vendor not found.");
+			return;
+		}
+
+		if (selectMeal.getQty() < qty) {
+			System.out.println("Vendor has insufficient quantity for this meal!");
+			return;
+		}
+
+		double ttAmt = selectMeal.getPrice() * qty;
+		double gst = ttAmt * 1.08;
+		System.out.println("Total Amount: $" + gst);
+		System.out.println("GST:        : 8%");
+
+		boolean cfm = Helper.readBoolean("Confirm purchase? [y/n]: ");
+		if (!cfm) {
+			System.out.println("Purchase canceled!");
+			return;
+		}
+
+		boolean authenticate = PaymentVerification(parent.getName(), gst);
+		if (!authenticate) {
+			System.out.println("Payment failed!");
+			return;
+		}
+
+		// Deduct quantity from vendor and update meal quantity
+		int newVendorQty = vendor.getMenu().get(vendor.getMenu().indexOf(selectMeal)).getQty() - qty;
+		vendor.updateMealQty(selectMeal.getName(), newVendorQty);
+		selectMeal.setQty(selectMeal.getQty() - qty);
+
+		// Create and add the order to the order list
+		Ordering order = new Ordering(parent.getName(), child.getChildName(), LocalDate.now());
+		order.addItem(selectMeal, qty, order.getItems());
+		parent.getOrderHistory().add(order);
+
+		System.out.println("Order placed successfully.");
+	}
+
+	// Refactor the loop for vendor
+	private static Vendor getVendorByMeal(ArrayList<Vendor> VendorList, Meals selectedMeal) {
+		for (Vendor V : VendorList) {
+			for (Meals M : V.getMenu()) {
+				if (M.getName().equalsIgnoreCase(selectedMeal.getName())) {
+					return V;
+				}
+			}
+		}
+		return null;
+	}
+
+	// refactor the loop for parents
+	private static Parents getParentByName(String parentName) {
+		for (Parents P : ParentAccounts) {
+			if (P.getName().equalsIgnoreCase(parentName)) {
+				return P;
+			}
+		}
+		return null;
+	}
+
+	// refactor the loop for children from parents class
+	private static Child getChildByName(String childName, String parentName) {
+		Parents P = getParentByName(parentName);
+		if (P != null) {
+			for (Child C : P.getChildren()) {
+				if (C.getChildName().equalsIgnoreCase(childName)) {
+					return C;
+				}
+			}
+		}
+		return null;
+	}
+
+	private static boolean PaymentVerification(String parentName, double amount) {
+		String ccNH = Helper.readString("Enter Card Holder Name: ");
+		String cc = Helper.readString("Enter CreditCard Number: ");
+		String cvc = Helper.readString("Enter CVC Number: ");
+		LocalDate date = Helper.readLocalDateCC("Enter Expiry date (mm/yyyy): ");
+
+		boolean validation = false;
+		for (Parents P : ParentAccounts) {
+			if (P.getName().equalsIgnoreCase(parentName)) {
+				for (PaymentGateway PG : P.getCC()) {
+					boolean Verified = PG.authenticate(ccNH, cc, cvc, date);
+					if (Verified) {
+						System.out.println("Payment successful!");
+						validation = true;
+						PG.setCreditAmt(PG.getCreditAmt() - amount);
+					}
+				}
+			}
+		}
+		return validation;
 	}
 
 	private static void tracking_View() {
-
+		for()
 	}
 
 	private static void Rating() {
@@ -269,8 +412,6 @@ public class C206_CaseStudy {
 	}
 
 	private static void addChild(String ParentName) {
-		String IC_Pattern = "(?i)[tgm][0-9]{7}[a-zA-Z]";
-		String Name_Pattern = "[a-zA-Z]";
 		for (Parents P : ParentAccounts) {
 			if (P.getName().equalsIgnoreCase(ParentName)) {
 				for (Child C : P.getChildren()) {
@@ -299,8 +440,6 @@ public class C206_CaseStudy {
 	}
 
 	private static void addAllergies(String ParentName) {
-		String IC_Pattern = "(?i)[tgm][0-9]{7}[a-zA-Z]";
-		String Name_Pattern = "[a-zA-Z]";
 		String ic = Helper.readStringRegEx("Enter Child's NRIC: ", IC_Pattern);
 		String name = Helper.readStringRegEx("Enter Child name per NRIC: ", Name_Pattern);
 		for (Parents P : ParentAccounts) {
@@ -324,6 +463,47 @@ public class C206_CaseStudy {
 			}
 		}
 	}
+
+	private static void CreditCard(String parentName) {
+		int options = -1;
+		while (options != 3) {
+			System.out.println("1. Add Credit Card?");
+			System.out.println("2. Add Credits?");
+			options = Helper.readInt("Enter options:");
+			if (options == 1) {
+				String ccvp = "^4[0-9]{12}(?:[0-9]{3})?$";
+				String ccmp = "^5[1-5][0-9]{14}$";
+				String cvcp = "^[0-9]{3,4}$";
+				String ccNH = Helper.readString("Enter Card Holder Name: ");
+				String cc = Helper.readString("Enter CreditCard Number: ");
+				String cvc = Helper.readStringRegEx("Enter CVC Number: ",cvcp);
+				LocalDate date = Helper.readLocalDateCC("Enter Expiry date (mm/yyyy): ");
+				if(Helper.readBooleanRegEx(cc, ccmp) || Helper.readBooleanRegEx(cc, ccvp)) {
+					Parents parent = getParentByName(parentName);
+					
+				}
+				
+			} else if (options == 2) {
+				String ccNH = Helper.readString("Enter Card Holder Name: ");
+				String cc = Helper.readString("Enter CreditCard Number: ");
+				String cvc = Helper.readString("Enter CVC Number: ");
+				LocalDate date = Helper.readLocalDateCC("Enter Expiry date (mm/yyyy): ");
+				Parents P = getParentByName(parentName);
+				for(PaymentGateway PG: P.getCC()) {
+					if(PG.authenticate(ccNH, cc, cvc, date)) {
+						double ccAmt = Helper.readDouble("Enter Credit Amount: ");
+						System.out.println("Payment Successful!\nCredit Added to wallet!");
+						PG.setCreditAmt(ccAmt);
+					}
+				}
+			} else if (options == 3) {
+				break;
+			} else {
+				System.out.println("Invalid options!");
+			}
+		}
+	}
+
 //Main End
 
 //Admin Start
@@ -571,6 +751,5 @@ public class C206_CaseStudy {
 		}
 	}
 //Vendor End
-	
 
 }

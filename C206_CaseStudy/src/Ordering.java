@@ -2,20 +2,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Ordering{
+	private String orderId;
 	private String name;
 	private String ChildName;
 	private ArrayList<String> Restrictions;
-	private String vendorName;
 	private LocalDate date;
 	private ArrayList<Meals> items;
 	
-	public Ordering(String name, String ChildName, String vendorName, LocalDate date) {
+	public Ordering(String name, String ChildName, LocalDate date) {
+		this.orderId = Helper.toHex((name+ChildName+date+(items).toString()));
 		this.name = name;
 		this.ChildName = ChildName;
-		this.vendorName = vendorName;
 		this.date = date;
-		this.items = new ArrayList<Meals>();
+		this.items = new ArrayList<>(items);
 		this.Restrictions = new ArrayList<String>();
+	}
+
+	public String getOrderId() {
+		return orderId;
 	}
 
 	public ArrayList<String> getRestrictions(){
@@ -44,10 +48,6 @@ public class Ordering{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getVendorName() {
-		return vendorName;
 	}
 
 	public LocalDate getDate() {

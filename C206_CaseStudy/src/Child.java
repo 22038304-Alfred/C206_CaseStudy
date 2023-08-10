@@ -55,4 +55,6 @@ public class Child {
 	public void delRestrictions(String RestrictionInput) {
 		this.Restrictions.remove(RestrictionInput);
 	}
+	
+	
 }

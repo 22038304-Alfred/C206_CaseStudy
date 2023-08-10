@@ -72,4 +72,13 @@ public class Vendor{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public void updateMealQty(String mealName, int newQty) {
+		for(Meals M: Menu) {
+			if(M.getName().equalsIgnoreCase(mealName)) {
+				M.setQty(newQty);
+				break;
+			}
+		}
+	}
 }
