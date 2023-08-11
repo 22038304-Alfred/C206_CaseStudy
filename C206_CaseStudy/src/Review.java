@@ -1,12 +1,18 @@
 public class Review {
+	private String parentName;
 	private int RateFood;
 	private int RateExperience;
 	private String Improvements;
 	
-	public Review(int RateExperience, int RateFood, String Improvements) {
+	public Review(int RateExperience, int RateFood, String Improvements, String parentName) {
 		this.RateExperience = RateExperience;
 		this.RateFood = RateFood;
 		this.Improvements = Improvements;
+		this.parentName = parentName;
+	}
+
+	public String getParentName() {
+		return parentName;
 	}
 
 	public int getRateFood() {
