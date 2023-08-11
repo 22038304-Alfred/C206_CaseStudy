@@ -307,7 +307,7 @@ public class C206_CaseStudy {
 		ArrayList<Meals> childMenu = new ArrayList<>();
 		for (Menu ML : MenuList) {
 			for (Meals M : ML.getFoodMenu()) {
-				if (M.getMealTags().containsAll(child.getRestrictions())) {
+				if (!M.getMealTags().containsAll(child.getRestrictions())) {
 					childMenu.add(M);
 				}
 			}
