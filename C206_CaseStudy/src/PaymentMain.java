@@ -81,8 +81,8 @@ public class PaymentMain {
 	        delPay = p;
 	        String transBuyerAcc = trans.getBuyerAcc();
 			String existBuyerAcc = delPay.getBuyerAcc();
-			if (existBuyerAcc.equals(transBuyerAcc)) {
-	            paymentList.remove(trans);
+			if (existBuyerAcc.equals(transBuyerAcc)) { 
+	            paymentList.remove(trans); 
 	            return; 
 	        }
 	    }

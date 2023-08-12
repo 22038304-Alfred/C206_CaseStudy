@@ -9,7 +9,7 @@ public class Payment {
 	public Payment(String buyerAcc, int amount, String method, String sellerAcc) {
 		this.buyerAcc = buyerAcc;
 		this.amount = amount;
-		this.hasRecord = true;
+		this.hasRecord = true; 
 		this.method = method;
 		this.sellerAcc = sellerAcc;
 		
