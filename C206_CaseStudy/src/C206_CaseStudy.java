@@ -200,24 +200,79 @@ public class C206_CaseStudy {
 		return validation;
 	}
 
-	private static void trackOrder(String parentName, String orderID) {
+	private static void viewOrder(String parentName) {
 		Parents parent = getParentByName(parentName);
 		int i = 0;
+		
+		// Check if parent exist
+		if(parent == null){
+			System.out.println("Parent not found.");
+			return;
+		}
+		
+		// Iterate through the parent's Order History
 		if (parent != null) {
 			for (Ordering O : parent.getOrderHistory()) {
 				if (O != null) {
 					boolean trackingOrder = O.getTrackingOrder();
-					String status = trackingOrder ? "Pending" : "Arrived";
+					// Check if the order has arrived(false) or pending(true)
+					String status = trackingOrder ? "Not Shipped" : "Delievered";
 					System.out.println(
-							String.format("Order Details:\n" + "No. order: %s\n" + "OrderID: %s\n" + "Status: %s",
-									i + 1, orderID, status));
+							String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n",
+									i + 1, O.getOrderId(), status));
 				} else {
+					// If the orderHistory is null
 					System.out.println("Order not found.");
+					return;
 				}
 			}
-		} else {
-			System.out.println("Parent not found.");
 		}
+
+	}
+	
+	private static void delOrder(String parentName, String orderID) {
+		Parents parent = getParentByName(parentName);
+		String mealTitle = "\nMeals:\n%-2s %-10s %-5s\n";
+		String format = "%-2d %-10s %-5.2f\n";
+		if(parent == null) {
+			System.out.println("Parent not found!");
+			return;
+		}
+		
+		if(parent != null) {
+			for (int i = 0; i < parent.getOrderHistory().size(); i++) {
+				Ordering O = parent.getOrderHistory().get(i);
+				if(O != null && O.getOrderId().equalsIgnoreCase(orderID)) {
+					boolean trackingOrder = O.getTrackingOrder();
+					// Check if the order has arrived(false) or pending(true)
+					// To check if the order has arrived already
+					String status = trackingOrder ? "Not Shipped" : "Delivered";
+					if(status.equals("Delivered")) {
+						System.out.println("Order Details:\nOrderID: "+O.getOrderId());
+						System.out.printf(mealTitle, "No.", "Meal Name", "Price");
+						for(Meals M : O.getItems()) {
+							System.out.printf(format, i+1, M.getName(), M.getPrice());
+						}
+						boolean delVerification = Helper.readBoolean("Do you want to remove this order from your order history? [y/n]: ");
+						if(delVerification == true) {
+							parent.getOrderHistory().remove(i);
+							System.out.println("Order removed from history!");
+							return;
+						}else {
+							return;
+						}
+					}else {
+						System.out.println("Order is still pending!");
+					}
+					
+				}else {
+					System.out.println("Order does not exist!");;
+					return;
+				}
+			}
+		}
+		
+		
 	}
 
 	private static void Rating(String parentName) {
@@ -376,6 +431,8 @@ public class C206_CaseStudy {
 					V.getContactNo() == contactNo && V.getAddress().equals(address)) {
 				VendorList.remove(i);
 				System.out.println("Vendor Removed!");
+			}else {
+				System.out.println("Information incorrect!");
 			}
 		}
 	}
