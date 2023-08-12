@@ -6,7 +6,6 @@ public class PaymentGateway {
 	private String CVC;
 	private LocalDate ccDate;
 	private String ccNameHolder;
-	private double creditAmt;
 	private static final String ccv = "^4[0-9]{12}(?:[0-9]{3})?$";
 	private static final String ccm = "^5[1-5][0-9]{14}$";
 	private static final String cvc = "^[0-9]{3,4}$";
@@ -17,15 +16,6 @@ public class PaymentGateway {
 		this.creditCard = creditCard;
 		this.CVC = CVC;
 		this.ccDate = ccDate;
-		this.creditAmt = 0;
-	}
-
-	public double getCreditAmt() {
-		return creditAmt;
-	}
-
-	public void setCreditAmt(double creditAmt) {
-		this.creditAmt = creditAmt;
 	}
 
 	public String getccId() {

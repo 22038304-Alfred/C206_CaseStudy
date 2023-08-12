@@ -1,23 +1,19 @@
-import java.util.ArrayList;
-
+/**
+ * I declare that this code was written by me.
+ * I will not copy or allow others to copy my code.
+ * I understand that copying code is considered as plagiarism.
+ *
+ * 22013393, 1 Aug 2023 5:52:56 pm
+ */
 public class Child {
 	private String id;
 	private String name;
 	private String SchName;
-	private ArrayList<String> Restrictions;
 	
 	public Child(String id, String name, String SchName) {
 		this.id = id;
 		this.name = name;
 		this.SchName = SchName;
-		this.Restrictions = null;
-	}
-	
-	public Child(String id, String name, String SchName, ArrayList<String> Restrictions) {
-		this.id = id;
-		this.name = name;
-		this.SchName = SchName;
-		this.Restrictions = new ArrayList<String>();
 	}
 	
 	public String getChildName() {
@@ -43,18 +39,5 @@ public class Child {
 	public void setSchName(String SchName) {
 		this.SchName = SchName;
 	}
-	
-	public ArrayList<String> getRestrictions(){
-		return Restrictions;
-	}
-	
-	public void addRestrictions(String RestrictionInput) {
-		this.Restrictions.add(RestrictionInput);
-	}
-	
-	public void delRestrictions(String RestrictionInput) {
-		this.Restrictions.remove(RestrictionInput);
-	}
-	
 	
 }

@@ -1,3 +1,10 @@
+/**
+ * I declare that this code was written by me.
+ * I will not copy or allow others to copy my code.
+ * I understand that copying code is considered as plagiarism.
+ *
+ * 22013393, 1 Aug 2023 5:52:56 pm
+ */
 import java.util.ArrayList;
 
 public class Vendor{
@@ -77,12 +84,4 @@ public class Vendor{
 		this.address = address;
 	}
 	
-	public void updateMealQty(String mealName, int newQty) {
-		for(Meals M: Menu) {
-			if(M.getName().equalsIgnoreCase(mealName)) {
-				M.setQty(newQty);
-				break;
-			}
-		}
-	}
 }

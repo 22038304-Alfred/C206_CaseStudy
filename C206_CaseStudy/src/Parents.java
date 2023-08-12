@@ -74,7 +74,6 @@ public class Parents{
 		this.name = name;
 	}
 
-
 	public ArrayList<Ordering> getOrderHistory() {
 		return orderHistory;
 	}
