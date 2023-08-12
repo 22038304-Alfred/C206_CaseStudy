@@ -10,20 +10,36 @@ import java.util.ArrayList;
 public class Vendor{
 	private String name;
 	private String email;
+	private int contactNo;
 	private String address;
-	private String pass;
 	private ArrayList<Meals> Menu;
 	private ArrayList<Review> reviews;
 	
-	public Vendor(String name, String pass, String email, String address, ArrayList<Meals> Menu) {
+	public Vendor(String name, String email, int contactno, String address, ArrayList<Meals> Menu) {
 		this.name = name;
-		this.pass = pass;
 		this.email = email;
+		this.contactNo = contactNo;
 		this.address = address;
 		this.Menu = new ArrayList<Meals>();
 		this.reviews = new ArrayList<Review>();
 	}
 
+	public Vendor(String name, String email, int contactno, String address) {
+		this.name = name;
+		this.email = email;
+		this.contactNo = contactNo;
+		this.address = address;
+		this.Menu = new ArrayList<Meals>();
+		this.reviews = new ArrayList<Review>();
+	}
+	
+	public int getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(int contactNo) {
+		this.contactNo = contactNo;
+	}
 
 	public ArrayList<Meals> getMenu() {
 		return Menu;
@@ -39,25 +55,6 @@ public class Vendor{
 
 	public void publishReviews(ArrayList<Review> reviews) {
 		this.reviews = reviews;
-	}
-	
-	public String getPass() {
-		return pass;
-	}
-
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
-
-	public boolean authentication(String name, String pass) {
-		boolean authenticate = false;
-	    if(this.name.equals(name) && this.pass.equals(pass)) {
-	    	authenticate = true;
-	    	return authenticate;
-	    }else {
-	    	authenticate = false;
-	    	return authenticate;
-	    }
 	}
 	
 	public String getEmail() {

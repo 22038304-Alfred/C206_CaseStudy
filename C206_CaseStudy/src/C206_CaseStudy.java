@@ -24,9 +24,9 @@ public class C206_CaseStudy {
 		VendorMeal1.add(new Meals("Nasi Lemak", "Delicious and flavourful!", 1300, "Malay"));
 		VendorMeal2.add(new Meals("Meatless Don", "Unique and Tasty!", 1400, "Japanese"));
 		VendorMeal2.add(new Meals("Veg Quiche", "Flaky and crumbly!", 1500, ""));
-		VendorList.add(new Vendor("Vendor1", "password", "ABC@coporation.org", "AMK Hub #1-23,123567", VendorMeal1));
+		VendorList.add(new Vendor("Vendor1", "ABC@coporation.org", "83294920" ,"AMK Hub #1-23,123567", VendorMeal1));
 		VendorList.add(
-				new Vendor("Vendor2", "pass123", "EFG@coporation.org", "Bishan Junction 8 #1-23,123564", VendorMeal2));
+				new Vendor("Vendor2", "EFG@coporation.org", "93034040", "Bishan Junction 8 #1-23,123564", VendorMeal2));
 	}
 //Main Start
 
@@ -254,17 +254,6 @@ public class C206_CaseStudy {
 		}
 	}
 
-	private static void addChild(String ParentName) {
-		Parents P = getParentByName(ParentName);
-		String ic = Helper.readStringRegEx("Enter Child's NRIC [e.g T/G/M######A]:", IC_Pattern);
-		String name = Helper.readStringRegEx("Enter Full Name per NRIC: ", Name_Pattern);
-		String schName = Helper.readString("Enter School Name: ");
-		System.out.println("Child added!");
-		P.addChildren(new Child(ic, name, schName));
-
-	}
-
-
 	private static void generateReport() {
 		while (true) {
 			reportMenu();
@@ -349,120 +338,156 @@ public class C206_CaseStudy {
 		System.out.println("Total Sales for " + targetDate + ": $" + totalSales);
 	}
 
+	private static void addVendor() {
+		String name = Helper.readString("Enter Name of Vendor");
+		String email = Helper.readStringRegEx("Enter Email address: ","[a-ZA-Z0-9]@[a-zA-Z0-9].(com|org)");
+		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
+		String address = Helper.readString("Enter Address: ");
+		VendorList.add(new Vendor(name,email,contactNo,address));
+		System.out.println("Vendor Added!");
+		
+	}
+	
+	private static void delVendor() {
+		String name = Helper.readString("Enter Name of Vendor");
+		String email = Helper.readStringRegEx("Enter Email address: ","[a-ZA-Z0-9]@[a-zA-Z0-9].(com|org)");
+		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
+		String address = Helper.readString("Enter Address: ");
+		for(int i=0; i<VendorList.size(); i++) {
+			Vendor V = VendorList.get(i);
+			if(V.getName().equalsIgnoreCase(name) && V.getEmail().equals(email) &&
+					V.getContactNo() == contactNo && V.getAddress().equals(address)) {
+				VendorList.remove(i);
+				System.out.println("Vendor Removed!");
+			}
+		}
+	}
+	
+	private static void viewAllVendor() {
+		String format = "No. | %-20s | %-30s | %-15s | %-50s\n";
+		Helper.line(45,"-");
+		System.out.printf(format, "Vendor Name", "Vendor Email", "Contact No.", "Address");
+		Helper.line(45,"-");
+		for(int i = 0; i < VendorList.size(); i++) {
+			Vendor V = VendorList.get(i);
+			System.out.printf(format, V.getName(), V.getEmail(), V.getContactNo(),V.getAddress());
+		}
+	}
 //Admin End
 
-//Vendor Start
-	private static void AddItems(String VendorName) {
-		String name = Helper.readString("Enter name of dish: ");
-		String description = Helper.readString("Enter description of dish: ");
-		double price = Helper.readDouble("Set price of dish: ");
-		String type = Helper.readString("Enter type of Cuisine");
+	//Vendor Start
+		private static void AddItems(String VendorName) {
+			String name = Helper.readString("Enter name of dish: ");
+			String description = Helper.readString("Enter description of dish: ");
+			double price = Helper.readDouble("Set price of dish: ");
+			String type = Helper.readString("Enter type of Cuisine");
 
-		Vendor V = getVendorByName(VendorName);
-		for (Meals M : V.getMenu()) {
-			if (name.equalsIgnoreCase(M.getName())) {
-				V.getMenu().add(new Meals(name, description, price, type));
-			} else {
-				System.out.println("Item exist!");
-			}
-		}
-	}
-
-	private static void DelItems(String VendorName) {
-		String name = Helper.readString("Enter name of dish: ");
-		Vendor V = getVendorByName(VendorName);
-		for (int M = 0; M < V.getMenu().size(); M++) {
-			Meals m = V.getMenu().get(M);
-			if (m.getName().equalsIgnoreCase(name)) {
-				V.getMenu().remove(m);
-				System.out.println("Item Removed!");
-			} else {
-				System.out.println("Item does not exist!");
-			}
-		}
-	}
-
-	private static void EditItems(String VendorName) {
-		String pattern = "(?i)(name|description|price)";
-		String edit = Helper.readStringRegEx("Which option you want to edit?[e.g Description]:", pattern);
-		String nameItem = Helper.readString("Enter name of item: ");
-		Vendor V = getVendorByName(VendorName);
-		for (Meals M : V.getMenu()) {
-			if (nameItem.equalsIgnoreCase(M.getName())) {
-				if (edit.equalsIgnoreCase("name")) {
-					String NameChange = Helper.readString("Enter new name: ");
-					M.setName(NameChange);
-				} else if (edit.equalsIgnoreCase("description")) {
-					String DescChage = Helper.readString("Update description: ");
-					M.setDescription(DescChage);
-				} else if (edit.equalsIgnoreCase("price")) {
-					double newPrice = Helper.readDouble("Update price: ");
-					M.setPrice(newPrice);
+			Vendor V = getVendorByName(VendorName);
+			for (Meals M : V.getMenu()) {
+				if (name.equalsIgnoreCase(M.getName())) {
+					V.getMenu().add(new Meals(name, description, price, type));
+				} else {
+					System.out.println("Item exist!");
 				}
 			}
 		}
-	}
 
-	private static void ViewFB(String VendorName) {
-		Vendor V = getVendorByName(VendorName);
-		int MinIndex = 0;
-		int x = 1;
-		int MaxIndex = Math.min(5, V.getReviews().size());
-		Page_Loop: while (true) {
-			for (int i = MinIndex; i < MaxIndex; i++) {
-				Review R = V.getReviews().get(i);
-				System.out.printf("%d. Food Rating: %d\nExperience Rating: %d\nDescription:\n%s", x + 1,
-						R.getRateFood(), R.getRateExperience(), R.getImprovements());
-			}
-
-			if (MaxIndex >= V.getReviews().size()) {
-				System.out.println("Null");
-				break Page_Loop;
-			}
-
-			boolean input = Helper.readBoolean("Show 5 more? (y/n): ");
-			if (input == true) {
-				MinIndex = MaxIndex;
-				MaxIndex = Math.min((MinIndex + 5), V.getReviews().size());
-			} else {
-				System.out.println("END");
-				break Page_Loop;
+		private static void DelItems(String VendorName) {
+			String name = Helper.readString("Enter name of dish: ");
+			Vendor V = getVendorByName(VendorName);
+			for (int M = 0; M < V.getMenu().size(); M++) {
+				Meals m = V.getMenu().get(M);
+				if (m.getName().equalsIgnoreCase(name)) {
+					V.getMenu().remove(m);
+					System.out.println("Item Removed!");
+				} else {
+					System.out.println("Item does not exist!");
+				}
 			}
 		}
-	}
 
-	private static void EditInfo(String VendorName) {
-		String Pattern = "(?i)(email|address)";
-		String Choice = Helper.readStringRegEx("Which option you want to edit?[e.g Address]", Pattern);
-		Vendor V = getVendorByName(VendorName);
-		if (V == null) {
-			System.out.println("Vendor does not exist");
-			return;
-		}
-		if (Choice.equalsIgnoreCase("Email")) {
-			String EmailPattern = "[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\\\\.(com|sg|co|org)";
-			String NewEmail = Helper.readStringRegEx("Update Email", EmailPattern);
-			V.setEmail(NewEmail);
-		} else if (Choice.equalsIgnoreCase("Address")) {
-			String NewAddress = Helper.readString("Update Address: ");
-			V.setAddress(NewAddress);
-		}
-	}
-
-	private static void ViewMenu(String VendorName) {
-		Vendor V = getVendorByName(VendorName);
-		if (V == null) {
-			System.out.println("Vendor does not exist");
-			return;
+		private static void EditItems(String VendorName) {
+			String pattern = "(?i)(name|description|price)";
+			String edit = Helper.readStringRegEx("Which option you want to edit?[e.g Description]:", pattern);
+			String nameItem = Helper.readString("Enter name of item: ");
+			Vendor V = getVendorByName(VendorName);
+			for (Meals M : V.getMenu()) {
+				if (nameItem.equalsIgnoreCase(M.getName())) {
+					if (edit.equalsIgnoreCase("name")) {
+						String NameChange = Helper.readString("Enter new name: ");
+						M.setName(NameChange);
+					} else if (edit.equalsIgnoreCase("description")) {
+						String DescChage = Helper.readString("Update description: ");
+						M.setDescription(DescChage);
+					} else if (edit.equalsIgnoreCase("price")) {
+						double newPrice = Helper.readDouble("Update price: ");
+						M.setPrice(newPrice);
+					}
+				}
+			}
 		}
 
-		for (Meals M : V.getMenu()) {
-			System.out.printf("Name: %s\nDescription: %s\nPrice: %f.2\n", M.getName(), M.getDescription(),
-					M.getPrice());
+		private static void ViewFB(String VendorName) {
+			Vendor V = getVendorByName(VendorName);
+			int MinIndex = 0;
+			int x = 1;
+			int MaxIndex = Math.min(5, V.getReviews().size());
+			Page_Loop: while (true) {
+				for (int i = MinIndex; i < MaxIndex; i++) {
+					Review R = V.getReviews().get(i);
+					System.out.printf("%d. Food Rating: %d\nExperience Rating: %d\nDescription:\n%s", x + 1,
+							R.getRateFood(), R.getRateExperience(), R.getImprovements());
+				}
+
+				if (MaxIndex >= V.getReviews().size()) {
+					System.out.println("Null");
+					break Page_Loop;
+				}
+
+				boolean input = Helper.readBoolean("Show 5 more? (y/n): ");
+				if (input == true) {
+					MinIndex = MaxIndex;
+					MaxIndex = Math.min((MinIndex + 5), V.getReviews().size());
+				} else {
+					System.out.println("END");
+					break Page_Loop;
+				}
+			}
 		}
 
-	}
-//Vendor End
+		private static void EditInfo(String VendorName) {
+			String Pattern = "(?i)(email|address)";
+			String Choice = Helper.readStringRegEx("Which option you want to edit?[e.g Address]", Pattern);
+			Vendor V = getVendorByName(VendorName);
+			if (V == null) {
+				System.out.println("Vendor does not exist");
+				return;
+			}
+			if (Choice.equalsIgnoreCase("Email")) {
+				String EmailPattern = "[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\\\\.(com|sg|co|org)";
+				String NewEmail = Helper.readStringRegEx("Update Email", EmailPattern);
+				V.setEmail(NewEmail);
+			} else if (Choice.equalsIgnoreCase("Address")) {
+				String NewAddress = Helper.readString("Update Address: ");
+				V.setAddress(NewAddress);
+			}
+		}
+
+		private static void ViewMenu(String VendorName) {
+			Vendor V = getVendorByName(VendorName);
+			if (V == null) {
+				System.out.println("Vendor does not exist");
+				return;
+			}
+
+			for (Meals M : V.getMenu()) {
+				System.out.printf("Name: %s\nDescription: %s\nPrice: %f.2\n", M.getName(), M.getDescription(),
+						M.getPrice());
+			}
+
+		}
+	//Vendor End
+		
 
 //Help function
 
