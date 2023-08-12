@@ -46,6 +46,23 @@ public class C206_CaseStudy {
 
 		return menuList2;
 	}
+	
+	private static void viewCuisine() {
+		ArrayList<String> cuisineType = new ArrayList<>();
+		for(Menu ML: MenuList) {
+			for(Meals M: ML.getFoodMenu()) {
+				String types = M.getType();
+				if(!cuisineType.contains(types.toLowerCase())) {
+					cuisineType.add(types);
+				}
+			}
+		}
+		int i=0;
+		System.out.println("No. Cuisine Type\n");
+		for(String ct: cuisineType) {
+			System.out.printf("%d. %s\n", i+1, ct);
+		}
+	}
 
 	// For Menu Viewing
 	private static void ViewMenu() {
@@ -58,6 +75,7 @@ public class C206_CaseStudy {
 			if (C != null) {
 				for (Menu menu : MenuList) {
 					// Check if Date exist in Menu
+					viewCuisine();
 					boolean checkMenuGotDate = Helper.containDate(menu.getDate(), date);
 					if (checkMenuGotDate) {
 						String category = Helper.readString("Enter type of Cuisine: ");
@@ -175,7 +193,6 @@ public class C206_CaseStudy {
 					if (Verified) {
 						System.out.println("Payment successful!");
 						validation = true;
-						PG.setCreditAmt(PG.getCreditAmt() - amount);
 					}
 				}
 			}
