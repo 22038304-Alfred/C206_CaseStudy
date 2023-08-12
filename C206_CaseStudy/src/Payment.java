@@ -19,7 +19,7 @@ public class Payment {
 		String output = String.format("%-10s %-30d %-10s %-10s %-10s \n", buyerAcc,
 		amount, showRecord(hasRecord), method, sellerAcc);
 		return output;
-	} 
+	}  
 	public static String showRecord(boolean getRecord) {
 		String hasRecord; 
 

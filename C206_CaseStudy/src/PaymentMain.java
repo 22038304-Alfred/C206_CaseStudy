@@ -74,7 +74,7 @@ public class PaymentMain {
 	}
     
     
-	//delete 
+	//delete
 	public static void deletePayment(ArrayList<Payment> paymentList, Payment trans) {
 	    Payment delPay;
 	    for (Payment p : paymentList) {
