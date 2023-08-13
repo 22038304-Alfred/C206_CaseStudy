@@ -5,7 +5,7 @@ public class Payment {
 	private String method;
 	private String  sellerAcc;
 	private boolean hasRecord;
-	
+
 	public Payment(String buyerAcc, int amount, String method, String sellerAcc) {
 		this.buyerAcc = buyerAcc;
 		this.amount = amount;
@@ -16,7 +16,7 @@ public class Payment {
 	}
 	public String toString() {
 		// Write your codes here
-		String output = String.format("%-10s %-30d %-10s %-10s %-10s \n", buyerAcc,
+		String output = String.format("%-10s %-30s %-10s %-10s %-10s \n", buyerAcc,
 		amount, showRecord(hasRecord), method, sellerAcc);
 		return output;
 	}  
