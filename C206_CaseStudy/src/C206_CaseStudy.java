@@ -12,26 +12,84 @@ public class C206_CaseStudy {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		ArrayList<Ordering> P1Order = new ArrayList<>();
+		ArrayList<Ordering> P2Order = new ArrayList<>();
 
-		// Parents Account
-		ParentAccounts.add(new Parents("Default1", "Pass123"));
-		ParentAccounts.add(new Parents("Default2", "Pass123"));
+		ArrayList<Child> children1 = new ArrayList<>();
+		ArrayList<Child> children2 = new ArrayList<>();
 
-		// Creating a Meals for vendors and Vendors' account
-		ArrayList<Meals> VendorMeal1 = new ArrayList<Meals>();
-		ArrayList<Meals> VendorMeal2 = new ArrayList<Meals>();
-		VendorMeal1.add(new Meals("Chicken Rice", "Traditional and Fragrant Dish!", 1200, "Chineses"));
-		VendorMeal1.add(new Meals("Nasi Lemak", "Delicious and flavourful!", 1300, "Malay"));
-		VendorMeal2.add(new Meals("Meatless Don", "Unique and Tasty!", 1400, "Japanese"));
-		VendorMeal2.add(new Meals("Veg Quiche", "Flaky and crumbly!", 1500, ""));
-		VendorList.add(new Vendor("Vendor1", "ABC@coporation.org", 83294920,"AMK Hub #1-23,123567", VendorMeal1));
-		VendorList.add(
-				new Vendor("Vendor2", "EFG@coporation.org", 93034040, "Bishan Junction 8 #1-23,123564", VendorMeal2));
+		// Generate sample children for parents
+		Child child1 = new Child("C1", "Child1", "School1");
+		Child child2 = new Child("C2", "Child2", "School1");
+		Child child3 = new Child("C3", "Child3", "School2");
+		Child child4 = new Child("C4", "Child4", "School2");
+
+		children1.add(child1);
+		children1.add(child2);
+
+		children2.add(child3);
+		children2.add(child4);
+
+		// Generate sample meals for orders
+		ArrayList<Meals> VendorMeal1 = new ArrayList<>();
+		VendorMeal1.add(new Meals("Chicken Rice", "Traditional and Fragrant Dish!", 4.50, "Chinese"));
+		VendorMeal1.add(new Meals("Siew Mai", "Savoury and bite-sized delight!", 2.70, "Chinese"));
+		VendorMeal1.add(new Meals("Minced Braised Pork", "Braised pork with aromatic spices and herbs served on rice", 4.00, "Taiwanese"));
+		VendorMeal1.add(new Meals("Mapo Tofu", "Spicy tofu dish with minced meat and sichuan peppers", 5.10, "Chinese"));
+		VendorMeal1.add(new Meals("Scallian Pancake", "Savoury flaky pancakes with chopped scallions", 2.90, "Taiwanese"));
+		VendorMeal1.add(new Meals("Oyster Omelette", "Savoury omelette with fresh oysters and vegetables", 4.30, "Taiwanese"));
+
+		ArrayList<Meals> VendorMeal2 = new ArrayList<>();
+		VendorMeal2.add(new Meals("Meatless Don", "Unique and Tasty!", 4.30, "Japanese"));
+		VendorMeal2.add(new Meals("Seafood Don", "Flaky and crumbly!", 6.80, "Japanese"));
+		VendorMeal2.add(new Meals("Tempura Rice", "Lightly battered and deep-fried seafood, vegetables and prawns served with a bed of rice", 3.80, "Japanese"));
+		VendorMeal2.add(new Meals("Ramen", "Noodles in flavourful broth topping with pork, egg and vegetables", 4.80, "Japanese"));
+
+		ArrayList<Meals> Order1 = new ArrayList<>();
+		Order1.add(VendorMeal1.get(0)); // Chicken Rice
+		Order1.add(VendorMeal1.get(1)); // Siew Mai
+		Order1.add(VendorMeal1.get(3)); // Minced Braised Pork
+
+		ArrayList<Meals> Order2 = new ArrayList<>();
+		Order2.add(VendorMeal2.get(0)); // Meatless Don
+		Order2.add(VendorMeal2.get(1)); // Seafood Don
+		Order2.add(VendorMeal2.get(3)); // Ramen
+
+		ArrayList<Meals> Order3 = new ArrayList<>();
+		Order3.add(VendorMeal1.get(3)); // Chicken Rice
+		Order3.add(VendorMeal1.get(5)); // Mapo Tofu
+
+		// Generate sample orders for parents with items
+		P1Order.add(new Ordering("Default1", "Child1", LocalDate.now(), Order1, (VendorMeal1.get(0).getPrice() + VendorMeal1.get(1).getPrice() + VendorMeal1.get(2).getPrice())));
+		P1Order.add(new Ordering("Default1", "Child2", LocalDate.now(), Order2, (VendorMeal2.get(0).getPrice() * 2 + VendorMeal2.get(1).getPrice() + VendorMeal2.get(3).getPrice())));
+		P2Order.add(new Ordering("Default2", "Child3", LocalDate.now(), Order3, (VendorMeal1.get(0).getPrice() + VendorMeal1.get(3).getPrice())));
+
+	    ParentAccounts.add(new Parents("Parent1", "Pass123", children1, P1Order));
+	    ParentAccounts.add(new Parents("Parent2", "Pass123", children2, P2Order));
+
+		// Creating Meals for vendors and Vendors' account
+		VendorList.add(new Vendor("Vendor1", "ABC@coporation.org", 83294920, "AMK Hub #1-23,123567", VendorMeal1));
+		VendorList.add(new Vendor("Vendor2", "EFG@coporation.org", 93034040, "Bishan Junction 8 #1-23,123564", VendorMeal2));
+		
+		
+		
+		
+		String parentName = "Parent1";
+		String childName = "C1";
+		String vendorName = "Vendor1";
+		
+	    // Refactored
+	    Parents parent = getParentByName(parentName);
+	    Child child = getChildByName(parentName, childName);
+	    Vendor vendor = getVendorByName(vendorName);
+	    Ordering order = getOrderbyIDnParent(parentName, P1Order.get(0).getOrderId());
+		System.out.println(parent+"\n"+child+"\n"+vendor+"\n"+order+"\n");
 	}
 //Main Start
 
 	// The creation of Menu
-	private static ArrayList<Menu> MenuListCreation(ArrayList<Vendor> VendorList, ArrayList<Menu> menuList2,
+	public static ArrayList<Menu> MenuListCreation(ArrayList<Vendor> VendorList, ArrayList<Menu> menuList2,
 			LocalDate date) {
 		// Check if the date is within range
 		boolean checkValid = Helper.isValidRangeDate(date);
@@ -47,7 +105,7 @@ public class C206_CaseStudy {
 		return menuList2;
 	}
 	
-	private static void viewCuisine() {
+	public static void viewCuisine() {
 		ArrayList<String> cuisineType = new ArrayList<>();
 		for(Menu ML: MenuList) {
 			for(Meals M: ML.getFoodMenu()) {
@@ -65,7 +123,7 @@ public class C206_CaseStudy {
 	}
 
 	// For Menu Viewing
-	private static void ViewMenu() {
+	public static void ViewMenu() {
 		LocalDate date = Helper.readLocalDate("Enter Day: ");
 		String ChildName = Helper.readString("Enter your Child's name: ");
 		// The creation of MenuList
@@ -96,14 +154,15 @@ public class C206_CaseStudy {
 	}
 
 	// This is for the printMenu list
-	private static void printMenu(Meals meal) {
+	public static void printMenu(Meals meal) {
 		System.out.println("Name: " + meal.getName());
 		System.out.println("Description: " + meal.getDescription());
 		System.out.println("Price: " + meal.getPrice());
 		System.out.println("----------------------");
 	}
 
-	private static void StartOrder() {
+	//Parents can order directly from their child
+	public static void StartOrder() {
 		String parentName = Helper.readString("Enter your Name: ");
 		String childName = Helper.readString("Enter Child's Name per NRIC: ");
 
@@ -167,8 +226,9 @@ public class C206_CaseStudy {
 	 * @param child
 	 * @param selectMeal
 	 * @param vendor
+	 * Verification of order and is added to parents
 	 */
-	private static void verifyOrderVendorqty(Parents parent, Child child, double ttAmt, Meals selectMeal,
+	public static void verifyOrderVendorqty(Parents parent, Child child, double ttAmt, Meals selectMeal,
 			Vendor vendor) {
 		// Deduct quantity from vendor and update meal quantity
 
@@ -179,7 +239,8 @@ public class C206_CaseStudy {
 		System.out.println("Order placed successfully.");
 	}
 
-	private static boolean PaymentVerification(String parentName, double amount) {
+	//Verify and authenticate payment in order
+	public static boolean PaymentVerification(String parentName, double amount) {
 		String ccNH = Helper.readString("Enter Card Holder Name: ");
 		String cc = Helper.readString("Enter CreditCard Number: ");
 		String cvc = Helper.readString("Enter CVC Number: ");
@@ -199,9 +260,9 @@ public class C206_CaseStudy {
 		}
 		return validation;
 	}
-
-	private static void viewOrder(String parentName) {
-		Parents parent = getParentByName(parentName);
+	// Parent can view all the Orders and see if it have arrived or pending
+	public static void viewOrder(String parentName) {
+		Parents parent = getParentByName(parentName);w
 		int i = 0;
 		
 		// Check if parent exist
@@ -220,6 +281,18 @@ public class C206_CaseStudy {
 					System.out.println(
 							String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n",
 									i + 1, O.getOrderId(), status));
+					i++;
+					boolean toView = Helper.readBoolean("Would you like to view the meals? [y/n]: ");
+					if(toView) {
+						String orderId = Helper.readString("Enter Order ID: ");
+						if(O.getOrderId().equalsIgnoreCase(orderId)) {
+							for(Meals M: O.getItems()) {
+								printMenu(M);
+							}
+						}
+					}else {
+						return;
+					}
 				} else {
 					// If the orderHistory is null
 					System.out.println("Order not found.");
@@ -230,7 +303,8 @@ public class C206_CaseStudy {
 
 	}
 	
-	private static void delOrder(String parentName, String orderID) {
+	//Parents can delete orders from their order history
+	public static void delOrder(String parentName, String orderID) {
 		Parents parent = getParentByName(parentName);
 		String mealTitle = "\nMeals:\n%-2s %-10s %-5s\n";
 		String format = "%-2d %-10s %-5.2f\n";
@@ -275,7 +349,7 @@ public class C206_CaseStudy {
 		
 	}
 
-	private static void Rating(String parentName) {
+	public static void Rating(String parentName) {
 		String orderId = Helper.readString("Enter Order ID: ");
 		Ordering order = getOrderbyIDnParent(parentName, orderId);
 
@@ -326,7 +400,7 @@ public class C206_CaseStudy {
 		}
 	}
 
-	private static void generateReport() {
+	public static void generateReport() {
 		while (true) {
 			reportMenu();
 			int option = Helper.readInt("Enter Report Option: ");
@@ -349,7 +423,7 @@ public class C206_CaseStudy {
 		return;
 	}
 
-	private static void reportMenu() {
+	public static void reportMenu() {
 		Helper.line(45, "=");
 		System.out.println("Sales report");
 		Helper.line(45, "=");
@@ -359,7 +433,7 @@ public class C206_CaseStudy {
 
 	}
 
-	private static void generateMonthlyReport(YearMonth targetMonth) {
+	public static void generateMonthlyReport(YearMonth targetMonth) {
 		System.out.println("Sales Report for " + targetMonth);
 
 		double totalSales = 0.0;
@@ -385,7 +459,7 @@ public class C206_CaseStudy {
 		System.out.println("Total Sales for " + targetMonth + ": $" + totalSales);
 	}
 
-	private static void generateDailyReport(LocalDate targetDate) {
+	public static void generateDailyReport(LocalDate targetDate) {
 		System.out.println("Sales Report for " + targetDate);
 
 		double totalSales = 0.0;
@@ -410,7 +484,7 @@ public class C206_CaseStudy {
 		System.out.println("Total Sales for " + targetDate + ": $" + totalSales);
 	}
 
-	private static void addVendor() {
+	public static void addVendor() {
 		String name = Helper.readString("Enter Name of Vendor");
 		String email = Helper.readStringRegEx("Enter Email address: ","[a-ZA-Z0-9]@[a-zA-Z0-9].(com|org)");
 		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
@@ -420,7 +494,7 @@ public class C206_CaseStudy {
 		
 	}
 	
-	private static void delVendor() {
+	public static void delVendor() {
 		String name = Helper.readString("Enter Name of Vendor");
 		String email = Helper.readStringRegEx("Enter Email address: ","[a-ZA-Z0-9]@[a-zA-Z0-9].(com|org)");
 		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
@@ -437,7 +511,7 @@ public class C206_CaseStudy {
 		}
 	}
 	
-	private static void viewAllVendor() {
+	public static void viewAllVendor() {
 		String format = "No. | %-20s | %-30s | %-15s | %-50s\n";
 		Helper.line(45,"-");
 		System.out.printf(format, "Vendor Name", "Vendor Email", "Contact No.", "Address");
@@ -450,7 +524,7 @@ public class C206_CaseStudy {
 //Admin End
 
 	//Vendor Start
-		private static void AddItems(String VendorName) {
+		public static void AddItems(String VendorName) {
 			String name = Helper.readString("Enter name of dish: ");
 			String description = Helper.readString("Enter description of dish: ");
 			double price = Helper.readDouble("Set price of dish: ");
@@ -466,7 +540,7 @@ public class C206_CaseStudy {
 			}
 		}
 
-		private static void DelItems(String VendorName) {
+		public static void DelItems(String VendorName) {
 			String name = Helper.readString("Enter name of dish: ");
 			Vendor V = getVendorByName(VendorName);
 			for (int M = 0; M < V.getMenu().size(); M++) {
@@ -480,7 +554,7 @@ public class C206_CaseStudy {
 			}
 		}
 
-		private static void EditItems(String VendorName) {
+		public static void EditItems(String VendorName) {
 			String pattern = "(?i)(name|description|price)";
 			String edit = Helper.readStringRegEx("Which option you want to edit?[e.g Description]:", pattern);
 			String nameItem = Helper.readString("Enter name of item: ");
@@ -501,7 +575,7 @@ public class C206_CaseStudy {
 			}
 		}
 
-		private static void ViewFB(String VendorName) {
+		public static void ViewFB(String VendorName) {
 			Vendor V = getVendorByName(VendorName);
 			int MinIndex = 0;
 			int x = 1;
@@ -529,7 +603,7 @@ public class C206_CaseStudy {
 			}
 		}
 
-		private static void EditInfo(String VendorName) {
+		public static void EditInfo(String VendorName) {
 			String Pattern = "(?i)(email|address)";
 			String Choice = Helper.readStringRegEx("Which option you want to edit?[e.g Address]", Pattern);
 			Vendor V = getVendorByName(VendorName);
@@ -547,7 +621,7 @@ public class C206_CaseStudy {
 			}
 		}
 
-		private static void ViewMenu(String VendorName) {
+		public static void ViewVendorMenu(String VendorName) {
 			Vendor V = getVendorByName(VendorName);
 			if (V == null) {
 				System.out.println("Vendor does not exist");
@@ -566,7 +640,7 @@ public class C206_CaseStudy {
 //Help function
 
 	// Refactor the loop for vendor by specific meals
-	private static Vendor getVendorByMeal(ArrayList<Vendor> VendorList, Meals selectedMeal) {
+	public static Vendor getVendorByMeal(ArrayList<Vendor> VendorList, Meals selectedMeal) {
 		for (Vendor V : VendorList) {
 			for (Meals M : V.getMenu()) {
 				if (M.getName().equalsIgnoreCase(selectedMeal.getName())) {

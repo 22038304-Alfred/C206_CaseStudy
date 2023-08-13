@@ -49,6 +49,7 @@ public class Ordering {
 	}
 
 	private String generateOrderID() {
+		//ChatGPT was used for System.currentTimeMillis()
 		return "ORD" + System.currentTimeMillis() + counter++;
 	}
 	
