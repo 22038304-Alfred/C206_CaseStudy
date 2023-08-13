@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Ordering {
+	private int counter = 0;
 	private String orderId;
 	private String name;
 	private String ChildName;
@@ -48,7 +49,7 @@ public class Ordering {
 	}
 
 	private String generateOrderID() {
-		return Helper.toHex((name + ChildName + date.toString()+ items.toString()));
+		return "ORD" + System.currentTimeMillis() + counter++;
 	}
 	
 	public double getTotalAmount() {
