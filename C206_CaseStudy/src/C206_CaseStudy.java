@@ -24,9 +24,9 @@ public class C206_CaseStudy {
 		VendorMeal1.add(new Meals("Nasi Lemak", "Delicious and flavourful!", 1300, "Malay"));
 		VendorMeal2.add(new Meals("Meatless Don", "Unique and Tasty!", 1400, "Japanese"));
 		VendorMeal2.add(new Meals("Veg Quiche", "Flaky and crumbly!", 1500, ""));
-		VendorList.add(new Vendor("Vendor1", "ABC@coporation.org", "83294920" ,"AMK Hub #1-23,123567", VendorMeal1));
+		VendorList.add(new Vendor("Vendor1", "ABC@coporation.org", 83294920,"AMK Hub #1-23,123567", VendorMeal1));
 		VendorList.add(
-				new Vendor("Vendor2", "EFG@coporation.org", "93034040", "Bishan Junction 8 #1-23,123564", VendorMeal2));
+				new Vendor("Vendor2", "EFG@coporation.org", 93034040, "Bishan Junction 8 #1-23,123564", VendorMeal2));
 	}
 //Main Start
 
@@ -175,7 +175,7 @@ public class C206_CaseStudy {
 		// Create and add the order to the order list
 		Ordering order = new Ordering(parent.getName(), child.getChildName(), LocalDate.now(), ttAmt);
 		parent.getOrderHistory().add(order);
-
+		
 		System.out.println("Order placed successfully.");
 	}
 
@@ -578,7 +578,7 @@ public class C206_CaseStudy {
 	}
 
 	// Refactor the loop for vendor by Name
-	private static Vendor getVendorByName(String vendorName) {
+	public static Vendor getVendorByName(String vendorName) {
 		for (Vendor V : VendorList) {
 			if (V.getName().equalsIgnoreCase(vendorName)) {
 				return V;
@@ -588,7 +588,7 @@ public class C206_CaseStudy {
 	}
 
 	// refactor the loop for parents by Name
-	private static Parents getParentByName(String parentName) {
+	public static Parents getParentByName(String parentName) {
 		for (Parents P : ParentAccounts) {
 			if (P.getName().equalsIgnoreCase(parentName)) {
 				return P;
@@ -598,7 +598,7 @@ public class C206_CaseStudy {
 	}
 
 	// refactor the loop for children from parents class by Name
-	private static Child getChildByName(String childName, String parentName) {
+	public static Child getChildByName(String childName, String parentName) {
 		Parents P = getParentByName(parentName);
 		if (P != null) {
 			for (Child C : P.getChildren()) {
@@ -611,7 +611,7 @@ public class C206_CaseStudy {
 	}
 
 	// refactor the loop for orders from parent from order
-	private static Ordering getOrderbyIDnParent(String parentName, String orderId) {
+	public static Ordering getOrderbyIDnParent(String parentName, String orderId) {
 		Parents parent = getParentByName(parentName);
 		for (Ordering O : parent.getOrderHistory()) {
 			if (O.getOrderId().equalsIgnoreCase(orderId)) {

@@ -18,7 +18,7 @@ public class Ordering {
 	private double totalAmount;
 
 	public Ordering(String name, String ChildName, LocalDate date) {
-		this.orderId = Helper.toHex((name + ChildName + date + (items).toString()));
+		this.orderId = generateOrderID();
 		this.name = name;
 		this.ChildName = ChildName;
 		this.date = date;
@@ -28,7 +28,17 @@ public class Ordering {
 	}
 
 	public Ordering(String name, String ChildName, LocalDate date, double totalAmount) {
-		this.orderId = Helper.toHex((name + ChildName + date + (items).toString()));
+		this.orderId = generateOrderID();
+		this.name = name;
+		this.ChildName = ChildName;
+		this.date = date;
+		this.items = new ArrayList<>(items);
+		this.trackingOrder = true;
+		this.totalAmount = totalAmount;
+	}
+	
+	public Ordering(String name, String ChildName, LocalDate date, ArrayList<Meals> items, double totalAmount) {
+		this.orderId = generateOrderID();
 		this.name = name;
 		this.ChildName = ChildName;
 		this.date = date;
@@ -37,6 +47,10 @@ public class Ordering {
 		this.totalAmount = totalAmount;
 	}
 
+	private String generateOrderID() {
+		return Helper.toHex((name + ChildName + date.toString()+ items.toString()));
+	}
+	
 	public double getTotalAmount() {
 		return totalAmount;
 	}

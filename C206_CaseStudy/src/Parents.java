@@ -22,6 +22,14 @@ public class Parents{
 		this.CC = null;
 	}
 	
+	public Parents(String name, String password, ArrayList<Child> Children, ArrayList<Ordering> orderHistory) {
+		this.name = name;
+		this.password = password;
+		this.orderHistory = new ArrayList<Ordering>();
+		this.Children = new ArrayList<>(Children);
+		this.CC = null;
+	}
+	
 	public ArrayList<PaymentGateway> getCC() {
 		return CC;
 	}
