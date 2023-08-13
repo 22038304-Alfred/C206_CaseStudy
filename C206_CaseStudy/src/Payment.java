@@ -10,7 +10,7 @@ public class Payment {
 		this.buyerAcc = buyerAcc;
 		this.amount = amount;
 		this.hasRecord = true; 
-		this.method = method;
+		this.method = method; 
 		this.sellerAcc = sellerAcc;
 		
 	}
