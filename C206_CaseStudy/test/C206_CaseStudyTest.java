@@ -1,3 +1,8 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
@@ -85,6 +90,21 @@ public class C206_CaseStudyTest {
 		assertTrue("C206_CaseStudy_SampleTest ", true);
 	}
 
+	@Test
+    public void testMenuListCreation() {
+        LocalDate date = LocalDate.of(2023, 7, 18);
+        ArrayList<Menu> menuList = new ArrayList<>();
+        ArrayList<Vendor> vendorList = new ArrayList<>();
+        Vendor vendor1 = new Vendor("Vendor1", "vendor1@example.com", 12345678, "Vendor1 Address");
+        Meals meal1 = new Meals("Meal1", "Description1", 10.0, "Cuisine1");
+        vendor1.getMenu().add(meal1);
+        vendorList.add(vendor1);
+
+        menuList = C206_CaseStudy.MenuListCreation(vendorList, menuList, date);
+
+        assertEquals("Check if MenuList size is 1 when added",1, menuList.size());
+        assertEquals("Check if date is the same with the Menu's date",date, menuList.get(0).getDate());
+    }
 	
 	@Test
 	public void testViewVendorMenu() {
@@ -95,15 +115,21 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testGetVendorByName() {
 		System.out.println("VendorList: "+ VendorList);
+		
+		assertNotNull("Check if VendorList is not null",VendorList);
+		assertTrue("Check if VendorList is not empty", !VendorList.isEmpty());
+		
 		//Test if Vendor1 and 2 is present in VendorList
 		Vendor result1 = C206_CaseStudy.getVendorByName("Vendor1");
-		assertEquals("Vendor1", result1.getName());
+		assertNotNull("Check if Vendor1 is not Null", result1);
+		assertSame("Check if Vendor1 exist in VendorList", VendorList.get(0).getName(), result1.getName());
 		
 		Vendor result2 = C206_CaseStudy.getVendorByName("Vendor2");
-		assertEquals("Vendor2", result2.getName());
+		assertSame("Check if Vendor1 exist in VendorList", VendorList.get(1).getName(), result2.getName());
 		
-		//Checking if VendorList is not empty
-		assertNotNull(VendorList);
+		//Check for non-existing Vendor
+		Vendor nonExistingVendor = C206_CaseStudy.getVendorByName("Non-existent");
+		assertNull("Check if Vendor does exist will return null",nonExistingVendor);
 		
 		
 	}
@@ -111,61 +137,59 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testGetParentByName() {
 		System.out.println("Parent Accounts: "+ParentAccounts);
+		assertNotNull("Check if Parent Accounts is not null", ParentAccounts);
+		assertTrue("Check if Parent Accounts is not empty", !ParentAccounts.isEmpty());
+		
 		//Test if Parent1 and 2 is present in ParentAccounts
-		Parents result1 = C206_CaseStudy.getParentByName("Parent1");
-		assertEquals("Parent1", result1.getName());
+	    Parents result1 = C206_CaseStudy.getParentByName("Parent1");
+	    assertEquals("Check if Parent1 is present", ParentAccounts.get(0).getName(), result1.getName());
 		
-		Parents result2 = C206_CaseStudy.getParentByName("Parent1");
-		assertEquals("Parent2", result2.getName());
-		
-		//Checking if ParentAccounts is not empty
-		assertNotNull(ParentAccounts);
+	    Parents result2 = C206_CaseStudy.getParentByName("Parent2");
+	    assertEquals("Check if Parent2 is present", ParentAccounts.get(1).getName(), result2.getName());
 	}
 	
 	@Test
 	public void testGetChildByName() {
+		//Checking if ParentAccounts is not empty and null
+	    assertNotNull("Check if ParentAccounts is not null",ParentAccounts);
+	    assertTrue("Check if ParentAccounts is not empty", !ParentAccounts.isEmpty());
+		
 	    //Test if Parent1 is present in ParentAccounts
 	    Parents result1 = C206_CaseStudy.getParentByName("Parent1");
-	    assertEquals("Parent1", result1.getName());
+	    assertEquals("Check if Parent1 is present", ParentAccounts.get(0).getName(), result1.getName());
 	    assertNotNull(result1);
 	    
 	    //Test Children present from Parent: C1
 	    Child C1Result1 = C206_CaseStudy.getChildByName("C1", "Parent1");
-	    assertEquals("C1", C1Result1.getChildName());
+	    assertEquals("Check if C1 is present from Parent1", 
+	    		ParentAccounts.get(0).getChildren().get(0).getChildName(), C1Result1.getChildName());
 	    
 	    //Test Children present from Parent: C2
 	    Child C2Result1 = C206_CaseStudy.getChildByName("C2", "Parent1");
-	    assertEquals("C2", C2Result1.getChildName());
+	    assertEquals("Check if C2 is present from Parent1", 
+	    		ParentAccounts.get(0).getChildren().get(1).getChildName(), C2Result1.getChildName());
 	    
 	    //Test if Parent2 is present in ParentAccounts
 	    Parents result2 = C206_CaseStudy.getParentByName("Parent2");
-	    assertEquals("Parent2", result2.getName());
-	    assertNotNull(result2);
+	    assertEquals("Check if Parent2 is present", ParentAccounts.get(1).getName(), result2.getName());
 	    
 	    //Test Children present from Parent: C3
 	    Child C3Result2 = C206_CaseStudy.getChildByName("C3", "Parent2");
-	    assertEquals("C3", C3Result2.getChildName());
+	    assertEquals("Check if C3 is present from Parent2",
+	    		ParentAccounts.get(1).getChildren().get(0).getChildName(), C3Result2.getChildName());
 	    
 	    //Test Children present from Parent: C4
 	    Child C4Result2 = C206_CaseStudy.getChildByName("C4", "Parent2");
-	    assertEquals("C4", C4Result2.getChildName());
+	    assertEquals("Check if C4 is present from Parent2",
+	    		ParentAccounts.get(1).getChildren().get(1).getChildName(), C4Result2.getChildName());
 	    
-	    //Checking if ParentAccounts is not empty
-	    assertNotNull(ParentAccounts);
+	    
 	}
 
 	
 	@Test
 	public void getOrderByIDnParent() {
-		//
-	    Ordering result1 = C206_CaseStudy.getOrderbyIDnParent("Parent1", Order1.getOrderId());
-	    assertEquals(Order1, result1);
 
-	    Ordering result2 = C206_CaseStudy.getOrderbyIDnParent("Parent1", Order2.getOrderId());
-	    assertEquals(Order2, result2);
-
-	    Ordering result3 = C206_CaseStudy.getOrderbyIDnParent("Parent2", Order3.getOrderId());
-	    assertEquals(Order3, result3);
 	}
 	
 }

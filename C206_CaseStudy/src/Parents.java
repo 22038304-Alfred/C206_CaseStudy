@@ -6,14 +6,6 @@ public class Parents{
 	private ArrayList<Child> Children = new ArrayList<Child>();
 	private ArrayList<PaymentGateway> CC = new ArrayList<PaymentGateway>();
 
-	public Parents(String name, String password) {
-			this.name = name;
-			this.password = password;
-			this.orderHistory = new ArrayList<Ordering>();
-			this.Children = new ArrayList<Child>();
-			this.CC = null;
-	}
-
 	public Parents(String name, String password, ArrayList<Child> Children) {
 		this.name = name;
 		this.password = password;

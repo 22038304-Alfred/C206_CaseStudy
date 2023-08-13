@@ -84,26 +84,28 @@ public class C206_CaseStudy {
 	    Child child = getChildByName(parentName, childName);
 	    Vendor vendor = getVendorByName(vendorName);
 	    Ordering order = getOrderbyIDnParent(parentName, P1Order.get(0).getOrderId());
-		System.out.println(parent+"\n"+child+"\n"+vendor+"\n"+order+"\n");
+	    ArrayList<Menu> m = MenuListCreation(VendorList, MenuList, LocalDate.now());
+		System.out.println(parent+"\n"+child+"\n"+vendor+"\n"+order+"\n"+m+"\n");
+		
 	}
 //Main Start
 
 	// The creation of Menu
-	public static ArrayList<Menu> MenuListCreation(ArrayList<Vendor> VendorList, ArrayList<Menu> menuList2,
-			LocalDate date) {
-		// Check if the date is within range
-		boolean checkValid = Helper.isValidRangeDate(date);
-		if (checkValid == true) {
-			for (Vendor V : VendorList) {
-				for (Meals M : V.getMenu()) {
-					Menu Menu = new Menu(date, M);
-					menuList2.add(Menu);
-				}
-			}
-		}
-
-		return menuList2;
+	public static ArrayList<Menu> MenuListCreation(ArrayList<Vendor> VendorList, ArrayList<Menu> menuList2, LocalDate date) {
+	    boolean checkValid = Helper.isValidRangeDate(date);
+	    if (checkValid) {
+	        for (Vendor V : VendorList) {
+	            for (int x = V.getMenu().size() - 1; x >= 0; x--) {
+	                Meals M = V.getMenu().get(x);
+	                Menu menu = new Menu(date, M);
+	                menuList2.add(menu);
+	            }
+	        }
+	    }
+	    return menuList2;
 	}
+
+
 	
 	public static void viewCuisine() {
 		ArrayList<String> cuisineType = new ArrayList<>();
@@ -262,7 +264,7 @@ public class C206_CaseStudy {
 	}
 	// Parent can view all the Orders and see if it have arrived or pending
 	public static void viewOrder(String parentName) {
-		Parents parent = getParentByName(parentName);w
+		Parents parent = getParentByName(parentName);
 		int i = 0;
 		
 		// Check if parent exist
@@ -447,11 +449,7 @@ public class C206_CaseStudy {
 					double orderTotal = order.getTotalAmount();
 					totalSales += orderTotal;
 
-					System.out.println("Parent: " + parent.getName());
-					System.out.println("Order ID: " + order.getOrderId());
-					System.out.println("Order Date: " + orderDate);
-					System.out.println("Order Total: $" + orderTotal);
-					System.out.println("-----------------------------------");
+					reportMenu(order, orderDate, orderTotal);
 				}
 			}
 		}
@@ -472,16 +470,25 @@ public class C206_CaseStudy {
 					double orderTotal = order.getTotalAmount();
 					totalSales += orderTotal;
 
-					System.out.println("Parent: " + parent.getName());
-					System.out.println("Order ID: " + order.getOrderId());
-					System.out.println("Order Date: " + orderDate);
-					System.out.println("Order Total: $" + orderTotal);
-					System.out.println("-----------------------------------");
+					reportMenu(order, orderDate, orderTotal);
 				}
 			}
 		}
 
 		System.out.println("Total Sales for " + targetDate + ": $" + totalSales);
+	}
+
+	/**
+	 * @param parent
+	 * @param order
+	 * @param orderDate
+	 * @param orderTotal
+	 */
+	private static void reportMenu(Ordering order, LocalDate orderDate, double orderTotal) {
+		System.out.println("Order ID: " + order.getOrderId());
+		System.out.println("Order Date: " + orderDate);
+		System.out.println("Order Total: $" + orderTotal);
+		System.out.println("-----------------------------------");
 	}
 
 	public static void addVendor() {
@@ -577,30 +584,12 @@ public class C206_CaseStudy {
 
 		public static void ViewFB(String VendorName) {
 			Vendor V = getVendorByName(VendorName);
-			int MinIndex = 0;
-			int x = 1;
-			int MaxIndex = Math.min(5, V.getReviews().size());
-			Page_Loop: while (true) {
-				for (int i = MinIndex; i < MaxIndex; i++) {
-					Review R = V.getReviews().get(i);
+			int x = 0;
+				for (Review R : V.getReviews()) {
 					System.out.printf("%d. Food Rating: %d\nExperience Rating: %d\nDescription:\n%s", x + 1,
 							R.getRateFood(), R.getRateExperience(), R.getImprovements());
+					x++;
 				}
-
-				if (MaxIndex >= V.getReviews().size()) {
-					System.out.println("Null");
-					break Page_Loop;
-				}
-
-				boolean input = Helper.readBoolean("Show 5 more? (y/n): ");
-				if (input == true) {
-					MinIndex = MaxIndex;
-					MaxIndex = Math.min((MinIndex + 5), V.getReviews().size());
-				} else {
-					System.out.println("END");
-					break Page_Loop;
-				}
-			}
 		}
 
 		public static void EditInfo(String VendorName) {
@@ -654,7 +643,7 @@ public class C206_CaseStudy {
 	// Refactor the loop for vendor by Name
 	public static Vendor getVendorByName(String vendorName) {
 		for (Vendor V : VendorList) {
-			if (V.getName().equalsIgnoreCase(vendorName)) {
+			if (vendorName == V.getName()) {
 				return V;
 			}
 		}
@@ -663,9 +652,9 @@ public class C206_CaseStudy {
 
 	// refactor the loop for parents by Name
 	public static Parents getParentByName(String parentName) {
-		for (Parents P : ParentAccounts) {
-			if (P.getName().equalsIgnoreCase(parentName)) {
-				return P;
+		for (Parents parent : ParentAccounts) {
+			if (parent.getName().equals(parentName)) {
+				return parent;
 			}
 		}
 		return null;
