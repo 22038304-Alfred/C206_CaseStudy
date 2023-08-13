@@ -1,18 +1,50 @@
 import java.util.ArrayList;
-
 public class Parents{
 	private String name;
 	private String password;
-	private boolean tracking;
-	private String feedback;
-	private ArrayList<Ordering> orderList = new ArrayList<Ordering>();
-	
-	public Parents(String name, String password, boolean tracking, String feedback, ArrayList<Ordering> orderList) {
+	private ArrayList<Ordering> orderHistory = new ArrayList<Ordering>();
+	private ArrayList<Child> Children = new ArrayList<Child>();
+	private ArrayList<PaymentGateway> CC = new ArrayList<PaymentGateway>();
+
+	public Parents(String name, String password) {
 			this.name = name;
 			this.password = password;
-			this.tracking = false;
-			this.feedback = "";
-			this.orderList = orderList;
+			this.orderHistory = new ArrayList<Ordering>();
+			this.Children = new ArrayList<Child>();
+			this.CC = null;
+	}
+
+	public Parents(String name, String password, ArrayList<Child> Children) {
+		this.name = name;
+		this.password = password;
+		this.orderHistory = new ArrayList<Ordering>();
+		this.Children = new ArrayList<>(Children);
+		this.CC = null;
+	}
+	
+	public Parents(String name, String password, ArrayList<Child> Children, ArrayList<Ordering> orderHistory) {
+		this.name = name;
+		this.password = password;
+		this.orderHistory = new ArrayList<Ordering>();
+		this.Children = new ArrayList<>(Children);
+		this.CC = null;
+	}
+	
+	public ArrayList<PaymentGateway> getCC() {
+		return CC;
+	}
+	
+	public ArrayList<Child> getChildren() {
+		return Children;
+	}
+
+
+	public void setChildren(ArrayList<Child> children) {
+		Children = children;
+	}
+
+	public void addChildren(Child child) {
+		Children.add(child);
 	}
 
 	public String getPassword() {
@@ -24,11 +56,22 @@ public class Parents{
 	}
 	
 	public boolean authentication(String name, String password) {
-	    return this.name.equals(name) && this.password.equals(password);
+		boolean authenticate = false;
+	    if(this.name.equals(name) && this.password.equals(password)) {
+	    	authenticate = true;
+	    	return authenticate;
+	    }else {
+	    	authenticate = false;
+	    	return authenticate;
+	    }
 	}
 
-	public void setOrderList(ArrayList<Ordering> orderList) {
-		this.orderList = orderList;
+	public void setOrderHistory(ArrayList<Ordering> orderHistory) {
+		this.orderHistory = orderHistory;
+	}
+	
+	public void addOrder(Ordering order) {
+		orderHistory.add(order);
 	}
 
 	public String getName() {
@@ -39,24 +82,8 @@ public class Parents{
 		this.name = name;
 	}
 
-	public boolean isTracking() {
-		return tracking;
-	}
-
-	public void setTracking(boolean tracking) {
-		this.tracking = tracking;
-	}
-
-	public String getFeedback() {
-		return feedback;
-	}
-
-	public void setFeedback(String feedback) {
-		this.feedback = feedback;
-	}
-
-	public ArrayList<Ordering> getOrderList() {
-		return orderList;
+	public ArrayList<Ordering> getOrderHistory() {
+		return orderHistory;
 	}
 
 }

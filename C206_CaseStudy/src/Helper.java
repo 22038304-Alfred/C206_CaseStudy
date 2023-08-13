@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Helper {
@@ -23,6 +24,19 @@ public class Helper {
 		return input;
 
 	}
+	
+	public static boolean readBooleanRegEx(String prompt, String pattern) {
+		String input = readString(prompt);	
+		boolean matched = Pattern.matches(pattern, input);
+
+		while (!matched) {
+			System.out.println("Invalid input!");
+			input = readString(prompt);
+			matched = Pattern.matches(pattern, input);
+		}
+		return matched;
+
+	}
 
 	public static int readInt(String prompt) {
 		int input = 0;
@@ -38,6 +52,25 @@ public class Helper {
 		return input;
 	}
 
+	public static int readIntRange(String prompt, int min, int max) {
+		int input = 0;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				input = Integer.parseInt(readString(prompt));
+				if(input >= min && input <= max) {
+					valid = true;
+				}else {
+					System.out.println("*** Please enter a valid integer within the specified range ***");
+				}
+				
+			} catch (NumberFormatException e) {
+				System.out.println("*** Please enter an integer ***");
+			}
+		}
+		return input;
+	}
+	
 	public static double readDouble(String prompt) {
 		double input = 0;
 		boolean valid = false;
@@ -152,7 +185,52 @@ public class Helper {
 		}
 		return date;
 	}
+	
+	public static LocalDate readLocalDateCC(String prompt) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+		LocalDate date = null;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				String input = readString(prompt).trim();
+				date = LocalDate.parse(input, formatter);
+			} catch (IllegalArgumentException e) {
+				System.out.println("*** Please enter a date (MM/YYYY) ***");
+			}
+		}
+		return date;
+	}
+	
+	public static boolean readBoolLocalDateCC(String ccDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+		boolean valid = false;
+		while (!valid) {
+			try {
+				String input = readString(ccDate.trim());
+				LocalDate date = LocalDate.parse(input, formatter);
+				valid = true;
+			} catch (IllegalArgumentException e) {
+				System.out.println("*** Please enter a date (MM/YYYY) ***");
+			}
+		}
+		return valid;
+	}
 
+	public static LocalDate readLocalDateFormatter(String prompt, String pattern) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		LocalDate date = null;
+		boolean valid = false;
+		while (!valid) {
+			try {
+				String input = readString(prompt).trim();
+				date = LocalDate.parse(input, formatter);
+			} catch (IllegalArgumentException e) {
+				System.out.println("*** Please enter a date ("+pattern.toUpperCase()+") ***");
+			}
+		}
+		return date;
+	}
+	
 	private static String quit = "0";
 
 	public static int getUserOption(String title, String[] menu) {
@@ -242,7 +320,7 @@ public class Helper {
 	public static Date now() {
 		return new Date(System.currentTimeMillis());
 	}
-
+	
 	public static int calcDayDifference(Date former, Date latter) {
 		long diff = latter.getTime() - former.getTime();
 		int days = (int) (diff / (24 * 60 * 60 * 1000));
@@ -269,4 +347,54 @@ public class Helper {
 	public static boolean sameDate(Date one, Date two) {
 		return getDay(one) == getDay(two) && getMonth(one) == getMonth(two) && getYear(one) == getYear(two);
 	}
+	
+	public static boolean containDate(LocalDate initialDate, LocalDate MainDate) {
+		return initialDate.getYear() == MainDate.getYear() &&
+				initialDate.getMonth() == MainDate.getMonth() &&
+				initialDate.getDayOfMonth() == MainDate.getDayOfMonth();
+	}
+
+	public static boolean equalIgnoreCaseRegEx(String prompt, String pattern) {
+		if(prompt == null || pattern == null) return prompt == pattern;
+		
+		Pattern patterns = Pattern.compile(Pattern.quote(prompt), Pattern.CASE_INSENSITIVE);
+		Matcher match = patterns.matcher(pattern);
+		return match.matches();
+	}
+	
+	public static String capitalizedWords(String Word) {
+		String[] words = Word.split(" ");
+		String output = "";
+
+		for (String word : words) {
+			if (!word.isEmpty()) {
+				char firstLetter = Character.toUpperCase(word.charAt(0));
+				String FullWord = word.substring(1).toLowerCase();
+				output += firstLetter + FullWord + " ";
+			}
+		}
+
+		if (!output.isEmpty()) {
+			output = output.substring(0, output.length() - 1);
+		}
+
+		return output;
+	}
+
+	public static boolean isValidRangeDate(LocalDate date) {
+		LocalDate now = LocalDate.now();
+		long calDate = date.toEpochDay() - now.toEpochDay();
+		return calDate >= 0 && calDate <= 7;
+	}
+	
+	public static String toHex(String input) {
+		StringBuilder hexDeci = new StringBuilder();
+		
+		for(char c: input.toCharArray()) {
+			hexDeci.append(String.format("%02X", c));
+		}
+		return hexDeci.toString();
+	}
+
+
 }

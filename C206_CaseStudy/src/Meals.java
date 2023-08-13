@@ -1,26 +1,29 @@
+/**
+ * I declare that this code was written by me.
+ * I will not copy or allow others to copy my code.
+ * I understand that copying code is considered as plagiarism.
+ *
+ * 22013393, 1 Aug 2023 5:52:56 pm
+ */
 public class Meals {
 	private String name;
 	private String description;
 	private double price;
-	private int qty;
+	private String Type;
 	
-	/*
-	 Establish the menu items in it:
-	 its name, description and prices
-	  */
-	public Meals(String name, String description, double price, int qty) {
+	public Meals(String name, String description, double price, String Type) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.qty = qty;
+		this.Type = Type;
 	}
 
-	public int getQty() {
-		return qty;
+	public String getType() {
+		return Type;
 	}
 
-	public void setQty(int qty) {
-		this.qty = qty;
+	public void setType(String type) {
+		Type = type;
 	}
 
 	public String getName() {
@@ -35,7 +38,6 @@ public class Meals {
 		return description;
 	}
 	
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
