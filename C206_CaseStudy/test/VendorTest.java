@@ -17,9 +17,8 @@ public class VendorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		VendorList.add(new Vendor("Vendor1", "company1@email.co", 87651234, "120 Bishan St 23"));
-		VendorList.add(new Vendor("Vendor2", "company2@email.com", 95693537, "52 Serangoon Rd"));
 
+		
 	}
 
 	@After
@@ -38,13 +37,10 @@ public class VendorTest {
 		assertNotNull("Test that VendorList is null", VendorList);
 		assertNotEquals("Test that VendorList is not empty", 0, VendorList.size());
 		// Test Case Normal Condition
-
+		VendorList.add(new Vendor("Vendor1", "company1@email.co", 87651234, "120 Bishan St 23"));
+		VendorList.add(new Vendor("Vendor2", "company2@email.com", 95693537, "52 Serangoon Rd"));
 		VendorMain.addVendor(VendorList);
 		assertEquals("Check if vendor added was successful", 3, VendorList.size());
-
-		// Test that VendorList is not null/empty
-		assertEquals("Test that VendorList is not empty", 0, VendorList.size());
-		assertNotNull("Test that VendorList is not null", VendorList);
 
 		// No Test case error/boundary condition due to the input have to be accurate as
 		// it will prompt to re-enter
