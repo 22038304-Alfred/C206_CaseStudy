@@ -601,7 +601,7 @@ public class C206_CaseStudy {
 
 		//retrieve
 		public static String retrieveAllPayment(ArrayList<Payment> paymentList) {
-
+ 
 
 			String output = "";
 

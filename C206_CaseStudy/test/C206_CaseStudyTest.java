@@ -206,7 +206,7 @@ public class C206_CaseStudyTest {
 		C206_CaseStudy.deleteSchool("Temasek Polytechnic", schoolList);
 		assertEquals("Test that the School arraylist size is now 1.", 1, schoolList.size());
 		
-		// Delete a school that is not in the list
+		// Delete a school that is not in the list 
         C206_CaseStudy.deleteSchool("Temasek Polytechnic", schoolList);
         assertEquals("Test that the School arraylist size is unchange.", 1, schoolList.size()); 
         
