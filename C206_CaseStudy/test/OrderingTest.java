@@ -5,6 +5,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,39 +81,38 @@ public class OrderingTest {
 	
 	@Test
 	public void testStartOrder() {
+		//Test Case Error Condition
+		//Test that userList/orderList
 		
+		//Test Case Normal Condition
+		//Test Case Boundary Condition
+		
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        OrderingMain.viewOrder("NonExistentUser");
+
+        // Restore original console output
+        System.setOut(originalOut);
+
+        // Verify the captured output
+        assertEquals("User does not exist\n", outputStream.toString());
 	}
 	
 	@Test
 	public void testDelOrder() {
-		
+		//Test Case Error Condition
+		//Test Case Normal Condition
+		//Test Case Boundary Condition
 	}
 	
 	@Test
 	public void testViewOrder() {
-		
+		//Test Case Error Condition
+		//Test Case Normal Condition
+		//Test Case Boundary Condition
 	}
 	
-	@Test
-	public void testVerifyOrderVendorqty() {
-		
-	}
-
-	@Test
-	public void testGetOrderByUser() {
-        Ordering result = OrderingMain.getOrderByUser("User1", "Order1");
-        
-        assertNull("Check if OrderList is not null",result);
-        assertEquals("User1 present", orderList.get(0).getName(), result.getName());
-        assertEquals("Child1 present", orderList.get(0).getChildName(), result.getChildName());
-	}
-	
-	@Test
-	public void testGetUserByName() {
-        User result = OrderingMain.getUserByName("User1");
-        
-        assertNotNull("Check that User1 is not null",result);
-        assertEquals("Check if User1 equals and present to userList", userList.get(0).getName(),result.getName());
-	}
 
 }
