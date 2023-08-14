@@ -101,6 +101,16 @@ public class C206_CaseStudy {
 		System.out.println("3. View All Vendors");
 		System.out.println("4. End");
 	}
+	
+	private static void mgtAccMenu() {
+		Helper.line(60, "=");
+		System.out.println("WELCOME TO SCHOOL LUNCHBOX ONLINE (ADMIN PAGE)");
+		Helper.line(60, "=");
+		System.out.println("1. Start Order");
+		System.out.println("2. Delete Order");
+		System.out.println("3. View and Track Orders");
+		System.out.println("4. End");
+	}
 
 	private static void vendorMenu() {
 		Helper.line(60, "=");
@@ -286,7 +296,7 @@ public class C206_CaseStudy {
 
 			switch (option) {
 			case 1:
-				// ManageOrder();
+				ManageOrder();
 				break;
 			case 2:
 				ManagePayment();
@@ -583,7 +593,31 @@ public class C206_CaseStudy {
 	 * System.out.println("Child does not exist!"); } } }
 	 */
 
-	public static void StartOrder(String user) {
+	private static void ManageAcc(String user) {
+
+		while (option != 5) {
+			mgtAccMenu();
+			option = Helper.readInt("Enter an option > ");
+
+			if (option == 1) {
+				StartOrder(user);
+				
+			} else if (option == 2) {
+				viewAllUser(userList);
+
+			} else if (option == 3) {
+				removeUser(Helper.readString("Please enter the user name to delete: "), userList);
+
+			} else if (option == 4) {
+				System.out.println("Bye!");
+			} else {
+				System.out.println("Invalid choice. Please try again.");
+				break;
+			}
+		}
+	}
+	
+	private static void StartOrder(String user) {
 		String childName = Helper.readString("Enter Child's Name: ");
 		User parent = getUserByName(user);
 		if (parent == null) {
@@ -633,7 +667,7 @@ public class C206_CaseStudy {
 		C206_CaseStudy.makePayment(paymentList, transaction);
 	}
 
-	public static void delOrder(String user, String orderID) {
+	private static void delOrder(String user, String orderID) {
 		User parent = getUserByName(user);
 		String mealTitle = "\nMenu:\n%-2s %-10s %-5s\n";
 		String format = "%-2d %-10s %-5.2f\n";
@@ -682,7 +716,7 @@ public class C206_CaseStudy {
 
 	}
 
-	public static void viewOrder(String user) {
+	private static void viewOrder(String user) {
 		User parent = getUserByName(user);
 		int i = 0;
 		if (parent == null) {
@@ -730,14 +764,14 @@ public class C206_CaseStudy {
 	}
 
 //Refactored
-	public static void printMenu(Menu meal) {
+	private static void printMenu(Menu meal) {
 		System.out.println("Name: " + meal.getName());
 		System.out.println("Description: " + meal.getDescription());
 		System.out.println("Price: " + meal.getPrice());
 		System.out.println("----------------------");
 	}
 
-	public static void verifyOrderVendorqty(User parent, String child, double ttAmt, Menu selectMeal, String vendor) {
+	private static void verifyOrderVendorqty(User parent, String child, double ttAmt, Menu selectMeal, String vendor) {
 		// Deduct quantity from vendor and update meal quantity
 
 		// Create and add the order to the order list
@@ -748,7 +782,7 @@ public class C206_CaseStudy {
 	}
 
 // refactor the loop for parents by Name
-	public static User getUserByName(String username) {
+	private static User getUserByName(String username) {
 		for (User parent : userList) {
 			if (parent.getName().equals(username)) {
 				return parent;
@@ -758,7 +792,7 @@ public class C206_CaseStudy {
 	}
 
 //refactor user to order
-	public static Ordering getOrderByUser(String username, String orderID) {
+	private static Ordering getOrderByUser(String username, String orderID) {
 		User user = getUserByName(username);
 		for (Ordering OL : orderList) {
 			if (user.getName().equalsIgnoreCase(OL.getName()) && OL.getOrderId().equals(orderID)) {
