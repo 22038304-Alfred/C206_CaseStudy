@@ -1,11 +1,10 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -35,46 +34,70 @@ public class VendorTest {
 
 	@Test
 	public void testAddVendor() {
-		//Test Case Normal Condition
-		//Test that VendorList is not null/empty
+		// Test Case Normal Condition
+		assertNotNull("Test that VendorList is null", VendorList);
+		assertNotEquals("Test that VendorList is not empty", 0, VendorList.size());
+		// Test Case Normal Condition
+
+		VendorMain.addVendor(VendorList);
+		assertEquals("Check if vendor added was successful", 3, VendorList.size());
+
+		// Test that VendorList is not null/empty
 		assertEquals("Test that VendorList is not empty", 0, VendorList.size());
 		assertNotNull("Test that VendorList is not null", VendorList);
-		
-		//Test Case Error Condition
-		//Check if adding vendor fails
-		
-		
-		//Test Case Boundary Condition
-		
-		
+
+		// No Test case error/boundary condition due to the input have to be accurate as
+		// it will prompt to re-enter
+
 	}
 
 	@Test
 	public void testDelVendor() {
-		//Test Case Normal Condition
-		//Test that VendorList is not null/empty
+		// Test that VendorList is not null/empty
 		assertNotNull("Test that VendorList is null", VendorList);
-		assertEquals("Test that VendorList is not null", 0, VendorList);
-		
-		//Test Case Error Condition
-		//Check if removing vendor fails
-		
-		
-		//Test Case Boundary Condition
+		assertEquals("Test that VendorList is 2", 2, VendorList.size());
+
+		// Test Case Normal Condition
+		// Check if removing vendor is successful
+		VendorList.add(new Vendor("Vendor3", "vendor3@email.co", 82345678, "123 Main St"));
+		VendorMain.delVendor(VendorList);
+		assertTrue(VendorList.isEmpty());
+
+		// Test Case Boundary Condition
+		VendorMain.delVendor(VendorList);
+		assertEquals(1, VendorList.size());
+		assertEquals("Test that the remaining vendor in the list is the expected vendor", VendorList.get(0).getName());
+
+		// Test Case Error Condition
+		VendorMain.delVendor(VendorList);
+		assertEquals("Test that the vendor to delete is not found", VendorList);
+		assertEquals("Test that the vendor list remains unchange", 2, VendorList.size());
 	}
-	
+
 	@Test
 	public void testViewAllVendor() {
-		//Test Case Normal Condition
-		//Test that VendorList is not null/empty
-		assertNotNull("Test that VendorList is null", VendorList);
-		assertEquals("Test that VendorList is not null", 0, VendorList);
-		
-		//Test Case Error Condition
-		//Check if it displays, not null from the list
-		
-		
-		//Test Case Boundary Condition
+		// Test if the output of the print is not empty
+		String testResult = "";
+		String result = VendorMain.viewAllVendor(VendorList);
+		assertNotEquals("Test that the output is not blank", testResult, result);
+
+		// Test Case Normal Condition
+		assertEquals("Test the vendor list size is 1", 2, VendorList.size());
+
+		// Test Case Error Condition
+		VendorList.clear();
+		String results = VendorMain.viewAllVendor(VendorList);
+		String expectedOutput = "No vendors available.";
+		assertEquals("Verify that the output indicates no vendors are available", expectedOutput, result);
+
+		// Test Case Boundary Condition
+		// Check if added and if is more than the index
+		for (int i = 0; i < 5; i++) {
+			VendorList.add(new Vendor("Vendor" + i, "vendor" + i + "@email.co", 82345678, "123 Main St"));
+		}
+		String output = VendorMain.viewAllVendor(VendorList);
+		assertTrue("Test if vendor4 is added successfully", output.contains("Vendor4"));
+		assertFalse("Test if Vendor5 is not added due to out of bounds", output.contains("Vendor5"));
 	}
 
 }

@@ -101,7 +101,7 @@ public class C206_CaseStudy {
 		System.out.println("3. View All Vendors");
 		System.out.println("4. End");
 	}
-	
+
 	private static void mgtAccMenu() {
 		Helper.line(60, "=");
 		System.out.println("WELCOME TO SCHOOL LUNCHBOX ONLINE (ADMIN PAGE)");
@@ -520,13 +520,23 @@ public class C206_CaseStudy {
 			option = Helper.readInt("Enter an option > ");
 
 			if (option == 1) {
-				addVendor();
+				String name = Helper.readString("Enter Name of Vendor: ");
+				String email = Helper.readStringRegEx("Enter Email address: ", "[a-zA-Z0-9]+@[a-zA-Z0-9]+.(com|org)");
+				int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
+				String address = Helper.readString("Enter Address: ");
+				Vendor vendor = new Vendor(name, email, contactNo, address);
+				addVendor(VendorList, vendor);
 
 			} else if (option == 2) {
-				delVendor();
+				String name = Helper.readString("Enter Name of Vendor: ");
+				String email = Helper.readStringRegEx("Enter Email address: ", "[a-zA-Z0-9]+@[a-zA-Z0-9]+.(com|org)");
+				int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
+				String address = Helper.readString("Enter Address: ");
+				Vendor vendor = new Vendor(name, email, contactNo, address);
+				delVendor(VendorList, vendor);
 
 			} else if (option == 3) {
-				viewAllVendor();
+				viewAllVendor(VendorList);
 
 			} else if (option == 4) {
 				System.out.println("Bye!");
@@ -537,25 +547,22 @@ public class C206_CaseStudy {
 		}
 	}
 
-	public static void addVendor() {
-		String name = Helper.readString("Enter Name of Vendor: ");
-		String email = Helper.readStringRegEx("Enter Email address: ", "[a-zA-Z0-9]+@[a-zA-Z0-9]+.(com|org)");
-		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
-		String address = Helper.readString("Enter Address: ");
-		VendorList.add(new Vendor(name, email, contactNo, address));
+
+	public static void addVendor(ArrayList<Vendor> VendorList, Vendor vendor) {
+		VendorList.add(vendor);
 		System.out.println("Vendor Added!");
 
 	}
 
-	public static void delVendor() {
+	public static void delVendor(ArrayList<Vendor> VendorList, Vendor vendor) {
 		String name = Helper.readString("Enter Name of Vendor: ");
 		String email = Helper.readStringRegEx("Enter Email address: ", "[a-zA-Z0-9]+@[a-zA-Z0-9]+.(com|org)");
 		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
 		String address = Helper.readString("Enter Address: ");
 		for (int i = 0; i < VendorList.size(); i++) {
 			Vendor V = VendorList.get(i);
-			if (V.getName().equalsIgnoreCase(name) && V.getEmail().equalsIgnoreCase(email) && V.getContactNo() == contactNo
-					&& V.getAddress().equals(address)) {
+			if (V.getName().equalsIgnoreCase(name) && V.getEmail().equalsIgnoreCase(email)
+					&& V.getContactNo() == contactNo && V.getAddress().equals(address)) {
 				VendorList.remove(i);
 				System.out.println("Vendor Removed!");
 			} else {
@@ -564,15 +571,15 @@ public class C206_CaseStudy {
 		}
 	}
 
-	public static void viewAllVendor() {
+	public static void viewAllVendor(ArrayList<Vendor> VendorList) {
 		String format = "%-7s| %-20s | %-20s | %-15s | %-50s\n";
 		String format1 = "No. %-3d| %-20s | %-20s | %-15d | %-50s\n";
 		Helper.line(100, "-");
-		System.out.printf(format,"No.", "Vendor Name", "Vendor Email", "Contact No.", "Address");
+		System.out.printf(format, "No.", "Vendor Name", "Vendor Email", "Contact No.", "Address");
 		Helper.line(100, "-");
 		for (int i = 0; i < VendorList.size(); i++) {
 			Vendor V = VendorList.get(i);
-			System.out.printf(format1, i+1, V.getName(), V.getEmail(), V.getContactNo(), V.getAddress());
+			System.out.printf(format1, i + 1, V.getName(), V.getEmail(), V.getContactNo(), V.getAddress());
 		}
 	}
 	// vendor end
@@ -593,20 +600,21 @@ public class C206_CaseStudy {
 	 * System.out.println("Child does not exist!"); } } }
 	 */
 
-	private static void ManageAcc(String user) {
-
+	private static void ManageOrder() {
+		String user = Helper.readString("Enter Username: ");
 		while (option != 5) {
 			mgtAccMenu();
 			option = Helper.readInt("Enter an option > ");
 
 			if (option == 1) {
-				StartOrder(user);
-				
+				String childName = Helper.readString("Enter Child's Name: ");
+				StartOrder(user, MenuList, childName);
+
 			} else if (option == 2) {
-				viewAllUser(userList);
+				viewOrder(user);
 
 			} else if (option == 3) {
-				removeUser(Helper.readString("Please enter the user name to delete: "), userList);
+				delOrder(Helper.readString("Please enter the user name to delete: "), Helper.readString("Enter Order ID: "));
 
 			} else if (option == 4) {
 				System.out.println("Bye!");
@@ -616,9 +624,8 @@ public class C206_CaseStudy {
 			}
 		}
 	}
-	
-	private static void StartOrder(String user) {
-		String childName = Helper.readString("Enter Child's Name: ");
+
+	private static void StartOrder(String user, ArrayList<Menu> menuList , String childName) {
 		User parent = getUserByName(user);
 		if (parent == null) {
 			System.out.println("User not found");
@@ -650,7 +657,7 @@ public class C206_CaseStudy {
 			return;
 		}
 
-		payment(ttAmt);
+		payment((int)ttAmt);
 
 		verifyOrderVendorqty(parent, childName, gst, selectMeal, selectMeal.getVendorName());
 
@@ -667,13 +674,14 @@ public class C206_CaseStudy {
 		C206_CaseStudy.makePayment(paymentList, transaction);
 	}
 
-	private static void delOrder(String user, String orderID) {
+	public static boolean delOrder(String user, String orderID) {
+		boolean toDel = false;
 		User parent = getUserByName(user);
 		String mealTitle = "\nMenu:\n%-2s %-10s %-5s\n";
 		String format = "%-2d %-10s %-5.2f\n";
 		if (parent == null) {
 			System.out.println("User not found!");
-			return;
+			return toDel = false;
 		}
 
 		if (parent != null) {
@@ -697,31 +705,29 @@ public class C206_CaseStudy {
 						if (delVerification) {
 							orderList.remove(i);
 							System.out.println("Order removed from history!");
-							return;
+							return toDel = true;
 						} else {
-							return;
+							return toDel = false;
 						}
 					} else {
 						System.out.println("Order is still pending!");
-						return;
+						return toDel = false;
 					}
 
 				} else {
 					System.out.println("Order does not exist!");
-					;
-					return;
+					return toDel = false;
 				}
 			}
 		}
-
+		return toDel;
 	}
 
-	private static void viewOrder(String user) {
+	private static String viewOrder(String user) {
 		User parent = getUserByName(user);
 		int i = 0;
 		if (parent == null) {
-			System.out.println("User does not exist");
-			return;
+			return "User does not exist";
 		}
 		// Iterate through the parent's Order History
 		if (parent != null) {
@@ -730,14 +736,13 @@ public class C206_CaseStudy {
 					boolean trackingOrder = O.getTrackingOrder();
 					// Check if the order has arrived(false) or pending(true)
 					String status = trackingOrder ? "Shipping" : "Delievered";
-					Helper.line(40,"=");
+					Helper.line(40, "=");
 					System.out.println(String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n", i + 1,
 							O.getOrderId(), status));
 					i++;
 				} else {
 					// If the orderHistory is null
-					System.out.println("Order not found.");
-					return;
+					return "Order not found.";
 				}
 			}
 		}
@@ -753,14 +758,13 @@ public class C206_CaseStudy {
 						printMenu(M);
 					}
 				} else {
-					System.out.println("Order does not exist");
-					return;
+					return "Order does not exist";
 				}
 			}
-		} else {
-			return;
+		}else {
+			return "";
 		}
-
+		return "";
 	}
 
 //Refactored
@@ -805,8 +809,7 @@ public class C206_CaseStudy {
 
 	// --------------------------------------------------------------------------------------------------------------------//
 	// menu by JICHIN
-	
-	
+
 	// menu end
 	// --------------------------------------------------------------------------------------------------------------------//
 	// payment by QUEENIE

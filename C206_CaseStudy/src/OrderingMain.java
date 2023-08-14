@@ -61,12 +61,13 @@ public class OrderingMain {
 		viewOrder("User1");
 	}
 
-	public static void StartOrder(String user) {
+	public static boolean StartOrder(String user) {
+		boolean ordered = true;
 		String childName = Helper.readString("Enter Child's Name: ");
 		User parent = getUserByName(user);
 		if (parent == null) {
 			System.out.println("User not found");
-			return;
+			return ordered = false;
 		}
 		ArrayList<Menu> childMenu = new ArrayList<>();
 		String category = Helper.readString("Enter type of Meal e.g [Indian, Malay, Chinese]: ");
@@ -91,19 +92,19 @@ public class OrderingMain {
 		boolean cfm = Helper.readBoolean("Confirm purchase? [y/n]: ");
 		if (!cfm) {
 			System.out.println("Purchase canceled!");
-			return;
+			return ordered = false;
 		}
 
-		payment(ttAmt);
+		payment((int)gst);
 
 		verifyOrderVendorqty(parent, childName, gst, selectMeal, selectMeal.getVendorName());
-
+		return ordered;
 	}
 
 	/**
 	 * @param ttAmt
 	 */
-	private static void payment(double ttAmt) {
+	private static void payment(int ttAmt) {
 		String buyer = Helper.readString("Enter buyer account > ");
 		String method = Helper.readString("Enter payment method > ");
 		String seller = Helper.readString("Enter seller account > ");
@@ -111,13 +112,14 @@ public class OrderingMain {
 		C206_CaseStudy.makePayment(paymentList, transaction);
 	}
 
-	public static void delOrder(String user, String orderID) {
+	public static boolean delOrder(String user, String orderID) {
+		boolean toDel = false;
 		User parent = getUserByName(user);
 		String mealTitle = "\nMenu:\n%-2s %-10s %-5s\n";
 		String format = "%-2d %-10s %-5.2f\n";
 		if (parent == null) {
 			System.out.println("User not found!");
-			return;
+			return toDel = false;
 		}
 
 		if (parent != null) {
@@ -141,31 +143,29 @@ public class OrderingMain {
 						if (delVerification) {
 							orderList.remove(i);
 							System.out.println("Order removed from history!");
-							return;
+							return toDel = true;
 						} else {
-							return;
+							return toDel = false;
 						}
 					} else {
 						System.out.println("Order is still pending!");
-						return;
+						return toDel = false;
 					}
 
 				} else {
 					System.out.println("Order does not exist!");
-					;
-					return;
+					return toDel = false;
 				}
 			}
 		}
-
+		return toDel;
 	}
 
-	public static void viewOrder(String user) {
+	public static String viewOrder(String user) {
 		User parent = getUserByName(user);
 		int i = 0;
 		if (parent == null) {
-			System.out.println("User does not exist");
-			return;
+			return "User does not exist";
 		}
 		// Iterate through the parent's Order History
 		if (parent != null) {
@@ -180,8 +180,7 @@ public class OrderingMain {
 					i++;
 				} else {
 					// If the orderHistory is null
-					System.out.println("Order not found.");
-					return;
+					return "Order not found.";
 				}
 			}
 		}
@@ -197,13 +196,13 @@ public class OrderingMain {
 						printMenu(M);
 					}
 				} else {
-					System.out.println("Order does not exist");
-					return;
+					return"Order does not exist";
 				}
 			}
 		} else {
-			return;
+			return "";
 		}
+		return "";
 
 	}
 

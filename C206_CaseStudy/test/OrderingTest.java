@@ -62,11 +62,7 @@ public class OrderingTest {
 		paymentList.add(new Payment("56789", 20, "Credit Card", "98765"));
 		paymentList.add(new Payment("34567", 60, "PayNow", "76543"));
 
-		orderList.add(new Ordering("User1", "Child1", LocalDate.now(), Order1,
-				(MenuList.get(0).getPrice() + MenuList.get(1).getPrice() + MenuList.get(3).getPrice())));
-		orderList.get(0).setTrackOrder(false);
-		orderList.add(new Ordering("User1", "Child2", LocalDate.now(), Order2,
-				(MenuList.get(6).getPrice() * 2 + MenuList.get(7).getPrice() + MenuList.get(9).getPrice())));
+		
 	}
 
 	@After
@@ -81,37 +77,56 @@ public class OrderingTest {
 	
 	@Test
 	public void testStartOrder() {
-		//Test Case Error Condition
-		//Test that userList/orderList
+		//Test that userList/orderList is not null
+		assertNotNull("Test if VendorList is not null", orderList);
+		assertTrue("Test if VendorList is not empty", !orderList.isEmpty());
 		
-		//Test Case Normal Condition
-		//Test Case Boundary Condition
+        // StartOrder Normal Condition
+        assertTrue("Check if the order goes through",OrderingMain.StartOrder("User1"));
+
+        // StartOrder Error Condition (User not found)
+        assertFalse("Check if user does not exist will be an error",OrderingMain.StartOrder("NonExistentUser"));
 		
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PrintStream originalOut = System.out;
-        System.setOut(new PrintStream(outputStream));
-
-        OrderingMain.viewOrder("NonExistentUser");
-
-        // Restore original console output
-        System.setOut(originalOut);
-
-        // Verify the captured output
-        assertEquals("User does not exist\n", outputStream.toString());
+		
+		
+		
 	}
 	
 	@Test
 	public void testDelOrder() {
-		//Test Case Error Condition
+		//Test if vendor is not null/empty
+		assertNotNull("Test if VendorList is not null", orderList);
+		assertTrue("Test if VendorList is not empty", !orderList.isEmpty());
+		
 		//Test Case Normal Condition
-		//Test Case Boundary Condition
+		boolean remove = OrderingMain.delOrder("User1", orderList.get(0).getOrderId());
+		assertTrue("Test if orderList is removed successfully",remove);
+		
+		//Test Case Error Condition
+		boolean removeError = OrderingMain.delOrder("User1", orderList.get(3).getOrderId());//does not exist
+		assertTrue("Test that the order did not remove",removeError);
 	}
 	
 	@Test
 	public void testViewOrder() {
-		//Test Case Error Condition
+		//Test that orderList is not null/empty
+		assertNotNull("Test if orderList is not null", orderList);
+		assertEquals("Test if orderList is not empty", 0, orderList.size());
+		
 		//Test Case Normal Condition
+		
+		//Test if orders are present in orderList to view
+		String order = OrderingMain.viewOrder("User1");
+		assertEquals("Test that it is displaying the orderList is correct", "", order);
+		
+		
+		//Test Case Error Condition
+		
+		String orderError = OrderingMain.viewOrder("User3");
+		assertEquals("Test that it is displaying the orderList is ", order, orderError);
+		
 		//Test Case Boundary Condition
+		
 	}
 	
 
