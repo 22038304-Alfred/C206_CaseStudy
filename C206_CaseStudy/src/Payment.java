@@ -1,12 +1,12 @@
 //queenie 22044804
 public class Payment {
 	private String buyerAcc;
-	private int amount;
+	private double amount;
 	private String method;
 	private String  sellerAcc;
 	private boolean hasRecord;
 
-	public Payment(String buyerAcc, int amount, String method, String sellerAcc) {
+	public Payment(String buyerAcc, double amount, String method, String sellerAcc) {
 		this.buyerAcc = buyerAcc;
 		this.amount = amount;
 		this.hasRecord = true; 
@@ -34,10 +34,10 @@ public class Payment {
 	public String getBuyerAcc() {
 		return buyerAcc;
 	}
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	public String getMethod() {

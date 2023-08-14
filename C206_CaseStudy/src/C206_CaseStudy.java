@@ -10,6 +10,7 @@ public class C206_CaseStudy {
 
 	// MAIN
 	private static int option = 0;
+	private static final int Max_option_admin = 5;
 	private static final int Max_option = 4;
 	private static ArrayList<Admin> AdminAccounts = new ArrayList<Admin>();
 	private static ArrayList<User> userList = new ArrayList<User>();
@@ -45,6 +46,12 @@ public class C206_CaseStudy {
 
 		// JICHIN
 		// HEDIL
+		orderList.add(new Ordering());
+		orderList.add(new Ordering());
+
+		// Vendor
+		VendorList.add(new Vendor());
+		VendorList.add(new Vendor());
 
 		// QUEENIE
 		paymentList.add(new Payment("12345", 40, "Visa", "54321"));
@@ -85,6 +92,16 @@ public class C206_CaseStudy {
 
 	}
 
+	private static void adminVendorMenu() {
+		Helper.line(60, "=");
+		System.out.println("WELCOME TO SCHOOL LUNCHBOX ONLINE (ADMIN PAGE)");
+		Helper.line(60, "=");
+		System.out.println("1. Add Vendor");
+		System.out.println("2. Delete Vendor");
+		System.out.println("3. View All Vendors");
+		System.out.println("4. End");
+	}
+
 	private static void vendorMenu() {
 		Helper.line(60, "=");
 		System.out.println("WELCOME TO SCHOOL LUNCHBOX ONLINE (VENDOR PAGE)");
@@ -93,7 +110,6 @@ public class C206_CaseStudy {
 		System.out.println("2. Manage Menu");
 		System.out.println("3. End");
 	}
-
 
 	private static void GeneralUI() {
 		Loop1: while (option != Max_option) {
@@ -215,7 +231,7 @@ public class C206_CaseStudy {
 	}
 
 	private static void AdminUI() {
-		Loop2: while (option != Max_option) {
+		Loop2: while (option != Max_option_admin) {
 			int option = 0;
 			adminMenu();
 			option = Helper.readInt("Enter choice: ");
@@ -228,6 +244,8 @@ public class C206_CaseStudy {
 				ManageAcc();
 				break;
 			case 3:
+				ManageVendor();
+			case 4:
 				System.out.println("Session ended");
 				break Loop2;
 			default:
@@ -485,7 +503,31 @@ public class C206_CaseStudy {
 	// --------------------------------------------------------------------------------------------------------------------//
 
 	// vendor by HEDIL
-	public static void addVendor() {
+	private static void ManageVendor() {
+
+		while (option != 5) {
+			adminVendorMenu();
+			option = Helper.readInt("Enter an option > ");
+
+			if (option == 1) {
+				addVendor();
+
+			} else if (option == 2) {
+				delVendor();
+
+			} else if (option == 3) {
+				viewAllVendor();
+
+			} else if (option == 4) {
+				System.out.println("Bye!");
+			} else {
+				System.out.println("Invalid choice. Please try again.");
+				break;
+			}
+		}
+	}
+
+	private static void addVendor() {
 		String name = Helper.readString("Enter Name of Vendor");
 		String email = Helper.readStringRegEx("Enter Email address: ", "[a-ZA-Z0-9]@[a-zA-Z0-9].(com|org)");
 		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
@@ -495,7 +537,7 @@ public class C206_CaseStudy {
 
 	}
 
-	public static void delVendor() {
+	private static void delVendor() {
 		String name = Helper.readString("Enter Name of Vendor");
 		String email = Helper.readStringRegEx("Enter Email address: ", "[a-ZA-Z0-9]@[a-zA-Z0-9].(com|org)");
 		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
@@ -512,7 +554,7 @@ public class C206_CaseStudy {
 		}
 	}
 
-	public static void viewAllVendor() {
+	private static void viewAllVendor() {
 		String format = "No. | %-20s | %-30s | %-15s | %-50s\n";
 		Helper.line(45, "-");
 		System.out.printf(format, "Vendor Name", "Vendor Email", "Contact No.", "Address");
@@ -525,37 +567,23 @@ public class C206_CaseStudy {
 	// vendor end
 
 	// order by HEDIL
-	public static void ViewMenu() {
-		LocalDate date = Helper.readLocalDate("Enter Day: ");
-		String ChildName = Helper.readString("Enter your Child's name: ");
-		// The creation of MenuList
-		MenuListCreation(VendorList, MenuList, date);
-		for (Parents P : ParentAccounts) {
-			if (C != null) {
-				for (Menu menu : MenuList) {
-					// Check if Date exist in Menu
-					viewCuisine();
-					boolean checkMenuGotDate = Helper.containDate(menu.getDate(), date);
-					if (checkMenuGotDate) {
-						String category = Helper.readString("Enter type of Cuisine: ");
-						for (Meals M : menu.getFoodMenu()) {
-							if (M.getType().equalsIgnoreCase(category)) {
-								printMenu(M);
-							}
-						}
-					} else {
-						System.out.println("Meals not available for that day!");
-						break;
-					}
-				}
-			} else {
-				System.out.println("Child does not exist!");
-			}
-		}
-	}
+	/*
+	 * public static void ViewMenu() { LocalDate date =
+	 * Helper.readLocalDate("Enter Day: "); String ChildName =
+	 * Helper.readString("Enter your Child's name: "); // The creation of MenuList
+	 * MenuListCreation(VendorList, MenuList, date); User parent if (C != null) {
+	 * for (Menu menu : MenuList) { // Check if Date exist in Menu viewCuisine();
+	 * boolean checkMenuGotDate = Helper.containDate(menu.getDate(), date); if
+	 * (checkMenuGotDate) { String category =
+	 * Helper.readString("Enter type of Cuisine: "); for (Meals M :
+	 * menu.getFoodMenu()) { if (M.getType().equalsIgnoreCase(category)) {
+	 * printMenu(M); } } } else {
+	 * System.out.println("Meals not available for that day!"); break; } } } else {
+	 * System.out.println("Child does not exist!"); } } }
+	 */
 
 	// This is for the printMenu list
-	public static void printMenu(Meals meal) {
+	private static void printMenu(Menu meal) {
 		System.out.println("Name: " + meal.getName());
 		System.out.println("Description: " + meal.getDescription());
 		System.out.println("Price: " + meal.getPrice());
@@ -563,17 +591,17 @@ public class C206_CaseStudy {
 	}
 
 	// Parents can order directly from their child
-	public static void StartOrder(String user) {
+	private static void StartOrder(String user) {
 		String childName = Helper.readString("Enter Child's Name: ");
 		User parent = getUserByName(user);
 		if (parent == null) {
 			System.out.println("User not found");
 			return;
 		}
-		ArrayList<Meals> childMenu = new ArrayList<>();
+		ArrayList<Menu> childMenu = new ArrayList<>();
 		String category = Helper.readString("Enter type of Meal e.g [Indian, Malay, Chinese]: ");
 		for (Menu ML : MenuList) {
-			for (Meals M : ML.getFoodMenu()) {
+			for (Menu M : ML.getFoodMenu()) {
 				if (M.getType().equalsIgnoreCase(category)) {
 					childMenu.add(M);
 				}
@@ -586,7 +614,7 @@ public class C206_CaseStudy {
 		int mealChoice = Helper.readIntRange("Enter the number of the meal you want to order: ", 1, childMenu.size());
 		int qty = Helper.readIntRange("Enter the quantity: ", 1, Integer.MAX_VALUE);
 
-		Meals selectMeal = childMenu.get(mealChoice - 1);
+		Menu selectMeal = childMenu.get(mealChoice - 1);
 		Vendor vendor = getVendorByMeal(VendorList, selectMeal);
 		if (vendor == null) {
 			System.out.println("Vendor not found.");
@@ -606,102 +634,100 @@ public class C206_CaseStudy {
 		verifyOrderVendorqty(parent, childName, gst, selectMeal, vendor);
 	}
 
-	
-	//Parents can delete orders from their order history
-		public static void delOrder(String user, String orderID) {
-			User parent = getUserByName(user);
-			String mealTitle = "\nMeals:\n%-2s %-10s %-5s\n";
-			String format = "%-2d %-10s %-5.2f\n";
-			if(parent == null) {
-				System.out.println("User not found!");
-				return;
-			}
-			
-			if(parent != null) {
-				for (int i = 0; i < orderList.size(); i++) {
-					Ordering O = orderList.get(i);
-					boolean filterUserOrder = O != null && O.getOrderId().equalsIgnoreCase(orderID);
-					if(filterUserOrder) {
-						boolean trackingOrder = O.getTrackingOrder();
-						// Check if the order has arrived(false) or pending(true)
-						// To check if the order has arrived already
-						String status = trackingOrder ? "Not Shipped" : "Delivered";
-						if(status.equals("Delivered")) {
-							System.out.println("Order Details:\nOrderID: "+O.getOrderId());
-							System.out.printf(mealTitle, "No.", "Meal Name", "Price");
-							for(Meals M : O.getItems()) {
-								System.out.printf(format, i+1, M.getName(), M.getPrice());
-							}
-							boolean delVerification = Helper.readBoolean("Do you want to remove this order from your order history? [y/n]: ");
-							if(delVerification) {
-								orderList.remove(i);
-								System.out.println("Order removed from history!");
-								return;
-							}else {
-								return;
-							}
-						}else {
-							System.out.println("Order is still pending!");
-							return;
-						}
-						
-					}else {
-						System.out.println("Order does not exist!");;
-						return;
-					}
-				}
-			}
-			
-			
+	// Parents can delete orders from their order history
+	private static void delOrder(String user, String orderID) {
+		User parent = getUserByName(user);
+		String mealTitle = "\nMeals:\n%-2s %-10s %-5s\n";
+		String format = "%-2d %-10s %-5.2f\n";
+		if (parent == null) {
+			System.out.println("User not found!");
+			return;
 		}
-		
-		public static void viewOrder(String user) {
-			User parent = getUserByName(user);
-			int i = 0;
-			if(parent == null) {
-				System.out.println("User does not exist");
-				return;
-			}
-			// Iterate through the parent's Order History
-			if (parent != null) {
-				for (Ordering O : orderList) {
-					if (O != null && O.getName().equals(parent)) {
-						boolean trackingOrder = O.getTrackingOrder();
-						// Check if the order has arrived(false) or pending(true)
-						String status = trackingOrder ? "Not Shipped" : "Delievered";
-						System.out.println(
-								String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n",
-										i + 1, O.getOrderId(), status));
-						i++;
-						boolean toView = Helper.readBoolean("Would you like to view the meals? [y/n]: ");
-						if(toView) {
-							//Verify OrderID filter for specific order
-							String orderId = Helper.readString("Enter Order ID: ");
-							boolean orderExist = O.getOrderId().equalsIgnoreCase(orderId);
-							if(orderExist) {
-								for(Meals M: O.getItems()) {
-									printMenu(M);
-								}
-							}else {
-								System.out.println("Order does not exist");
-								return;
-							}
-						}else {
+
+		if (parent != null) {
+			for (int i = 0; i < orderList.size(); i++) {
+				Ordering O = orderList.get(i);
+				boolean filterUserOrder = O != null && O.getOrderId().equalsIgnoreCase(orderID);
+				if (filterUserOrder) {
+					boolean trackingOrder = O.getTrackingOrder();
+					// Check if the order has arrived(false) or pending(true)
+					// To check if the order has arrived already
+					String status = trackingOrder ? "Not Shipped" : "Delivered";
+					if (status.equals("Delivered")) {
+						System.out.println("Order Details:\nOrderID: " + O.getOrderId());
+						System.out.printf(mealTitle, "No.", "Meal Name", "Price");
+						for (Menu M : O.getItems()) {
+							System.out.printf(format, i + 1, M.getName(), M.getPrice());
+						}
+						boolean delVerification = Helper
+								.readBoolean("Do you want to remove this order from your order history? [y/n]: ");
+						if (delVerification) {
+							orderList.remove(i);
+							System.out.println("Order removed from history!");
+							return;
+						} else {
 							return;
 						}
 					} else {
-						// If the orderHistory is null
-						System.out.println("Order not found.");
+						System.out.println("Order is still pending!");
 						return;
 					}
+
+				} else {
+					System.out.println("Order does not exist!");
+					;
+					return;
 				}
 			}
-
 		}
-	
-	//Refactored
-	public static void verifyOrderVendorqty(User parent, String child, double ttAmt, Meals selectMeal,
-			Vendor vendor) {
+
+	}
+
+	private static void viewOrder(String user) {
+		User parent = getUserByName(user);
+		int i = 0;
+		if (parent == null) {
+			System.out.println("User does not exist");
+			return;
+		}
+		// Iterate through the parent's Order History
+		if (parent != null) {
+			for (Ordering O : orderList) {
+				if (O != null && O.getName().equals(parent)) {
+					boolean trackingOrder = O.getTrackingOrder();
+					// Check if the order has arrived(false) or pending(true)
+					String status = trackingOrder ? "Not Shipped" : "Delievered";
+					System.out.println(String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n", i + 1,
+							O.getOrderId(), status));
+					i++;
+					boolean toView = Helper.readBoolean("Would you like to view the meals? [y/n]: ");
+					if (toView) {
+						// Verify OrderID filter for specific order
+						String orderId = Helper.readString("Enter Order ID: ");
+						boolean orderExist = O.getOrderId().equalsIgnoreCase(orderId);
+						if (orderExist) {
+							for (Menu M : O.getItems()) {
+								printMenu(M);
+							}
+						} else {
+							System.out.println("Order does not exist");
+							return;
+						}
+					} else {
+						return;
+					}
+				} else {
+					// If the orderHistory is null
+					System.out.println("Order not found.");
+					return;
+				}
+			}
+		}
+
+	}
+
+	// Refactored
+	private static void verifyOrderVendorqty(User parent, String child, double ttAmt, Menu selectMeal, Vendor vendor) {
 		// Deduct quantity from vendor and update meal quantity
 
 		// Create and add the order to the order list
@@ -710,9 +736,9 @@ public class C206_CaseStudy {
 
 		System.out.println("Order placed successfully.");
 	}
-	
+
 	// refactor the loop for parents by Name
-	public static User getUserByName(String username) {
+	private static User getUserByName(String username) {
 		for (User parent : userList) {
 			if (parent.getName().equals(username)) {
 				return parent;
@@ -720,23 +746,22 @@ public class C206_CaseStudy {
 		}
 		return null;
 	}
-	
-	//refactor user to order
-	public static Ordering getOrderByUser(String username, String orderID) {
+
+	// refactor user to order
+	private static Ordering getOrderByUser(String username, String orderID) {
 		User user = getUserByName(username);
-		for(Ordering OL : orderList) {
-			if(user.getName().equalsIgnoreCase(OL.getName()) &&
-					OL.getOrderId().equals(orderID)) {
+		for (Ordering OL : orderList) {
+			if (user.getName().equalsIgnoreCase(OL.getName()) && OL.getOrderId().equals(orderID)) {
 				return OL;
 			}
 		}
 		return null;
 	}
-	
+
 	// Refactor the loop for vendor by specific meals
-	public static Vendor getVendorByMeal(ArrayList<Vendor> VendorList, Meals selectedMeal) {
+	public static Vendor getVendorByMeal(ArrayList<Vendor> VendorList, Menu selectedMeal) {
 		for (Vendor V : VendorList) {
-			for (Meals M : V.getMenu()) {
+			for (Menu M : V.getMenu()) {
 				if (M.getName().equalsIgnoreCase(selectedMeal.getName())) {
 					return V;
 				}
@@ -792,7 +817,7 @@ public class C206_CaseStudy {
 	public static Payment inputPayment() {
 
 		String buyer = Helper.readString("Enter buyer account > ");
-		int price = Helper.readInt("Enter price > ");
+		double price = Helper.readInt("Enter price > ");
 		String method = Helper.readString("Enter payment method > ");
 		String seller = Helper.readString("Enter seller account > ");
 

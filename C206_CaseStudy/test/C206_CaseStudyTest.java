@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class C206_CaseStudyTest {
 	ArrayList<Parents> ParentAccounts = new ArrayList<Parents>();
-	ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
+	ArrayList<VendorTest> VendorList = new ArrayList<VendorTest>();
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,38 +39,38 @@ public class C206_CaseStudyTest {
 		children2.add(child4);
 
 		// Generate sample meals for orders
-		ArrayList<Meals> VendorMeal1 = new ArrayList<>();
-		VendorMeal1.add(new Meals("Chicken Rice", "Traditional and Fragrant Dish!", 4.50, "Chinese"));
-		VendorMeal1.add(new Meals("Siew Mai", "Savoury and bite-sized delight!", 2.70, "Chinese"));
-		VendorMeal1.add(new Meals("Minced Braised Pork", "Braised pork with aromatic spices and herbs served on rice",
+		ArrayList<Menu> VendorMeal1 = new ArrayList<>();
+		VendorMeal1.add(new Menu("Chicken Rice", "Traditional and Fragrant Dish!", 4.50, "Chinese"));
+		VendorMeal1.add(new Menu("Siew Mai", "Savoury and bite-sized delight!", 2.70, "Chinese"));
+		VendorMeal1.add(new Menu("Minced Braised Pork", "Braised pork with aromatic spices and herbs served on rice",
 				4.00, "Taiwanese"));
 		VendorMeal1
-				.add(new Meals("Mapo Tofu", "Spicy tofu dish with minced meat and sichuan peppers", 5.10, "Chinese"));
+				.add(new Menu("Mapo Tofu", "Spicy tofu dish with minced meat and sichuan peppers", 5.10, "Chinese"));
 		VendorMeal1
-				.add(new Meals("Scallian Pancake", "Savoury flaky pancakes with chopped scallions", 2.90, "Taiwanese"));
+				.add(new Menu("Scallian Pancake", "Savoury flaky pancakes with chopped scallions", 2.90, "Taiwanese"));
 		VendorMeal1.add(
-				new Meals("Oyster Omelette", "Savoury omelette with fresh oysters and vegetables", 4.30, "Taiwanese"));
+				new Menu("Oyster Omelette", "Savoury omelette with fresh oysters and vegetables", 4.30, "Taiwanese"));
 
-		ArrayList<Meals> VendorMeal2 = new ArrayList<>();
-		VendorMeal2.add(new Meals("Meatless Don", "Unique and Tasty!", 4.30, "Japanese"));
-		VendorMeal2.add(new Meals("Seafood Don", "Flaky and crumbly!", 6.80, "Japanese"));
-		VendorMeal2.add(new Meals("Tempura Rice",
+		ArrayList<Menu> VendorMeal2 = new ArrayList<>();
+		VendorMeal2.add(new Menu("Meatless Don", "Unique and Tasty!", 4.30, "Japanese"));
+		VendorMeal2.add(new Menu("Seafood Don", "Flaky and crumbly!", 6.80, "Japanese"));
+		VendorMeal2.add(new Menu("Tempura Rice",
 				"Lightly battered and deep-fried seafood, vegetables and prawns served with a bed of rice", 3.80,
 				"Japanese"));
-		VendorMeal2.add(new Meals("Ramen", "Noodles in flavourful broth topping with pork, egg and vegetables", 4.80,
+		VendorMeal2.add(new Menu("Ramen", "Noodles in flavourful broth topping with pork, egg and vegetables", 4.80,
 				"Japanese"));
 
-		ArrayList<Meals> Order1 = new ArrayList<>();
+		ArrayList<Menu> Order1 = new ArrayList<>();
 		Order1.add(VendorMeal1.get(0)); // Chicken Rice
 		Order1.add(VendorMeal1.get(1)); // Siew Mai
 		Order1.add(VendorMeal1.get(3)); // Minced Braised Pork
 
-		ArrayList<Meals> Order2 = new ArrayList<>();
+		ArrayList<Menu> Order2 = new ArrayList<>();
 		Order2.add(VendorMeal2.get(0)); // Meatless Don
 		Order2.add(VendorMeal2.get(1)); // Seafood Don
 		Order2.add(VendorMeal2.get(3)); // Ramen
 
-		ArrayList<Meals> Order3 = new ArrayList<>();
+		ArrayList<Menu> Order3 = new ArrayList<>();
 		Order3.add(VendorMeal1.get(3)); // Chicken Rice
 		Order3.add(VendorMeal1.get(5)); // Mapo Tofu
 
@@ -86,9 +86,9 @@ public class C206_CaseStudyTest {
 		ParentAccounts.add(new Parents("Parent2", "Pass123", children2, P2Order));
 
 		// Creating Meals for vendors and Vendors' account
-		VendorList.add(new Vendor("Vendor1", "ABC@coporation.org", 83294920, "AMK Hub #1-23,123567", VendorMeal1));
+		VendorList.add(new VendorTest("Vendor1", "ABC@coporation.org", 83294920, "AMK Hub #1-23,123567", VendorMeal1));
 		VendorList.add(
-				new Vendor("Vendor2", "EFG@coporation.org", 93034040, "Bishan Junction 8 #1-23,123564", VendorMeal2));
+				new VendorTest("Vendor2", "EFG@coporation.org", 93034040, "Bishan Junction 8 #1-23,123564", VendorMeal2));
 	}
 
 	@After
@@ -145,7 +145,7 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testEditVendorInfo() {
 		// Test for Vendor2
-        Vendor testVendor = new Vendor("Test Vendor", "test@example.com", 87469760,"123 Test St");
+        VendorTest testVendor = new VendorTest("Test Vendor", "test@example.com", 87469760,"123 Test St");
 
         // Call the EditInfo method to edit the address
         C206_CaseStudy.EditInfo(testVendor.getName());
@@ -158,22 +158,22 @@ public class C206_CaseStudyTest {
 	// Refactored codes
 	@Test
 	public void testGetVendorByName() {
-		 Vendor testVendor = new Vendor("Test Vendor", "test@example.com", 87469760,"123 Test St");
+		 VendorTest testVendor = new VendorTest("Test Vendor", "test@example.com", 87469760,"123 Test St");
 		System.out.println("VendorList: " + VendorList);
 
 		assertNotNull("Check if VendorList is not null", VendorList);
 		assertTrue("Check if VendorList is not empty", !VendorList.isEmpty());
 
 		// Test if Vendor1 and 2 is present in VendorList
-		Vendor result1 = C206_CaseStudy.getVendorByName("Test Vendor");
+		VendorTest result1 = C206_CaseStudy.getVendorByName("Test Vendor");
 		assertNotNull("Check if Vendor1 is not Null", result1);
 		assertSame("Check if Vendor1 exist in VendorList", VendorList.get(2).getName(), result1.getName());
 
-		Vendor result2 = C206_CaseStudy.getVendorByName("Vendor2");
+		VendorTest result2 = C206_CaseStudy.getVendorByName("Vendor2");
 		assertSame("Check if Vendor1 exist in VendorList", VendorList.get(1).getName(), result2.getName());
 
 		// Check for non-existing Vendor
-		Vendor nonExistingVendor = C206_CaseStudy.getVendorByName("Non-existent");
+		VendorTest nonExistingVendor = C206_CaseStudy.getVendorByName("Non-existent");
 		assertNotNull("Check if Vendor does exist will return null", nonExistingVendor);
 
 	}

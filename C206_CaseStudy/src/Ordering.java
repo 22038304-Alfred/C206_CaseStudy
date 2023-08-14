@@ -14,7 +14,7 @@ public class Ordering {
 	private String name;
 	private String ChildName;
 	private LocalDate date;
-	private ArrayList<Meals> items;
+	private ArrayList<Menu> items;
 	private boolean trackingOrder;
 	private double totalAmount;
 
@@ -38,7 +38,7 @@ public class Ordering {
 		this.totalAmount = totalAmount;
 	}
 	
-	public Ordering(String name, String ChildName, LocalDate date, ArrayList<Meals> items, double totalAmount) {
+	public Ordering(String name, String ChildName, LocalDate date, ArrayList<Menu> items, double totalAmount) {
 		this.orderId = generateOrderID();
 		this.name = name;
 		this.ChildName = ChildName;
@@ -89,7 +89,7 @@ public class Ordering {
 		return date;
 	}
 
-	public ArrayList<Meals> getItems() {
+	public ArrayList<Menu> getItems() {
 		return items;
 	}
 

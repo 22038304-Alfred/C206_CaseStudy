@@ -12,24 +12,24 @@ public class Vendor{
 	private String email;
 	private int contactNo;
 	private String address;
-	private ArrayList<Meals> Menu;
+	private ArrayList<Menu> Menu;
 	private ArrayList<Review> reviews;
 	
-	public Vendor(String name, String email, int contactno, String address, ArrayList<Meals> Menu) {
+	public Vendor(String name, String email, int contactNo, String address, ArrayList<Menu> Menu) {
 		this.name = name;
 		this.email = email;
 		this.contactNo = contactNo;
 		this.address = address;
-		this.Menu = new ArrayList<Meals>();
+		this.Menu = new ArrayList<Menu>();
 		this.reviews = new ArrayList<Review>();
 	}
 
-	public Vendor(String name, String email, int contactno, String address) {
+	public Vendor(String name, String email, int contactNo, String address) {
 		this.name = name;
 		this.email = email;
 		this.contactNo = contactNo;
 		this.address = address;
-		this.Menu = new ArrayList<Meals>();
+		this.Menu = new ArrayList<Menu>();
 		this.reviews = new ArrayList<Review>();
 	}
 	
@@ -41,7 +41,7 @@ public class Vendor{
 		this.contactNo = contactNo;
 	}
 
-	public ArrayList<Meals> getMenu() {
+	public ArrayList<Menu> getMenu() {
 		return Menu;
 	}
 
