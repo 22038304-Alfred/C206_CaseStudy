@@ -9,7 +9,7 @@ public class VendorMenuTest {
  
 	private Menu menu1;
 	private Menu menu2;
-	private Menu menu3;
+	private Menu menu3; 
 
 	private ArrayList<Menu> menuList;
 
