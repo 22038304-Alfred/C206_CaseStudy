@@ -1,42 +1,52 @@
-import java.util.ArrayList;
-//import java.time.LocalDate;
-
-
 public class Menu {
-	private String date;
-	private ArrayList<Meals> FoodMenu;
-	/*
-	 Each meals will be within an array and will randomise setting the dates to each meals to put out
-	  */
-	public Menu(String date, ArrayList<Meals> FoodMenu) {
-		this.date = date;
-		this.FoodMenu = new ArrayList<Meals>();
-	}
+	private String name;
+	private String description;
+	private double price;
+	private int qty;
 	
-	public Menu(String date, Meals FoodMenu) {
-		this.date = date;
-		this.FoodMenu = new ArrayList<Meals>();
-		this.FoodMenu.add(FoodMenu);
+	/*
+	 Establish the menu items in it:
+	 its name, description and prices
+	  */
+	public Menu(String name, String description, double price, int qty) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.qty = qty;
+	}  
+
+	public int getQty() {
+		return qty;
 	}
 
-	
-	public void addMeals(String date, ArrayList<Meals> foodMenu, ArrayList<Menu> dayMenuList) {
-		dayMenuList.add(new Menu(date,foodMenu));
+	public void setQty(int qty) {
+		this.qty = qty;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 	
-	public String getDate() {
-		return date;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	
-	public void setDate(String date) {
-		this.date = date;
+
+	public double getPrice() {
+		return price;
 	}
-	
-	public ArrayList<Meals> getFoodMenu() {
-		return FoodMenu;
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
-	
-	public void setFoodMenu(ArrayList<Meals> foodMenu) {
-		FoodMenu = foodMenu;
-	}
+
+
 }
