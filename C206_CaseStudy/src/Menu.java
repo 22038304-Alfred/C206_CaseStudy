@@ -14,7 +14,7 @@ public class Menu {
 		this.price = price;
 		this.qty = qty;
 	}  
-
+ 
 	public int getQty() {
 		return qty;
 	}
