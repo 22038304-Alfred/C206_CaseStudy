@@ -80,7 +80,8 @@ public class OrderingMain {
 		for (int i = 0; i < childMenu.size(); i++) {
 			System.out.printf("%d. %s\n", (i + 1), childMenu.get(i).getName());
 		}
-		int mealChoice = Helper.readIntRange("Enter the number of the meal you want to order: ", 1, childMenu.size());
+		int mealChoice = Helper.readIntRange("Enter the number of the meal you want to order: "
+				, 1, childMenu.size());
 		int qty = Helper.readIntRange("Enter the quantity: ", 1, Integer.MAX_VALUE);
 
 		Menu selectMeal = childMenu.get(mealChoice - 1);
@@ -100,6 +101,49 @@ public class OrderingMain {
 		verifyOrderVendorqty(parent, childName, gst, selectMeal, selectMeal.getVendorName());
 		return ordered;
 	}
+	
+	//Overload to test
+	public static boolean StartOrder(String user, String[] inputs) {
+	    boolean ordered = true;
+	    int inputIndex = 0;
+	    String childName = inputs[inputIndex++];
+	    User parent = getUserByName(user);
+	    if (parent == null) {
+	        System.out.println("User not found");
+	        return ordered = false;
+	    }
+	    ArrayList<Menu> childMenu = new ArrayList<>();
+	    String category = inputs[inputIndex++];
+	    for (Menu M : MenuList) {
+	        if (M.getType().equalsIgnoreCase(category)) {
+	            childMenu.add(M);
+	        }
+	    }
+	    System.out.println("Child's Menu");
+	    for (int i = 0; i < childMenu.size(); i++) {
+	        System.out.printf("%d. %s\n", (i + 1), childMenu.get(i).getName());
+	    }
+	    int mealChoice = Integer.parseInt(inputs[inputIndex++]);
+	    int qty = Integer.parseInt(inputs[inputIndex++]);
+
+	    Menu selectMeal = childMenu.get(mealChoice - 1);
+
+	    double ttAmt = selectMeal.getPrice() * qty;
+	    double gst = ttAmt * 1.08;
+	    System.out.println("Total Amount: $" + gst);
+	    System.out.println("GST:        : 8%");
+	    System.out.print("Confirm purchase? [y/n]: ");
+	    String cfmInput = inputs[inputIndex++];
+	    if (!cfmInput.equalsIgnoreCase("y") && !cfmInput.equalsIgnoreCase("yes")) {
+	        System.out.println("Purchase canceled!");
+	        return ordered = false;
+	    }
+
+	    payment((int) gst);
+
+	    verifyOrderVendorqty(parent, childName, gst, selectMeal, selectMeal.getVendorName());
+	    return ordered;
+	}
 
 	/**
 	 * @param ttAmt
@@ -113,6 +157,55 @@ public class OrderingMain {
 	}
 
 	public static boolean delOrder(String user, String orderID) {
+		boolean toDel = false;
+		User parent = getUserByName(user);
+		String mealTitle = "\nMenu:\n%-2s %-10s %-5s\n";
+		String format = "%-2d %-10s %-5.2f\n";
+		if (parent == null) {
+			System.out.println("User not found!");
+			return toDel = false;
+		}
+		if (parent != null) {
+			for (int i = 0; i < orderList.size();) {
+				Ordering O = orderList.get(i);
+				boolean filterUserOrder = O != null && O.getOrderId().equalsIgnoreCase(orderID);
+				if (filterUserOrder) {
+					boolean trackingOrder = O.getTrackingOrder();
+					// Check if the order has arrived(false) or pending(true)
+					// To check if the order has arrived already
+					String status = trackingOrder ? "Not Shipped" : "Delivered";
+					if (status.equals("Delivered")) {
+						System.out.println("Order Details:\nOrderID: " + O.getOrderId());
+						System.out.printf(mealTitle, "No.", "Meal Name", "Price");
+						for (Menu M : O.getItems()) {
+							System.out.printf(format, i + 1, M.getName(), M.getPrice());
+							i++;
+						}
+						boolean delVerification = Helper
+								.readBoolean("Do you want to remove this order from your order history? [y/n]: ");
+						if (delVerification) {
+							orderList.remove(i);
+							System.out.println("Order removed from history!");
+							return toDel = true;
+						} else {
+							return toDel = false;
+						}
+					} else {
+						System.out.println("Order is still pending!");
+						return toDel = false;
+					}
+
+				} else {
+					System.out.println("Order does not exist!");
+					return toDel = false;
+				}
+			}
+		}
+		return toDel;
+	}
+	
+	//Overload for testing
+	public static boolean delOrder(String user, String orderID, boolean delVerification) {
 		boolean toDel = false;
 		User parent = getUserByName(user);
 		String mealTitle = "\nMenu:\n%-2s %-10s %-5s\n";
@@ -138,9 +231,7 @@ public class OrderingMain {
 							System.out.printf(format, i + 1, M.getName(), M.getPrice());
 							i++;
 						}
-						boolean delVerification = Helper
-								.readBoolean("Do you want to remove this order from your order history? [y/n]: ");
-						if (delVerification) {
+						if (delVerification == true) {
 							orderList.remove(i);
 							System.out.println("Order removed from history!");
 							return toDel = true;
@@ -200,9 +291,9 @@ public class OrderingMain {
 				}
 			}
 		} else {
-			return "";
+			return "Order Not Found";
 		}
-		return "";
+		return "Order Not Found";
 
 	}
 

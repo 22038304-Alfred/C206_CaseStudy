@@ -1,8 +1,3 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
@@ -113,134 +108,130 @@ public class C206_CaseStudyTest {
 	}
 
 	@Test
-	public void testStartOrder() {
-
+	public void c206_test() {
+		// fail("Not yet implemented");
+		assertTrue("C206_CaseStudy_SampleTest ", true);
 	}
-
+	
 	@Test
-	public void testPaymentVerification() {
+	public void testStartOrder() {
+		//Test that userList/orderList is not null
+		assertNotNull("Test if VendorList is not null", orderList);
+		assertTrue("Test if VendorList is not empty", !orderList.isEmpty());
+		
+        // StartOrder Normal Condition
+        assertTrue("Check if the order goes through",OrderingMain.StartOrder("User1"));
 
+        // StartOrder Error Condition (User not found)
+        assertFalse("Check if user does not exist will be an error",OrderingMain.StartOrder("NonExistentUser"));
+		
+		
+		
+		
 	}
-
+	
 	@Test
 	public void testDelOrder() {
-
+		//Test if vendor is not null/empty
+		assertNotNull("Test if VendorList is not null", orderList);
+		assertTrue("Test if VendorList is not empty", !orderList.isEmpty());
+		
+		//Test Case Normal Condition
+		boolean remove = OrderingMain.delOrder("User1", orderList.get(0).getOrderId());
+		assertTrue("Test if orderList is removed successfully",remove);
+		
+		//Test Case Error Condition
+		boolean removeError = OrderingMain.delOrder("User1", orderList.get(3).getOrderId());//does not exist
+		assertTrue("Test that the order did not remove",removeError);
 	}
-
+	
 	@Test
 	public void testViewOrder() {
-
+		//Test that orderList is not null/empty
+		assertNotNull("Test if orderList is not null", orderList);
+		assertEquals("Test if orderList is not empty", 0, orderList.size());
+		
+		//Test Case Normal Condition
+		
+		//Test if orders are present in orderList to view
+		String order = OrderingMain.viewOrder("User1");
+		assertEquals("Test that it is displaying the orderList is correct", "", order);
+		
+		
+		//Test Case Error Condition
+		
+		String orderError = OrderingMain.viewOrder("User3");
+		assertEquals("Test that it is displaying the orderList is ", order, orderError);
+		
+		//Test Case Boundary Condition
+		
 	}
 
 	@Test
 	public void testAddVendor() {
+		// Test Case Normal Condition
+		assertNotNull("Test that VendorList is null", VendorList);
+		assertNotEquals("Test that VendorList is not empty", 0, VendorList.size());
+		// Test Case Normal Condition
+		Vendor V1 = new Vendor("Vendor1", "company1@email.co", 87651234, "120 Bishan St 23");
+		Vendor V2 = new Vendor("Vendor2", "company2@email.com", 95693537, "52 Serangoon Rd");
+		VendorMain.addVendor(VendorList, V21);
+		VendorMain.addVendor(VendorList, V2);
+		assertEquals("Check if vendor added was successful", 2, VendorList.size());
+
+		// No Test case error/boundary condition due to the input have to be accurate as
+		// it will prompt to re-enter
 
 	}
 
 	@Test
 	public void testDelVendor() {
+		// Test that VendorList is not null/empty
+		assertNotNull("Test that VendorList is null", VendorList);
+		assertEquals("Test that VendorList is 2", 2, VendorList.size());
 
+		// Test Case Normal Condition
+		// Check if removing vendor is successful
+		VendorList.add(new Vendor("Vendor3", "vendor3@email.co", 82345678, "123 Main St"));
+		VendorMain.delVendor(VendorList);
+		assertTrue(VendorList.isEmpty());
+
+		// Test Case Boundary Condition
+		VendorMain.delVendor(VendorList);
+		assertEquals(1, VendorList.size());
+		assertEquals("Test that the remaining vendor in the list is the expected vendor", VendorList.get(0).getName());
+
+		// Test Case Error Condition
+		VendorMain.delVendor(VendorList);
+		assertEquals("Test that the vendor to delete is not found", VendorList);
+		assertEquals("Test that the vendor list remains unchange", 2, VendorList.size());
 	}
 
 	@Test
-	public void testEditVendorInfo() {
-		// Test for Vendor2
-        VendorTest testVendor = new VendorTest("Test Vendor", "test@example.com", 87469760,"123 Test St");
+	public void testViewAllVendor() {
+		// Test if the output of the print is not empty
+		String testResult = "";
+		String result = VendorMain.viewAllVendor(VendorList);
+		assertNotEquals("Test that the output is not blank", testResult, result);
 
-        // Call the EditInfo method to edit the address
-        C206_CaseStudy.EditInfo(testVendor.getName());
+		// Test Case Normal Condition
+		assertEquals("Test the vendor list size is 1", 2, VendorList.size());
 
-        // Check if the address has been updated
-        assertEquals("456 New St", testVendor.getAddress());
+		// Test Case Error Condition
+		VendorList.clear();
+		String results = VendorMain.viewAllVendor(VendorList);
+		String expectedOutput = "No vendors available.";
+		assertEquals("Verify that the output indicates no vendors are available", expectedOutput, result);
 
+		// Test Case Boundary Condition
+		// Check if added and if is more than the index
+		for (int i = 0; i < 5; i++) {
+			VendorList.add(new Vendor("Vendor" + i, "vendor" + i + "@email.co", 82345678, "123 Main St"));
+		}
+		String output = VendorMain.viewAllVendor(VendorList);
+		assertTrue("Test if vendor4 is added successfully", output.contains("Vendor4"));
+		assertFalse("Test if Vendor5 is not added due to out of bounds", output.contains("Vendor5"));
 	}
 
-	// Refactored codes
-	@Test
-	public void testGetVendorByName() {
-		 VendorTest testVendor = new VendorTest("Test Vendor", "test@example.com", 87469760,"123 Test St");
-		System.out.println("VendorList: " + VendorList);
-
-		assertNotNull("Check if VendorList is not null", VendorList);
-		assertTrue("Check if VendorList is not empty", !VendorList.isEmpty());
-
-		// Test if Vendor1 and 2 is present in VendorList
-		VendorTest result1 = C206_CaseStudy.getVendorByName("Test Vendor");
-		assertNotNull("Check if Vendor1 is not Null", result1);
-		assertSame("Check if Vendor1 exist in VendorList", VendorList.get(2).getName(), result1.getName());
-
-		VendorTest result2 = C206_CaseStudy.getVendorByName("Vendor2");
-		assertSame("Check if Vendor1 exist in VendorList", VendorList.get(1).getName(), result2.getName());
-
-		// Check for non-existing Vendor
-		VendorTest nonExistingVendor = C206_CaseStudy.getVendorByName("Non-existent");
-		assertNotNull("Check if Vendor does exist will return null", nonExistingVendor);
-
-	}
-
-	@Test
-	public void testGetParentByName() {
-		System.out.println("Parent Accounts: " + ParentAccounts);
-		assertNotNull("Check if Parent Accounts is not null", ParentAccounts);
-		assertTrue("Check if Parent Accounts is not empty", !ParentAccounts.isEmpty());
-
-		// Test if Parent1 and 2 is present in ParentAccounts
-		Parents result1 = C206_CaseStudy.getParentByName("Parent1");
-		assertEquals("Check if Parent1 is present", ParentAccounts.get(0).getName(), result1.getName());
-
-		Parents result2 = C206_CaseStudy.getParentByName("Parent2");
-		assertEquals("Check if Parent2 is present", ParentAccounts.get(1).getName(), result2.getName());
-	}
-
-	@Test
-	public void testGetChildByName() {
-		// Checking if ParentAccounts is not empty and null
-		assertNotNull("Check if ParentAccounts is not null", ParentAccounts);
-		assertTrue("Check if ParentAccounts is not empty", !ParentAccounts.isEmpty());
-
-		// Test if Parent1 is present in ParentAccounts
-		Parents result1 = C206_CaseStudy.getParentByName("Parent1");
-		assertEquals("Check if Parent1 is present", ParentAccounts.get(0).getName(), result1.getName());
-		assertNotNull(result1);
-
-		// Test Children present from Parent: C1
-		Child C1Result1 = C206_CaseStudy.getChildByName("C1", "Parent1");
-		assertEquals("Check if C1 is present from Parent1", ParentAccounts.get(0).getChildren().get(0).getChildName(),
-				C1Result1.getChildName());
-
-		// Test Children present from Parent: C2
-		Child C2Result1 = C206_CaseStudy.getChildByName("C2", "Parent1");
-		assertEquals("Check if C2 is present from Parent1", ParentAccounts.get(0).getChildren().get(1).getChildName(),
-				C2Result1.getChildName());
-
-		// Test if Parent2 is present in ParentAccounts
-		Parents result2 = C206_CaseStudy.getParentByName("Parent2");
-		assertEquals("Check if Parent2 is present", ParentAccounts.get(1).getName(), result2.getName());
-
-		// Test Children present from Parent: C3
-		Child C3Result2 = C206_CaseStudy.getChildByName("C3", "Parent2");
-		assertEquals("Check if C3 is present from Parent2", ParentAccounts.get(1).getChildren().get(0).getChildName(),
-				C3Result2.getChildName());
-
-		// Test Children present from Parent: C4
-		Child C4Result2 = C206_CaseStudy.getChildByName("C4", "Parent2");
-		assertEquals("Check if C4 is present from Parent2", ParentAccounts.get(1).getChildren().get(1).getChildName(),
-				C4Result2.getChildName());
-
-	}
-
-	@Test
-	public void getOrderByIDnParent() {
-		Parents result1 = C206_CaseStudy.getParentByName("Parent1");
-		assertEquals("Check if Parent1 is present", ParentAccounts.get(0).getName(), result1.getName());
-		Ordering order1 = C206_CaseStudy.getOrderbyIDnParent(result1.getName(),
-				result1.getOrderHistory().get(0).getOrderId());
-
-		// A checker to check if order 1 is
-		Ordering checkOrder1 = C206_CaseStudy.getOrderbyIDnParent(ParentAccounts.get(0).getName(),
-				ParentAccounts.get(0).getOrderHistory().get(0).getOrderId());
-		assertSame("Check if the OrderId and Parent are true", checkOrder1, order1);
-
-	}
 
 }

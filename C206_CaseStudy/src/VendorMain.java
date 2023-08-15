@@ -17,11 +17,16 @@ public class VendorMain {
 				int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
 				String address = Helper.readString("Enter Address: ");
 				Vendor vendor = new Vendor(name, email, contactNo, address);
-				addVendor(vendor);
+				addVendor(vendorList, vendor);
 			}else if(options == 2) {
-				delVendor();
+				String name = Helper.readString("Enter Name of Vendor: ");
+				String email = Helper.readStringRegEx("Enter Email address: ", "[a-zA-Z0-9]+@[a-zA-Z0-9]+.(com|org)");
+				int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
+				String address = Helper.readString("Enter Address: ");
+				Vendor vendor = new Vendor(name, email, contactNo, address);
+				delVendor(vendorList, vendor);
 			}else if(options == 3) {
-				viewAllVendor();
+				viewAllVendor(vendorList);
 			}else if(options == 4) {
 				System.out.println("End");
 				break;
@@ -47,15 +52,10 @@ public class VendorMain {
 
 	}
 
-	public static void delVendor(ArrayList<Vendor> vendorList) {
-		String name = Helper.readString("Enter Name of Vendor: ");
-		String email = Helper.readStringRegEx("Enter Email address: ", "[a-zA-Z0-9]+@[a-zA-Z0-9]+.(com|org)");
-		int contactNo = Integer.parseInt(Helper.readStringRegEx("Enter Contact No.", "[89][0-9]{7}"));
-		String address = Helper.readString("Enter Address: ");
+	public static void delVendor(ArrayList<Vendor> vendorList, Vendor vendor) {
 		for (int i = 0; i < vendorList.size(); i++) {
 			Vendor V = vendorList.get(i);
-			if (V.getName().equalsIgnoreCase(name) && V.getEmail().equalsIgnoreCase(email) && V.getContactNo() == contactNo
-					&& V.getAddress().equals(address)) {
+			if (vendor.equals(V)) {
 				vendorList.remove(i);
 				System.out.println("Vendor Removed!");
 			} else {
@@ -68,11 +68,15 @@ public class VendorMain {
 		String format = "%-7s| %-20s | %-20s | %-15s | %-50s\n";
 		String format1 = "No. %-3d| %-20s | %-20s | %-15d | %-50s\n";
 		Helper.line(100, "-");
-		String output = String.format("No.", "Vendor Name", "Vendor Email", "Contact No.", "Address");
+		String output = String.format(format,"No.", "Vendor Name", 
+				"Vendor Email", "Contact No.", "Address");
 		Helper.line(100, "-");
 		for (int i = 0; i < vendorList.size(); i++) {
 			Vendor V = vendorList.get(i);
-			output += String.format(format1, i+1, V.getName(), V.getEmail(), V.getContactNo(), V.getAddress());
+			if(!vendorList.isEmpty()) {
+			output += String.format(format1, i+1, V.getName(), V.getEmail(), 
+					V.getContactNo(), V.getAddress());
+			}
 		}
 		return output;
 	}

@@ -1,15 +1,10 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +15,6 @@ public class OrderingTest {
 	private static ArrayList<Vendor> VendorList = new ArrayList<Vendor>();
 	private static ArrayList<Menu> MenuList = new ArrayList<Menu>();
 	private static ArrayList<User> userList = new ArrayList<User>();
-	private static ArrayList<Payment> paymentList = new ArrayList<Payment>();
 
 	@Before
 	public void setUp() throws Exception {
@@ -58,15 +52,11 @@ public class OrderingTest {
 		Order2.add(MenuList.get(7)); // Seafood Don
 		Order2.add(MenuList.get(9)); // Ramen
 
-		paymentList.add(new Payment("12345", 40, "Visa", "54321"));
-		paymentList.add(new Payment("56789", 20, "Credit Card", "98765"));
-		paymentList.add(new Payment("34567", 60, "PayNow", "76543"));
-
-		
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		orderList.clear();
 	}
 
 	@Test
@@ -74,60 +64,118 @@ public class OrderingTest {
 		// fail("Not yet implemented");
 		assertTrue("C206_CaseStudy_SampleTest ", true);
 	}
-	
+
 	@Test
 	public void testStartOrder() {
-		//Test that userList/orderList is not null
+		// Test that userList/orderList is not null
 		assertNotNull("Test if VendorList is not null", orderList);
-		assertTrue("Test if VendorList is not empty", !orderList.isEmpty());
+		assertTrue("Test if VendorList is empty", orderList.isEmpty());
+		// Condition Normal
+		String[] inputLine = { "Child1", "Chinese", "1", "1", "y" };
+		//If the order goes well
+		boolean result = OrderingMain.StartOrder("User1", inputLine);
+		assertTrue("Check if the order goes through", result);
+		assertEquals("Check if orderList adds 1", 1 ,orderList.size());
 		
-        // StartOrder Normal Condition
-        assertTrue("Check if the order goes through",OrderingMain.StartOrder("User1"));
+		// Boundary Condition: Cancel transaction
+		String[] inputLinesErrorCancel = { "Child1", "Chinese", "1", "1", "n" };
+		// If input is a 'n' for transaction
+		boolean resultEC = OrderingMain.StartOrder("User1", inputLinesErrorCancel);
+		assertFalse("Test that cancelled purchase", resultEC);
 
-        // StartOrder Error Condition (User not found)
-        assertFalse("Check if user does not exist will be an error",OrderingMain.StartOrder("NonExistentUser"));
-		
-		
-		
-		
+		// Error condition: User does not exist Error
+		String[] inputLinesErrorUser = { "Child1", "Chinese", "1", "1", "y" };
+		// If input is incorrect
+		boolean resultEU = OrderingMain.StartOrder("NonExistentUser", inputLinesErrorUser);
+		assertFalse("Test that user does not exist", resultEU);
+
 	}
-	
+
 	@Test
 	public void testDelOrder() {
-		//Test if vendor is not null/empty
-		assertNotNull("Test if VendorList is not null", orderList);
-		assertTrue("Test if VendorList is not empty", !orderList.isEmpty());
+		// Test if vendor is not null/empty
+		assertNotNull("Test if orderList is not null", orderList);
+		assertEquals("Test if orderList is empty", 0, orderList.size());
+		// Test Case Error Condition
+		// Where User is correct but order is incorrect
+		boolean removeErrorID = OrderingMain.delOrder("User1", "3242io");// does not exist
+		assertFalse("Test that the order does not exist", removeErrorID);
+
+		// Where both User and order is incorrectS
+		boolean removeErrorUser = OrderingMain.delOrder("User00", "afsgrbt1243");
+		assertFalse("Test that the User does not exist", removeErrorUser);
+		// Setup
+		MenuList.add(new Menu("Chicken Rice", "Traditional and Fragrant Dish!", 4.50, "Chinese", "Vendor1"));
+		MenuList.add(new Menu("Siew Mai", "Savoury and bite-sized delight!", 2.70, "Chinese", "Vendor1"));
+		ArrayList<Menu> Order1 = new ArrayList<>();
+		ArrayList<Menu> Order2 = new ArrayList<>();
+		Order1.add(MenuList.get(0)); // Chicken Rice
+		Order2.add(MenuList.get(1));
+		orderList.add(new Ordering("User1", "Child1", LocalDate.now(), Order1, (MenuList.get(0).getPrice())));
+		orderList.get(0).setTrackOrder(false);
+		orderList.add(new Ordering("User1", "Child2", LocalDate.now(), Order2, (MenuList.get(1).getPrice())));
+		// Test Case Normal Condition
+		boolean result = OrderingMain.delOrder("User1", orderList.get(0).getOrderId(),false);
+		// Test if they did not accept to remove the orders
+		assertFalse("Test if the item has not been removed", result);
+		assertEquals("Test that the item has not been removed", 2, orderList.size());
 		
-		//Test Case Normal Condition
-		boolean remove = OrderingMain.delOrder("User1", orderList.get(0).getOrderId());
-		assertTrue("Test if orderList is removed successfully",remove);
-		
-		//Test Case Error Condition
-		boolean removeError = OrderingMain.delOrder("User1", orderList.get(3).getOrderId());//does not exist
-		assertTrue("Test that the order did not remove",removeError);
+		boolean results = OrderingMain.delOrder("User1", orderList.get(1).getOrderId(),true);
+		//Test if they accept to remove the orders
+		assertTrue("Test of the order has been removed successfully", results);
+		assertEquals("Test that order has been removed", 1 , orderList.size());
+		// Test Case Boundary Condition
+		boolean resultB = OrderingMain.delOrder("User1", orderList.get(1).getOrderId());
+		assertFalse("Test will reject if is Not Shipped", resultB);
+
+		orderList.add(new Ordering("User2", "Child1", LocalDate.now(), new ArrayList<>(), 0.0));
+		String boundaryResult = OrderingMain.viewOrder("User2");
+		assertEquals("Test that is the orders are empty it will result a blank", "Order Not Found",
+				boundaryResult);
+
 	}
-	
+
+
 	@Test
 	public void testViewOrder() {
-		//Test that orderList is not null/empty
+		// Test that orderList is not null/empty
 		assertNotNull("Test if orderList is not null", orderList);
-		assertEquals("Test if orderList is not empty", 0, orderList.size());
-		
-		//Test Case Normal Condition
-		
-		//Test if orders are present in orderList to view
-		String order = OrderingMain.viewOrder("User1");
-		assertEquals("Test that it is displaying the orderList is correct", "", order);
-		
-		
-		//Test Case Error Condition
-		
-		String orderError = OrderingMain.viewOrder("User3");
-		assertEquals("Test that it is displaying the orderList is ", order, orderError);
-		
-		//Test Case Boundary Condition
-		
+		assertEquals("Test if orderList is empty", 0, orderList.size());
+		// Error Condition: User does not exist
+		String errorResult = OrderingMain.viewOrder("NonExistentUser");
+		assertEquals("Test that the user does not exist", "Order Not Found", errorResult);
+
+		// Boundary Condition: User exists with orders but no meals
+		orderList.add(new Ordering("User2", "Child1", LocalDate.now(), new ArrayList<>(), 0.0));
+		String boundaryResult = OrderingMain.viewOrder("User2");
+		assertEquals("Test that is the orders are empty it will result a blank", "User does not exist",
+				boundaryResult);
+		// setup
+		MenuList.add(new Menu("Chicken Rice", "Traditional and Fragrant Dish!", 4.50, "Chinese", "Vendor1"));
+		MenuList.add(new Menu("Siew Mai", "Savoury and bite-sized delight!", 2.70, "Chinese", "Vendor1"));
+		MenuList.add(new Menu("Minced Braised Pork", "Braised pork with aromatic spices and herbs served on rice",
+				4.00, "Taiwanese", "Vendor1"));
+		ArrayList<Menu> Order1 = new ArrayList<>();
+		Order1.add(MenuList.get(0)); // Chicken Rice
+		ArrayList<Menu> Order2 = new ArrayList<>();
+		Order2.add(MenuList.get(2)); // Minced Braised Pork
+
+		orderList.add(new Ordering("User1", "Child1", LocalDate.now(), Order1, (MenuList.get(0).getPrice())));
+		orderList.get(0).setTrackOrder(false);
+		orderList.add(new Ordering("User1", "Child2", LocalDate.now(), Order2, (MenuList.get(2).getPrice() * 2)));
+		Ordering O1 = orderList.get(0);
+		Ordering O2 = orderList.get(1);
+		// Normal Condition: User exists with orders and meals
+		String expectResult = "\n========================================\n";
+		expectResult += String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n", 1, O1.getOrderId(),
+				"Delivered");
+		expectResult += "\n========================================\n";
+		expectResult += String.format("Order Details:\nNo. order: %s\nOrderID: %s\nStatus: %s\n", 2, O2.getOrderId(),
+				"Not Shipped");
+		expectResult += "\n----------------------------------------\n";
+		expectResult += "Would you like to view the Meals? [y/n]: ";
+		String normalResult = OrderingMain.viewOrder("User1");
+		assertEquals("Test if OrderID can be produced", expectResult, normalResult);
 	}
-	
 
 }
