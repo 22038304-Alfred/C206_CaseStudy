@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class vendorMenu {
 
-	private static final int OPTION_ADD = 1;
+	private static final int OPTION_ADD = 1; 
 	private static final int OPTION_DELETE = 2;
 	private static final int OPTION_VIEW = 3;
 	private static final int OPTION_QUIT = 4;

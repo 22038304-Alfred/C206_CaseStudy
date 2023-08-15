@@ -4,7 +4,7 @@
  * I understand that copying code is considered as plagiarism.
  *
  * 22033872, 1 Aug 2023 5:52:56 pm
- */
+ */ 
 public class Menu {
 	private String name;
 	private String description;
