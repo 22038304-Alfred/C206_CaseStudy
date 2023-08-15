@@ -16,7 +16,7 @@ public class VendorMenuTest {
 	public VendorMenuTest()
 	{
 		super();
-	}
+	} 
 
 	@Before
 	public void setUp() throws Exception {
