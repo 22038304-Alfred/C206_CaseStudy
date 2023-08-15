@@ -14,7 +14,7 @@ public class VendorMenuTest {
 	private ArrayList<Menu> menuList;
 
 	public VendorMenuTest() 
-	{
+	{ 
 		super();
 	} 
   
@@ -92,12 +92,13 @@ public class VendorMenuTest {
 		vendorMenu.deleteMenu("Hamburger", menuList);		
 		assertEquals("Test that the menu arraylist size is 2.", 2, menuList.size());
 		// Delete a Menu
-		vendorMenu.deleteMenu("Hamburger", menuList);
-		assertEquals("Test that the Menu arraylist size is now 1.", 1, menuList.size());
+//		vendorMenu.deleteMenu("Hamburger", menuList);
+//		assertEquals("Test that the Menu arraylist size is now 1.", 1, menuList.size());
 
 		// Delete a Menu that is not in the list
 		vendorMenu.deleteMenu("Hamburger", menuList);
-		assertEquals("Test that the Menu arraylist size is unchange.", 1, menuList.size()); 
+		assertEquals("Test that the menu arraylist size is still 2",2,menuList.size());
+		//assertEquals("Test that the Menu arraylist size is unchange.", 2, menuList.size()); 
 
 	}
 
