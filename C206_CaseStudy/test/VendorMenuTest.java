@@ -13,7 +13,7 @@ public class VendorMenuTest {
 
 	private ArrayList<Menu> menuList;
 
-	public VendorMenuTest()
+	public VendorMenuTest() 
 	{
 		super();
 	} 
