@@ -6,7 +6,7 @@ import org.junit.Test;
  
  
 public class VendorMenuTest {
- 
+  
 	private Menu menu1;
 	private Menu menu2;
 	private Menu menu3; 
