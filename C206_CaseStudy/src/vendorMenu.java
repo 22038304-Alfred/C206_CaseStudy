@@ -19,9 +19,9 @@ public class vendorMenu {
 
 		ArrayList<Menu> menuList = new ArrayList<Menu>();
 
-		menuList.add(new Menu("Hamburger", "Delicious Beef Burger", 8.99, 5));
-		menuList.add(new Menu("Garden fruit Salad", "Crispy Crunchy Fruti Salad", 3.99, 5));
-		menuList.add(new Menu("Fruit Juice", "Crisp Fruit Juice", 0.99, 5));
+		menuList.add(new Menu("Hamburger", "Delicious Beef Burger", 8.99, 5, "Western","Vendor 1"));
+		menuList.add(new Menu("Garden fruit Salad", "Crispy Crunchy Fruti Salad", 3.99, 5,"Fruits", "Vendor 2"));
+		menuList.add(new Menu("Fruit Juice", "Crisp Fruit Juice", 0.99, 5, "Drinks", "Vendor 3"));
 
 		int option = 0;
 
@@ -62,23 +62,25 @@ public class vendorMenu {
 		String output = "";
 
 		for (Menu menu : menuList) {
-	        output += String.format("%-30s %-30s %-20s %-20s\n",
-	            menu.getName(),
-	            menu.getDescription(),
-	            menu.getPrice(),
-	        	menu.getQty());
-	    }
-	    return output;
+			output += String.format("%-30s %-30s %-20s %-20s %-20s %-20s\n",
+					menu.getName(),
+					menu.getDescription(),
+					menu.getPrice(),
+					menu.getQty(),
+					menu.getType(),
+					menu.getVendorName());
+		}
+		return output;
 	}
-	
+
 	private static void viewAllMenu(ArrayList<Menu> menuList)
 	{
 		System.out.println("\n List of Menu: \n");
-		String output = String.format("%-30s %-30s %-20s %-20s \n", "NAME", "DESCRIPTION", "PRICE", "QTY");
+		String output = String.format("%-30s %-30s %-20s %-20s %-20s %-20s \n", "NAME", "DESCRIPTION", "PRICE", "QTY", "TYPE", "VENDORNAME");
 		output += retrieveAllMenu(menuList);
 		System.out.println(output);
 	}
-	
+
 	private static Menu inputMenu() 
 	{
 		// TODO Auto-generated method stub
@@ -86,8 +88,10 @@ public class vendorMenu {
 		String description = Helper.readString("Enter description > ");
 		double price = Helper.readDouble("Enter price > ");
 		int qty = Helper.readInt("Enter quantity > ");
-		
-		Menu menu = new Menu (name, description, price, qty);
+		String type = Helper.readString("Enter type > ");
+		String vendorName = Helper.readString("Enter name of vendor > ");
+
+		Menu menu = new Menu (name, description, price, qty, type, vendorName);
 		return menu;
 	}
 
@@ -98,30 +102,30 @@ public class vendorMenu {
 			if (m.getName().equalsIgnoreCase(menu.getName()) )
 				return;
 		}
-		if ((menu.getName().isEmpty()) || (menu.getDescription().isEmpty()) || (menu.getPrice()  == 0) || (menu.getQty () == 0)) {
-			
+		if ((menu.getName().isEmpty()) || (menu.getDescription().isEmpty()) || (menu.getPrice()  == 0) || (menu.getQty () == 0) || (menu.getType().isEmpty()) || (menu.getVendorName().isEmpty())) {
+
 			return;
 		}
-		
+
 		menuList.add(menu);
 	}
-	
-    public static void deleteMenu(String name, ArrayList<Menu> menuList) {
-        boolean menufound = false;
-        for (int i = 0; i < menuList.size(); i++) {
-        	Menu menu = menuList.get(i);
-            if (menu != null && menuList.get(i).getName().equalsIgnoreCase(name)) {
-                menuList.remove(i);
-                menufound = true;
-                System.out.println("Menu has been deleted");
-            }
-        }
-        if (!menufound) {
-            System.out.println("menu not found");
-        }
-    } 
 
- 
+	public static void deleteMenu(String name, ArrayList<Menu> menuList) {
+		boolean menufound = false;
+		for (int i = 0; i < menuList.size(); i++) {
+			Menu menu = menuList.get(i);
+			if (menu != null && menuList.get(i).getName().equalsIgnoreCase(name)) {
+				menuList.remove(i);
+				menufound = true;
+				System.out.println("Menu has been deleted");
+			}
+		}
+		if (!menufound) {
+			System.out.println("menu not found");
+		}
+	} 
+
+
 	public static void menu() {
 		Helper.line(80, "-");
 		System.out.println("Manage Menu: "); 
