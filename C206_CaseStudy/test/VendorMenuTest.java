@@ -17,7 +17,7 @@ public class VendorMenuTest {
 	{
 		super();
 	} 
- 
+  
 	@Before
 	public void setUp() throws Exception {
 		menu1 = new Menu("Hamburger", "Delicious Beef Burger", 8.99, 5, "Western","Vendor 1");
